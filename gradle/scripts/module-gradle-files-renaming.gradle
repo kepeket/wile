@@ -1,5 +1,5 @@
 void renameBuildFileToModuleName(final project) {
-    project.buildFileName = project.name.toLowerCase() + ".gradle"
+    project.buildFileName = project.name.toLowerCase() + ".gradle.kts"
     renameChildProjectsBuildFile(project)
 }
 
