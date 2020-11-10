@@ -1,3 +1,7 @@
+plugins {
+    id("common-android")
+}
+
 allprojects {
     repositories {
         mavenLocal()

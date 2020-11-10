@@ -9,15 +9,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
-
     defaultConfig {
         applicationId = "com.wile.main"
-        minSdkVersion(26)
-        targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -29,11 +24,6 @@ android {
 
     buildFeatures {
         dataBinding = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
