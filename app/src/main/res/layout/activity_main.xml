@@ -37,6 +37,8 @@
         android:id="@+id/workout_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:background="?android:windowBackground"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         android:padding="@dimen/text_padding">
 
@@ -54,6 +56,13 @@
             android:text="@{@string/time_format(vm.trainingDurationLiveData)}"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:background="@color/blue_bullet"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         app:layout_constraintTop_toBottomOf="@+id/workout_header"
@@ -74,7 +83,9 @@
         app:spanCount="2"
         app:toast="@{vm.toastLiveData}"
         tools:listitem="@layout/item_training"
-        tools:itemCount="3"/>
+        tools:itemCount="3"
+
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

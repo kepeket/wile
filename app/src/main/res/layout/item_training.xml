@@ -9,47 +9,64 @@
             type="com.wile.main.model.Training" />
 
     </data>
-    <androidx.cardview.widget.CardView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:elevation="3dp">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:padding="@dimen/form_padding"
-            android:layout_height="match_parent">
+        android:layout_marginBottom="@dimen/fab_margin">
 
-            <TextView
-                android:id="@+id/training_name"
+        <TextView
+            android:id="@+id/training_duration"
+            style="@style/Theme.Main.Training.Duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:text="@{training.duration + `s`}"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cardView2"
+            tools:text="30s" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="3dp"
+            app:cardCornerRadius="6dp"
+            android:layout_marginStart="@dimen/fab_margin"
+            app:layout_constraintStart_toEndOf="@+id/training_duration"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/Theme.Main.Training.Name"
-                tools:text="Pompes"
-                android:text="@{training.name}"/>
+                android:layout_height="match_parent"
+                android:padding="@dimen/form_padding">
 
-            <TextView
-                android:id="@+id/training_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/Theme.Main.Training.Duration"
-                tools:text="30s"
-                android:text="@{training.duration + `s`}"/>
-            <TextView
-                android:id="@+id/training_reps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/training_name"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/Theme.Main.Training.Reps"
-                tools:text="15 reps"
-                app:gone="@{training.reps == 0}"
-                android:text="@{training.reps + ` reps`}"/>
+                <TextView
+                    android:id="@+id/training_name"
+                    style="@style/Theme.Main.Training.Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{training.name}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Pompes" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/training_reps"
+                    style="@style/Theme.Main.Training.Reps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{training.reps + ` reps`}"
+                    app:gone="@{training.reps == 0}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/training_name"
+                    tools:text="15 reps" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
