@@ -1,0 +1,13 @@
+void renameBuildFileToModuleName(final project) {
+    project.buildFileName = project.name.toLowerCase() + ".gradle"
+    renameChildProjectsBuildFile(project)
+}
+
+void renameChildProjectsBuildFile(final project) {
+    project.children.each { final subProject -> renameBuildFileToModuleName(subProject) }
+}
+
+// Will rename every module's build.gradle file to use its name instead of `build`.
+// E.g. `app/build.gradle` will become `app/app.gradle`
+// The root build.gradle file will remain untouched
+renameChildProjectsBuildFile(rootProject)
