@@ -1,11 +1,11 @@
 plugins {
-    id("com.android.application")
-    id("com.google.firebase.crashlytics")
-    id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.android.extensions")
-    id("org.jetbrains.kotlin.kapt")
+    id(BuildScript.AndroidApplication)
+    id(BuildScript.Crashlytics)
+    id(BuildScript.DaggerHilt)
+    id(BuildScript.GoogleServices)
+    id(BuildScript.KotlinAndroid)
+    id(BuildScript.KotlinAndroidExtensions)
+    id(BuildScript.Kapt)
 }
 
 android {
