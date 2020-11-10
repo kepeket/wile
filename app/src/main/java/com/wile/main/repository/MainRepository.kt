@@ -22,12 +22,9 @@ class MainRepository @Inject constructor(
     suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
 
     @WorkerThread
-    suspend fun fetchTrainingDuration(
+    fun fetchTrainingDuration(
             workout: Int,
             onSuccess: () -> Unit,
             onError: (String) -> Unit
-    ) = flow {
-        var trainingDuration = trainingDao.getTrainingDuration(workout)
-        emit(trainingDuration)
-    }.flowOn(Dispatchers.IO)
+    ) = trainingDao.getTrainingDuration(workout)
 }

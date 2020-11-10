@@ -16,9 +16,8 @@ class MainViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {
 
-    private var trainingFetchingLiveData: MutableLiveData<Int> = MutableLiveData(0)
     val trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
-    val trainingDurationLiveData: LiveData<Int>
+    val trainingDurationLiveData: MutableLiveData<Int> = MutableLiveData(0)
 
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData
@@ -41,17 +40,18 @@ class MainViewModel @ViewModelInject constructor(
             }
         }
 
-        trainingDurationLiveData = trainingFetchingLiveData.switchMap {
-            launchOnViewModelScope {
-                this.mainRepository.fetchTrainingDuration(
-                        workout = it,
-                        onSuccess = {
-                            isLoading.set(false)
-                        },
-                        onError = {
-                            _toastLiveData.postValue(it)
-                        }
-                ).asLiveData()
+        viewModelScope.launch {
+            isLoading.set(true)
+            mainRepository.fetchTrainingDuration(
+                    workout = 0,
+                    onSuccess = {
+                        isLoading.set(false)
+                    },
+                    onError = {
+                        _toastLiveData.postValue(it)
+                    }
+            ).collect {
+                trainingDurationLiveData.value = it
             }
         }
     }

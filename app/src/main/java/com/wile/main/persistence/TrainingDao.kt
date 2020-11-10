@@ -15,7 +15,7 @@ interface TrainingDao {
     fun getTrainingList(workout_: Int): Flow<List<Training>>
 
     @Query("SELECT SUM(duration) FROM Training WHERE workout = :workout_")
-    suspend fun getTrainingDuration(workout_: Int): Int
+    fun getTrainingDuration(workout_: Int): Flow<Int>
 
     @Query("DELETE FROM Training WHERE id = :id_")
     suspend fun delete(id_: Int)
