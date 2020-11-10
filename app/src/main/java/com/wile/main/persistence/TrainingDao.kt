@@ -15,4 +15,7 @@ interface TrainingDao {
 
     @Query("SELECT * FROM Training WHERE workout = :workout_")
     suspend fun getTrainingList(workout_: Int): List<Training>
+
+    @Query("SELECT SUM(duration) FROM Training WHERE workout = :workout_")
+    suspend fun getTrainingDuration(workout_: Int): Int
 }

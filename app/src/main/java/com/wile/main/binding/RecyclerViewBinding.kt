@@ -4,6 +4,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wile.main.model.Training
 import com.wile.main.ui.adapter.TrainingAdapter
+import com.wile.main.ui.main.MainViewModel
 
 object RecyclerViewBinding {
 
@@ -22,6 +23,5 @@ object RecyclerViewBinding {
                 (view.adapter as? TrainingAdapter)?.addTrainingList(it)
             }
         }
-
     }
 }

@@ -1,15 +1,15 @@
 package com.wile.main.ui.add
 
-import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.databinding.ObservableBoolean
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
-import com.squareup.inject.assisted.Assisted
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.wile.main.base.LiveCoroutinesViewModel
 import com.wile.main.model.Training
 import com.wile.main.repository.AddRepository
-import com.wile.main.repository.MainRepository
 
 class AddViewModel @ViewModelInject constructor(
     private val addRepository: AddRepository,

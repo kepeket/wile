@@ -9,9 +9,47 @@
             type="com.wile.main.model.Training" />
 
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:elevation="3dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/form_padding"
+            android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/training_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Theme.Main.Training.Name"
+                tools:text="Pompes"
+                android:text="@{training.name}"/>
+
+            <TextView
+                android:id="@+id/training_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Theme.Main.Training.Duration"
+                tools:text="30s"
+                android:text="@{training.duration + `s`}"/>
+            <TextView
+                android:id="@+id/training_reps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/training_name"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/Theme.Main.Training.Reps"
+                tools:text="15 reps"
+                app:gone="@{training.reps == 0}"
+                android:text="@{training.reps + ` reps`}"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>

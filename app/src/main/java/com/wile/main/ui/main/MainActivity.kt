@@ -10,15 +10,19 @@ import com.wile.main.ui.adapter.TrainingAdapter
 import com.wile.main.ui.add.AddActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.toolbar
 
 @AndroidEntryPoint
 class MainActivity : DataBindingActivity() {
+
+
 
     val viewModel: MainViewModel by viewModels()
     private val binding: ActivityMainBinding by binding(R.layout.activity_main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSupportActionBar(toolbar)
         binding.apply {
             lifecycleOwner = this@MainActivity
             adapter = TrainingAdapter()

@@ -17,8 +17,7 @@ class AddRepository @Inject constructor(
         newTraining: Training,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
-    ) = flow {
+    )  {
         val training = trainingDao.insertTrainingList(newTraining)
-        emit(training)
-    }.flowOn(Dispatchers.IO)
+    }
 }

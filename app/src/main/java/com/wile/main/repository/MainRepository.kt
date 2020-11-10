@@ -20,4 +20,14 @@ class MainRepository @Inject constructor(
         var trainings = trainingDao.getTrainingList(workout)
         emit(trainings)
     }.flowOn(Dispatchers.IO)
+
+    @WorkerThread
+    suspend fun fetchTrainingDuration(
+            workout: Int,
+            onSuccess: () -> Unit,
+            onError: (String) -> Unit
+    ) = flow {
+        var trainingDuration = trainingDao.getTrainingDuration(workout)
+        emit(trainingDuration)
+    }.flowOn(Dispatchers.IO)
 }

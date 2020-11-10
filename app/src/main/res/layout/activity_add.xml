@@ -15,16 +15,16 @@
     tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Main.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.Main.PopupOverlay" />
+            />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -32,8 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/form_padding"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
         <EditText
@@ -75,6 +74,16 @@
             android:ems="10"
             android:inputType="number"
             android:hint="Reps par minute"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/training_rep_rate"
+            android:layout_marginTop="@dimen/form_padding"
+            android:text="Ajouter"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

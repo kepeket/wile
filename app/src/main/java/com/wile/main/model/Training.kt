@@ -12,6 +12,4 @@ data class Training(
     val repRate: Int = 0,
     val duration: Int = 30,
     val sorting: Int
-) {
-
-}
+)

@@ -9,5 +9,5 @@ abstract class DataBindingActivity : AppCompatActivity() {
 
     protected inline fun <reified T : ViewDataBinding> binding(
         @LayoutRes resId: Int
-    ): Lazy<T> = lazy { DataBindingUtil.setContentView<T>(this, resId) }
+    ): Lazy<T> = lazy { DataBindingUtil.setContentView(this, resId) }
 }

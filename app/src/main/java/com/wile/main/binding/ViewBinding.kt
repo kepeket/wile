@@ -3,9 +3,7 @@ package com.wile.main.binding
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedDispatcherOwner
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
-import com.google.android.material.card.MaterialCardView
 
 object ViewBinding {
 

@@ -6,8 +6,7 @@ import com.wile.main.model.Training
 
 @Database(entities = [
     Training::class],
-    version = 1,
-    exportSchema = true)
+    version = 1)
 
 abstract class AppDatabase : RoomDatabase() {
 
