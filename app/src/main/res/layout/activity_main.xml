@@ -67,6 +67,7 @@
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
         app:adapter="@{adapter}"
+        app:itemTouchListener="@{adapter.touchListener}"
         app:adapterTrainingList="@{vm.trainingListLiveData}"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"

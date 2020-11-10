@@ -4,16 +4,20 @@ import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.wile.main.R
 import com.wile.main.databinding.ItemTrainingBinding
 import com.wile.main.model.Training
+import com.wile.main.ui.main.MainViewModel
 
 class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>() {
 
     private val items: MutableList<Training> = mutableListOf()
     private var onClickedAt = 0L
+    private var listerner: TouchListenerCallbackInterface? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -32,6 +36,7 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
 
     fun addTrainingList(trainingList: List<Training>) {
         val previous = items.size
+        items.clear()
         items.addAll(trainingList)
         notifyItemRangeChanged(previous, trainingList.size)
     }
@@ -47,4 +52,35 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
 
     class TrainingViewHolder(val binding: ItemTrainingBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    fun setTouchListener(listener_: TouchListenerCallbackInterface?) {
+        listener_?.let{
+            listerner = it
+        }
+    }
+
+    val touchListener = object : ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, viewHolder1: RecyclerView.ViewHolder): Boolean {
+            //2
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+            //3
+            val position = viewHolder.adapterPosition
+
+            listerner?.let {
+                it.onDeleteTraining(items[position])
+            }
+            items.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
+
+
+    interface TouchListenerCallbackInterface {
+        fun onDeleteTraining(training: Training)
+        fun onMoveTraining(training: Training)
+    }
 }

@@ -55,4 +55,10 @@ class MainViewModel @ViewModelInject constructor(
             }
         }
     }
+
+    fun deleteTraining(id: Int){
+        viewModelScope.launch {
+            mainRepository.deleteTraining(id)
+        }
+    }
 }

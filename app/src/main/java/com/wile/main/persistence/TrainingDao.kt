@@ -1,10 +1,7 @@
 package com.wile.main.persistence
 
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.wile.main.model.Training
 import kotlinx.coroutines.flow.Flow
 
@@ -19,4 +16,8 @@ interface TrainingDao {
 
     @Query("SELECT SUM(duration) FROM Training WHERE workout = :workout_")
     suspend fun getTrainingDuration(workout_: Int): Int
+
+    @Query("DELETE FROM Training WHERE id = :id_")
+    suspend fun delete(id_: Int)
+
 }
