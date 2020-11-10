@@ -8,6 +8,8 @@ import androidx.lifecycle.*
 import com.wile.main.base.LiveCoroutinesViewModel
 import com.wile.main.model.Training
 import com.wile.main.repository.MainRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class MainViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository,
@@ -15,7 +17,7 @@ class MainViewModel @ViewModelInject constructor(
 ) : LiveCoroutinesViewModel() {
 
     private var trainingFetchingLiveData: MutableLiveData<Int> = MutableLiveData(0)
-    val trainingListLiveData: LiveData<List<Training>>
+    val trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
     val trainingDurationLiveData: LiveData<Int>
 
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
@@ -23,20 +25,22 @@ class MainViewModel @ViewModelInject constructor(
     val isLoading: ObservableBoolean = ObservableBoolean(false)
 
     init {
-        trainingListLiveData = trainingFetchingLiveData.switchMap {
+
+        viewModelScope.launch {
             isLoading.set(true)
-            launchOnViewModelScope {
-                this.mainRepository.fetchTrainingList(
-                        workout = it,
-                        onSuccess = {
-                            isLoading.set(false)
-                        },
-                        onError = {
-                            _toastLiveData.postValue(it)
-                        }
-                ).asLiveData()
+            mainRepository.fetchTrainingList(
+                    workout = 0,
+                    onSuccess = {
+                        isLoading.set(false)
+                    },
+                    onError = {
+                        _toastLiveData.postValue(it)
+                    }
+            ).collect {
+                trainingListLiveData.value = it
             }
         }
+
         trainingDurationLiveData = trainingFetchingLiveData.switchMap {
             launchOnViewModelScope {
                 this.mainRepository.fetchTrainingDuration(
@@ -50,15 +54,5 @@ class MainViewModel @ViewModelInject constructor(
                 ).asLiveData()
             }
         }
-    }
-
-    @MainThread
-    fun fetchTrainingList(workout: Int) {
-        trainingFetchingLiveData.value = workout
-    }
-
-    @MainThread
-    fun fetchTotalDuration(workout: Int) {
-        trainingFetchingLiveData.value = workout
     }
 }

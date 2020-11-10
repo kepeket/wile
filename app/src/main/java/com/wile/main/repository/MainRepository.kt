@@ -12,14 +12,11 @@ class MainRepository @Inject constructor(
 ) : Repository {
 
     @WorkerThread
-    suspend fun fetchTrainingList(
+    fun fetchTrainingList(
         workout: Int,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
-    ) = flow {
-        var trainings = trainingDao.getTrainingList(workout)
-        emit(trainings)
-    }.flowOn(Dispatchers.IO)
+    ) = trainingDao.getTrainingList(workout)
 
     @WorkerThread
     suspend fun fetchTrainingDuration(

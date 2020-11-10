@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.wile.main.model.Training
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrainingDao {
@@ -14,7 +15,7 @@ interface TrainingDao {
     suspend fun insertTrainingList(training: Training)
 
     @Query("SELECT * FROM Training WHERE workout = :workout_")
-    suspend fun getTrainingList(workout_: Int): List<Training>
+    fun getTrainingList(workout_: Int): Flow<List<Training>>
 
     @Query("SELECT SUM(duration) FROM Training WHERE workout = :workout_")
     suspend fun getTrainingDuration(workout_: Int): Int
