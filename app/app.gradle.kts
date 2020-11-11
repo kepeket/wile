@@ -15,6 +15,16 @@ android {
         applicationId = "com.wile.main"
         versionCode = 1
         versionName = "1.0"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments.putAll(mapOf(
+                    "room.schemaLocation" to "${rootProject.projectDir}/room-schemas",
+                    "room.incremental" to "true",
+                    "room.expandProjection" to "true"
+                ))
+            }
+        }
     }
 
     buildTypes {
@@ -24,9 +34,7 @@ android {
         }
     }
 
-    buildFeatures {
-        dataBinding = true
-    }
+    buildFeatures.dataBinding = true
 
     kotlinOptions {
         jvmTarget = "1.8"
