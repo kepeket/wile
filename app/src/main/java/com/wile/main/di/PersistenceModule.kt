@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.wile.main.persistence.AppDatabase
-import com.wile.main.persistence.TrainingDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,25 +16,19 @@ object PersistenceModule {
 
     @Provides
     @Singleton
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder().build()
-    }
+    fun provideMoshi() =  Moshi.Builder().build()
 
     @Provides
     @Singleton
     fun provideAppDatabase(
         application: Application
-    ): AppDatabase {
-        return Room
-            .databaseBuilder(application, AppDatabase::class.java, "Wile.db")
-            .fallbackToDestructiveMigration()
-            .build()
-    }
+    ): AppDatabase = Room
+        .databaseBuilder(application, AppDatabase::class.java, "Wile.db")
+        .fallbackToDestructiveMigration()
+        .build()
 
     @Provides
     @Singleton
-    fun provideTrainingDao(appDatabase: AppDatabase): TrainingDao {
-        return appDatabase.trainingDao()
-    }
+    fun provideTrainingDao(appDatabase: AppDatabase) = appDatabase.trainingDao()
 
 }
