@@ -10,14 +10,12 @@ import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.wile.main.R
 import com.wile.main.databinding.ItemTrainingBinding
 import com.wile.main.model.Training
-import com.wile.main.ui.main.MainViewModel
 
 class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>() {
 
-    private val items: MutableList<Training> = mutableListOf()
+    private val items = mutableListOf<Training>()
     private var onClickedAt = 0L
     private var listerner: TouchListenerCallbackInterface? = null
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -38,6 +36,11 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
         val previous = items.size
         items.clear()
         items.addAll(trainingList)
+        /*
+         FixMe : could be replaced by notifyDataSetChanged ;
+          notifyItemRangeChanged is useful when you want to do perf and don't replace all the data,
+          but here you clear & replace all
+         */
         notifyItemRangeChanged(previous, trainingList.size)
     }
 
@@ -77,7 +80,6 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
             notifyItemRemoved(position)
         }
     }
-
 
     interface TouchListenerCallbackInterface {
         fun onDeleteTraining(training: Training)
