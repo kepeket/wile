@@ -48,6 +48,9 @@ object Dependencies {
     // Artifact : https://mvnrepository.com/artifact/androidx.hilt/hilt-lifecycle-viewmodel
     const val hiltViewModel = "androidx.hilt:hilt-lifecycle-viewmodel"
 
+    const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect"
+    const val kotlinStdlibJdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+
     // https://material.io/develop/android/docs/getting-started/
     // https://mvnrepository.com/artifact/com.google.android.material/material
     const val materialDesign = "com.google.android.material:material"

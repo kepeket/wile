@@ -54,6 +54,8 @@ dependencies {
         Dependencies.firebaseCrashlytics,
         Dependencies.hiltAndroid,
         Dependencies.hiltViewModel,
+        Dependencies.kotlinReflect,
+        Dependencies.kotlinStdlibJdk7,
         Dependencies.materialDesign,
         Dependencies.moshi,
         Dependencies.room
