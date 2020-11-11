@@ -104,7 +104,7 @@ class MainActivity : DataBindingActivity(),
     }
 
     override fun skipTraining() {
-        chronometer.base = chronometer.base - 15 * 1000
+        chronometer.base = chronometer.base - TRAINING_TIME
     }
 
     override fun chronometerTicking(chronometer: Chronometer) {
@@ -130,4 +130,7 @@ class MainActivity : DataBindingActivity(),
         TODO("Not yet implemented")
     }
 
+    private companion object {
+        const val TRAINING_TIME = 15 * 1000
+    }
 }
