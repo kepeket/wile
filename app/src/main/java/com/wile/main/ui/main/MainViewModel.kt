@@ -1,5 +1,6 @@
 package com.wile.main.ui.main
 
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
@@ -37,21 +38,7 @@ class MainViewModel @ViewModelInject constructor(
                     }
             ).collect {
                 trainingListLiveData.value = it
-            }
-        }
-
-        viewModelScope.launch {
-            isLoading.set(true)
-            mainRepository.fetchTrainingDuration(
-                    workout = 0,
-                    onSuccess = {
-                        isLoading.set(false)
-                    },
-                    onError = {
-                        _toastLiveData.postValue(it)
-                    }
-            ).collect {
-                trainingDurationLiveData.value = it
+                trainingDurationLiveData.value = it.map { t -> t.duration }.sum()
             }
         }
     }

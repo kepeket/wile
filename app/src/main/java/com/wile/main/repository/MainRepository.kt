@@ -20,11 +20,4 @@ class MainRepository @Inject constructor(
 
     @WorkerThread
     suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
-
-    @WorkerThread
-    fun fetchTrainingDuration(
-            workout: Int,
-            onSuccess: () -> Unit,
-            onError: (String) -> Unit
-    ) = trainingDao.getTrainingDuration(workout)
 }
