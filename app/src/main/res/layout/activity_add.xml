@@ -12,19 +12,17 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity">
+    tools:context=".ui.main.AddActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            />
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/toolbar_home"
+            tools:viewBindingIgnore="true"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -32,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/form_padding"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
         <EditText
@@ -85,7 +82,6 @@
             android:layout_marginTop="@dimen/form_padding"
             android:text="Ajouter"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

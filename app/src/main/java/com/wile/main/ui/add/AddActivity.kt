@@ -2,7 +2,9 @@ package com.wile.main.ui.add
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
@@ -24,26 +26,22 @@ class AddActivity : DataBindingActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.apply {
             lifecycleOwner = this@AddActivity
             vm = viewModel
         }
+        setSupportActionBar(binding.mainToolbar.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         save_btn.setOnClickListener {
             validateTraining()
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menu?.let {
-            menuInflater.inflate(R.menu.menu_add, menu)
-        }
-        return true
-    }
-
     private fun validateTraining() {
+        if (training_title.text.isNullOrEmpty()){
+            Toast.makeText(this, getString(R.string.training_add_missing_name), Toast.LENGTH_SHORT).show()
+            return
+        }
         var computedDuration = 30
         if (training_duration.text.isNotBlank()){
             computedDuration = training_duration.text.toString().toInt()
@@ -78,10 +76,20 @@ class AddActivity : DataBindingActivity() {
         finish()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.training_add_menu, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.save_training -> {
+        R.id.training_main_go -> {
             validateTraining()
             true
+        }
+        android.R.id.home -> {
+            onBackPressed()
+            true;
         }
 
         else -> {

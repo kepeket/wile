@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wile</string>
+    <string name="app_name">Wile: keep up with the Bipbip</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -12,4 +12,5 @@
     <string name="activity_add_label">Ajouter un exo</string>
 
     <string name="time_format">%d secondes</string>
+    <string name="training_add_missing_name">Il faut au moins choisir un exercice</string>
 </resources>

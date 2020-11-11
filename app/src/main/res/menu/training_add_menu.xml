@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/save_training"
-        android:icon="@android:drawable/ic_menu_save"
-        android:title="Ajouter"
+        android:id="@+id/training_main_go"
+        android:icon="@drawable/ic_baseline_check_24"
+        android:title="Sauvegarder"
+        android:visible="true"
         app:showAsAction="always" />
 </menu>
