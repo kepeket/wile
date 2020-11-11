@@ -5,11 +5,11 @@
     <item
         android:id="@+id/training_main_go"
         android:icon="@drawable/ic_baseline_play_arrow_24"
-        android:title="Go"
+        android:title="@string/menu_training_main_go"
         android:visible="true"
         app:showAsAction="always" />
     <item
         android:icon="@drawable/ic_baseline_settings_24"
-        android:title="Paramètres"
+        android:title="@string/menu_training_main_parameters"
         app:showAsAction="ifRoom" />
 </menu>

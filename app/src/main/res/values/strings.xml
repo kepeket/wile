@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wile: keep up with the Bipbip</string>
     <string name="action_settings">Settings</string>
@@ -13,4 +14,7 @@
 
     <string name="time_format">%d secondes</string>
     <string name="training_add_missing_name">Il faut au moins choisir un exercice</string>
+
+    <string name="menu_training_main_go">Go</string>
+    <string name="menu_training_main_parameters">Paramètres</string>
 </resources>
