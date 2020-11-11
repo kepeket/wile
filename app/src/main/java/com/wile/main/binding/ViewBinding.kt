@@ -48,6 +48,8 @@ object ViewBinding {
         val stop = view.findViewById<ImageButton>(R.id.stop)
         val pause = view.findViewById<ImageButton>(R.id.pause)
         val skip = view.findViewById<ImageButton>(R.id.next)
+        val chronometer = view.findViewById<Chronometer>(R.id.chronometer)
+        controller.setBottomSheetView(view)
         stop?.setOnClickListener {
             controller.stopWorkout()
         }
@@ -57,13 +59,8 @@ object ViewBinding {
         skip?.setOnClickListener {
             controller.skipTraining()
         }
-    }
-
-    @JvmStatic
-    @BindingAdapter("ticker")
-    fun bindChronometerTicker(view: Chronometer, ticker: WorkoutInterface) {
-        view.setOnChronometerTickListener {
-            ticker.chronometerTicking(it)
+        chronometer?.setOnChronometerTickListener {
+            controller.chronometerTicking(it)
         }
     }
 }

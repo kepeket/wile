@@ -47,7 +47,8 @@ dependencies {
     kapts(
         Dependencies.hiltCompiler,
         Dependencies.moshiCompiler,
-        Dependencies.roomAnnotationProcessor
+        Dependencies.roomAnnotationProcessor,
+        "androidx.hilt:hilt-compiler:1.0.0-alpha02"
     )
 
     implementations(

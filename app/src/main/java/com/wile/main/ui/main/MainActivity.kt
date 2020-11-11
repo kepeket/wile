@@ -12,20 +12,23 @@ import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
 import com.wile.main.databinding.ActivityMainBinding
 import com.wile.main.model.Training
+import com.wile.main.service.TrainingMediaPlayer
 import com.wile.main.ui.adapter.TrainingAdapter
 import com.wile.main.ui.add.AddActivity
+import com.wile.main.ui.handler.WorkoutHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet.*
 
 @AndroidEntryPoint
 class MainActivity : DataBindingActivity(),
-    TrainingAdapter.TouchListenerCallbackInterface,
-    WorkoutInterface {
+    TrainingAdapter.TouchListenerCallbackInterface {
 
     private val viewModel: MainViewModel by viewModels()
     private val binding: ActivityMainBinding by binding(R.layout.activity_main)
     private val adapter by lazy { TrainingAdapter() }
+    private val mediaplayer by lazy { TrainingMediaPlayer(this) }
+    private val workoutHandler by lazy { WorkoutHandler(this, viewModel) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,7 @@ class MainActivity : DataBindingActivity(),
         }
 
         binding.workoutGo.apply {
-            workoutController = this@MainActivity
+            workoutController = workoutHandler
         }
 
         setSupportActionBar(binding.mainToolbar.toolbar)
@@ -55,70 +58,13 @@ class MainActivity : DataBindingActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.training_main_go -> {
-            startWorkout()
+            workoutHandler.startWorkout()
             true
         }
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun startWorkout() {
-        val sheetBehavior = BottomSheetBehavior.from(binding.workoutGo.trainingGoBottomSheet)
-        chronometer.isCountDown = false
-        chronometer.base = SystemClock.elapsedRealtime() + 5 * 1000
-        chronometer.start()
-        chronometerWarmup = true
-        chronometerIsRunning = true
-        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-    }
-
-    override var chronometerIsRunning = false
-    override var chronometerWarmup = false
-
-    override fun stopWorkout() {
-        if (chronometerIsRunning) {
-            chronometer.stop()
-            chronometerIsRunning = false
-        }
-        val sheetBehavior = BottomSheetBehavior.from(binding.workoutGo.trainingGoBottomSheet)
-        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
-    }
-
-    override fun pauseWorkout() {
-        if (chronometerIsRunning) {
-            chronometer.stop()
-            binding.workoutGo.pause.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-        } else {
-            chronometer.start()
-            binding.workoutGo.pause.setImageResource(R.drawable.ic_baseline_pause_24)
-        }
-
-        chronometerIsRunning = !chronometerIsRunning
-    }
-
-    override fun skipTraining() {
-        chronometer.base = chronometer.base - TRAINING_TIME
-    }
-
-    override fun chronometerTicking(chronometer: Chronometer) {
-        val timeDeltaFromStart = ((SystemClock.elapsedRealtime() - chronometer.base) / 1000).toInt()
-        if (timeDeltaFromStart == 0) {
-            if (chronometerWarmup) {
-                chronometerWarmup = false
-                viewModel.trainingDurationLiveData.value?.let {
-                    chronometer.isCountDown = true
-                    chronometer.base = SystemClock.elapsedRealtime() + it * 1000
-                }
-            } else if (chronometerIsRunning) {
-                chronometer.stop()
-            }
         }
     }
 
@@ -130,7 +76,4 @@ class MainActivity : DataBindingActivity(),
         TODO("Not yet implemented")
     }
 
-    private companion object {
-        const val TRAINING_TIME = 15 * 1000
-    }
 }
