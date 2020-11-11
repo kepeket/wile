@@ -6,7 +6,14 @@ import com.android.build.gradle.BaseExtension
  */
 subprojects {
     with(pluginManager) {
+        withPlugin(BuildScript.KotlinAndroid) {
+            useBoM()
+        }
+
         withPlugin(BuildScript.Kapt) {
+            dependencies {
+                configurations.create("kapt")(platform(project(":dependencies")))
+            }
             configure<org.jetbrains.kotlin.gradle.plugin.KaptExtension> {
                 javacOptions {
                     option("-source", "8")
@@ -19,6 +26,10 @@ subprojects {
             configureAndroidProject()
         }
     }
+}
+
+fun Project.useBoM() = dependencies {
+    "implementation"(platform(project(":dependencies")))
 }
 
 fun Project.configureAndroidProject() {
@@ -36,5 +47,9 @@ fun Project.configureAndroidProject() {
             sourceCompatibility = JavaVersion.VERSION_1_8
             targetCompatibility = JavaVersion.VERSION_1_8
         }
+    }
+
+    dependencies {
+        "androidTestImplementation"(platform(project(":dependencies")))
     }
 }

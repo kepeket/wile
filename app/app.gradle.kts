@@ -29,51 +29,41 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    kapt.correctErrorTypes = true
 }
 
 dependencies {
-    val lifecycle_version = "2.2.0"
-    val room_version = "2.2.5"
-    val hilt_core_version = "2.29.1-alpha"
-    val moshi_version = "1.11.0"
-    val hilt_version = "1.0.0-alpha02"
-    val assisted_inject_version = "0.5.2"
+    implementation(Dependencies.androidXAppCompat)
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("com.google.android.material:material:1.2.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.3.1")
+    implementation(Dependencies.androidXLiveDataKtx)
 
-    // hilt
-    implementation("com.google.dagger:hilt-android:$hilt_core_version")
-    implementation("androidx.hilt:hilt-common:$hilt_version")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:$hilt_version")
-    compileOnly("com.squareup.inject:assisted-inject-annotations-dagger2:$assisted_inject_version")
-    kapt("com.squareup.inject:assisted-inject-processor-dagger2:$assisted_inject_version")
-    kapt("com.google.dagger:hilt-compiler:$hilt_core_version")
-    kapt("androidx.hilt:hilt-compiler:$hilt_version")
+    implementation(Dependencies.androidXNavigationFragmentKTX)
+    implementation(Dependencies.androidXNavigationUiKTX)
 
-    // room
-    implementation("androidx.room:room-ktx:$room_version")
-    implementation("androidx.room:room-runtime:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
+    implementation(Dependencies.androidXViewModelKTX)
 
-    implementation("com.squareup.moshi:moshi-kotlin:$moshi_version")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi_version")
+    implementation(Dependencies.constraintLayout)
 
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation(Dependencies.firebaseAnalytics)
+    implementation(Dependencies.firebaseCrashlytics)
 
-    implementation(platform("com.google.firebase:firebase-bom:26.0.0"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation(Dependencies.hiltAndroid)
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hiltViewModel)
 
-    testImplementation("junit:junit:4.13.1")
-    androidTestImplementation("androidx.test.ext:junit:1.1.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+    implementation(Dependencies.materialDesign)
+
+    implementation(Dependencies.moshi)
+    kapt(Dependencies.moshiCompiler)
+
+    implementation(Dependencies.room)
+    kapt(Dependencies.roomAnnotationProcessor)
+
+    implementation(Dependencies.androidXCoreKTX)
+
+    testImplementation(Dependencies.junit)
+
+    androidTestImplementation(Dependencies.androidJunitRunner)
+    androidTestImplementation(Dependencies.espresso)
 }
