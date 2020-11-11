@@ -25,20 +25,22 @@ class MainActivity : DataBindingActivity(),
 
     private val viewModel: MainViewModel by viewModels()
     private val binding: ActivityMainBinding by binding(R.layout.activity_main)
+    private val adapter by lazy { TrainingAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val adapter_ = TrainingAdapter()
-        adapter_.setTouchListener(this)
+        adapter.setTouchListener(this)
         binding.apply {
             lifecycleOwner = this@MainActivity
-            adapter = adapter_
+            adapter = this@MainActivity.adapter
             vm = viewModel
         }
+
         binding.workoutGo.apply {
             workoutController = this@MainActivity
         }
+
         setSupportActionBar(binding.mainToolbar.toolbar)
         fab.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
