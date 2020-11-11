@@ -1,16 +1,12 @@
 package com.wile.main.ui.main
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Chronometer
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
@@ -27,9 +23,7 @@ class MainActivity : DataBindingActivity(),
     TrainingAdapter.TouchListenerCallbackInterface,
     WorkoutInterface {
 
-
-
-    val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
     private val binding: ActivityMainBinding by binding(R.layout.activity_main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +47,7 @@ class MainActivity : DataBindingActivity(),
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.training_main_menu, menu)
+        menuInflater.inflate(R.menu.training_main_menu, menu)
         return true
     }
 
@@ -70,7 +63,7 @@ class MainActivity : DataBindingActivity(),
         }
     }
 
-    fun startWorkout() {
+    private fun startWorkout() {
         val sheetBehavior = BottomSheetBehavior.from(binding.workoutGo.trainingGoBottomSheet)
         chronometer.isCountDown = false
         chronometer.base = SystemClock.elapsedRealtime() + 5 * 1000
@@ -82,8 +75,8 @@ class MainActivity : DataBindingActivity(),
         }
     }
 
-    override var chronometerIsRunning: Boolean = false
-    override var chronometerWarmup: Boolean = false
+    override var chronometerIsRunning = false
+    override var chronometerWarmup = false
 
     override fun stopWorkout() {
         if (chronometerIsRunning) {
@@ -99,13 +92,13 @@ class MainActivity : DataBindingActivity(),
     override fun pauseWorkout() {
         if (chronometerIsRunning) {
             chronometer.stop()
-            chronometerIsRunning = false
             binding.workoutGo.pause.setImageResource(R.drawable.ic_baseline_play_arrow_24)
         } else {
             chronometer.start()
-            chronometerIsRunning = true
             binding.workoutGo.pause.setImageResource(R.drawable.ic_baseline_pause_24)
         }
+
+        chronometerIsRunning = !chronometerIsRunning
     }
 
     override fun skipTraining() {
@@ -121,11 +114,8 @@ class MainActivity : DataBindingActivity(),
                     chronometer.isCountDown = true
                     chronometer.base = SystemClock.elapsedRealtime() + it * 1000
                 }
-            }
-            else {
-                if (chronometerIsRunning) {
-                    chronometer.stop()
-                }
+            } else if (chronometerIsRunning) {
+                chronometer.stop()
             }
         }
     }
