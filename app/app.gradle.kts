@@ -1,11 +1,13 @@
 plugins {
-    id(BuildScript.AndroidApplication)
-    id(BuildScript.Crashlytics)
-    id(BuildScript.DaggerHilt)
-    id(BuildScript.GoogleServices)
-    id(BuildScript.KotlinAndroid)
-    id(BuildScript.KotlinAndroidExtensions)
-    id(BuildScript.Kapt)
+    plugins(
+        BuildScript.AndroidApplication,
+        BuildScript.Crashlytics,
+        BuildScript.DaggerHilt,
+        BuildScript.GoogleServices,
+        BuildScript.KotlinAndroid,
+        BuildScript.KotlinAndroidExtensions,
+        BuildScript.Kapt
+    )
 }
 
 android {
@@ -34,36 +36,35 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.androidXAppCompat)
+    kapts(
+        Dependencies.hiltCompiler,
+        Dependencies.moshiCompiler,
+        Dependencies.roomAnnotationProcessor
+    )
 
-    implementation(Dependencies.androidXLiveDataKtx)
+    implementations(
+        Dependencies.androidXAppCompat,
+        Dependencies.androidXCoreKTX,
+        Dependencies.androidXLiveDataKtx,
+        Dependencies.androidXNavigationFragmentKTX,
+        Dependencies.androidXNavigationUiKTX,
+        Dependencies.androidXViewModelKTX,
+        Dependencies.constraintLayout,
+        Dependencies.firebaseAnalytics,
+        Dependencies.firebaseCrashlytics,
+        Dependencies.hiltAndroid,
+        Dependencies.hiltViewModel,
+        Dependencies.materialDesign,
+        Dependencies.moshi,
+        Dependencies.room
+    )
 
-    implementation(Dependencies.androidXNavigationFragmentKTX)
-    implementation(Dependencies.androidXNavigationUiKTX)
+    testImplementations(
+        Dependencies.junit
+    )
 
-    implementation(Dependencies.androidXViewModelKTX)
-
-    implementation(Dependencies.constraintLayout)
-
-    implementation(Dependencies.firebaseAnalytics)
-    implementation(Dependencies.firebaseCrashlytics)
-
-    implementation(Dependencies.hiltAndroid)
-    kapt(Dependencies.hiltCompiler)
-    implementation(Dependencies.hiltViewModel)
-
-    implementation(Dependencies.materialDesign)
-
-    implementation(Dependencies.moshi)
-    kapt(Dependencies.moshiCompiler)
-
-    implementation(Dependencies.room)
-    kapt(Dependencies.roomAnnotationProcessor)
-
-    implementation(Dependencies.androidXCoreKTX)
-
-    testImplementation(Dependencies.junit)
-
-    androidTestImplementation(Dependencies.androidJunitRunner)
-    androidTestImplementation(Dependencies.espresso)
+    androidTestImplementations(
+        Dependencies.androidJunitRunner,
+        Dependencies.espresso
+    )
 }
