@@ -25,23 +25,15 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
             binding.root.setOnClickListener {
                 val position = adapterPosition.takeIf { it != NO_POSITION }
                     ?: return@setOnClickListener
-                val currentClickedAt = SystemClock.elapsedRealtime()
-                    //DetailActivity.startActivity(binding.transformationLayout, items[position])
-                    onClickedAt = currentClickedAt
+                    listerner?.onTouchTraining(items[position])
             }
         }
     }
 
     fun addTrainingList(trainingList: List<Training>) {
-        val previous = items.size
         items.clear()
         items.addAll(trainingList)
-        /*
-         FixMe : could be replaced by notifyDataSetChanged ;
-          notifyItemRangeChanged is useful when you want to do perf and don't replace all the data,
-          but here you clear & replace all
-         */
-        notifyItemRangeChanged(previous, trainingList.size)
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: TrainingViewHolder, position: Int) {
@@ -84,5 +76,6 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
     interface TouchListenerCallbackInterface {
         fun onDeleteTraining(training: Training)
         fun onMoveTraining(training: Training)
+        fun onTouchTraining(training: Training)
     }
 }

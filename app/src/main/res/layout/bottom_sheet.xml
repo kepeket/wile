@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="workoutController"
@@ -18,6 +18,18 @@
     app:workoutController="@{workoutController}"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/form_padding"
+        tools:text="50 Pompes (1:20)"
+        style="@style/Theme.Main.BottomSheet.TrainingInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/currentWorkoutInfo"
+        android:text="@{workoutController.currentWorkoutLiveData}"/>
+
     <Chronometer
         android:id="@+id/chronometer"
         style="@style/Theme.Main.BottomSheet.Chronometer"
@@ -27,14 +39,14 @@
         android:layout_marginBottom="@dimen/form_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/currentWorkoutInfo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="114dp" />
+        app:layout_constraintGuide_begin="161dp" />
 
     <ImageButton
         android:id="@+id/stop"

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="training"
+            type="com.wile.main.model.Training" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/training_name_label"
+        style="@style/Theme.Main.Training.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/training_form_reprate_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/training_name_label">
+        <ImageButton
+            android:id="@+id/duration_btn_less"
+            style="@style/Theme.Main.Training.MoreLessBtn"
+            android:src="@drawable/ic_baseline_remove_circle_24"
+            app:counterTarget="@{trainingRepRate}"
+            app:counterDirection="@{`sub`}"
+ />
+
+        <EditText
+            android:id="@+id/training_rep_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textAlignment="center"
+            android:inputType="number"
+            android:text="@{training.repRate}"
+            android:layout_marginTop="@dimen/text_padding" />
+
+        <ImageButton
+            android:id="@+id/duration_btn_plus"
+            style="@style/Theme.Main.Training.MoreLessBtn"
+            android:src="@drawable/ic_baseline_add_circle_24"
+            app:counterTarget="@{trainingRepRate}"
+            app:counterDirection="@{`add`}"
+             />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

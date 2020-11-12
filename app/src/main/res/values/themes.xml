@@ -14,10 +14,31 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.Main.BottomSheet.TrainingInfo" parent="Theme.Main">
+        <item name="textAllCaps">true</item>
+        <item name="android:textSize">@dimen/workout_info</item>
+    </style>
+
     <style name="Theme.Main.BottomSheet.Chronometer" parent="Theme.Main">
         <item name="android:textSize">54sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="Theme.Main.Training.Label" parent="Theme.Main">
+        <item name="textAllCaps">true</item>
+        <item name="android:textSize">@dimen/trainin_label</item>
+    </style>
+
+    <style name="Theme.Main.Training.MoreLessBtn" parent="Theme.Main">
+        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_marginHorizontal">@dimen/form_padding</item>
+    </style>
+
+
 
     <style name="Theme.Main.Training.Name" parent="Theme.Main">
         <item name="android:textSize">24sp</item>
@@ -47,4 +68,7 @@
     <style name="Theme.Main.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Main.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <dimen name="workout_info">24sp</dimen>
+    <dimen name="trainin_label">18sp</dimen>
 </resources>

@@ -27,7 +27,6 @@ class MainActivity : DataBindingActivity(),
     private val viewModel: MainViewModel by viewModels()
     private val binding: ActivityMainBinding by binding(R.layout.activity_main)
     private val adapter by lazy { TrainingAdapter() }
-    private val mediaplayer by lazy { TrainingMediaPlayer(this) }
     private val workoutHandler by lazy { WorkoutHandler(this, viewModel) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,4 +75,9 @@ class MainActivity : DataBindingActivity(),
         TODO("Not yet implemented")
     }
 
+    override fun onTouchTraining(training: Training) {
+        val intent = Intent(this, AddActivity::class.java)
+        intent.putExtra(AddActivity.TRAINING_ID, training.id)
+        startActivity(intent)
+    }
 }

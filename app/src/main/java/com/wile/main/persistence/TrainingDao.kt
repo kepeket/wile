@@ -16,6 +16,9 @@ interface TrainingDao {
     @Query("SELECT * FROM Training WHERE workout = :workout")
     fun getTrainingList(workout: Int): Flow<List<Training>>
 
+    @Query("SELECT * FROM Training WHERE id = :id")
+    fun getTraining(id: Int): Training
+
     @Query("DELETE FROM Training WHERE id = :id")
     suspend fun delete(id: Int)
 

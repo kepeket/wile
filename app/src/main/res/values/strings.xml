@@ -17,4 +17,11 @@
 
     <string name="menu_training_main_go">Go</string>
     <string name="menu_training_main_parameters">Paramètres</string>
+    <string name="save_training_btn">Sauvegarder</string>
+    <string name="edit_training_toolbar_title">Mettre à jour un exo</string>
+    <string name="save_new_training_btn">Ajouter</string>
+    <string name="training_form_name_label">Nom de l\'exercice</string>
+    <string name="training_form_duration_label">Durée</string>
+    <string name="training_form_rep_label">Répétitions</string>
+    <string name="training_form_reprate_label">Rep par minute</string>
 </resources>

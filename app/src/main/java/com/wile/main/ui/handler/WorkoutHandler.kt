@@ -9,7 +9,7 @@ import android.os.Vibrator
 import android.util.Log
 import android.view.View
 import android.widget.Chronometer
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.main.R
 import com.wile.main.model.Training
@@ -17,10 +17,7 @@ import com.wile.main.service.TrainingMediaPlayer
 import com.wile.main.ui.main.MainViewModel
 import com.wile.main.ui.main.WorkoutInterface
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
-import java.lang.Math.abs
-import java.lang.Math.round
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 
 class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterface {
@@ -31,12 +28,12 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
     private var currentWorkout = 0
     private var totalWorkoutTime = 0
     private var nextTrainingTime = 0L
-    private var timeDeltaFromStart = 0
     private val trainingList: MutableList<Training> = mutableListOf()
-    private var wantToSkip = false
 
     override var chronometerIsRunning = false
     override var chronometerWarmup = true
+
+    override val currentWorkoutLiveData = MutableLiveData<String>()
 
     var timeWhenPaused = 0
 
@@ -65,20 +62,37 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
                     chronometer.isCountDown = true
                     chronometerIsRunning = true
                     setChronometerBase()
+                    updateInfoDisplay()
                     chronometer.start()
                 }
             }
         }
     }
 
+    private fun updateInfoDisplay(){
+        if (currentWorkout < trainingList.count()) {
+            val train =  trainingList[currentWorkout]
+            var info = ""
+            val minutes: Int = train.duration / (60)
+            val seconds: Int = train.duration % 60
+            if (train.reps != 0){
+                info = String.format("%d %s (~%d:%02d)", train.reps, train.name, minutes, seconds)
+            } else {
+                info = String.format("%s (%d:%02d)",  train.name, minutes, seconds)
+            }
+            currentWorkoutLiveData.value = info
+        }
+    }
+
     private fun setChronometerBase() {
-        totalWorkoutTime = trainingList.subList(currentWorkout, trainingList.lastIndex+1).map { t -> t.duration }.sum() + 1
+        totalWorkoutTime = trainingList.subList(currentWorkout, trainingList.lastIndex + 1).map { t -> t.duration }.sum() + 1
         nextTrainingTime = SystemClock.elapsedRealtime() + trainingList[currentWorkout].duration.toLong() * 1000
-        Log.i("CHRONO", String.format("new training duration is %d", trainingList[currentWorkout].duration ))
+        Log.i("CHRONO", String.format("new training duration is %d", trainingList[currentWorkout].duration))
         chronometer.base = SystemClock.elapsedRealtime() + totalWorkoutTime  * 1000
     }
 
     private fun notifyNewTraining() {
+        updateInfoDisplay()
         mediaplayer.playWhistle()
         val v = context.getSystemService(VIBRATOR_SERVICE) as Vibrator?
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -143,7 +157,7 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
         }
         Log.i("CHRONO", String.format("EOT %d (%d) EOW %d", nextTrainingTime, last3sec, endOfWorkout))
         if (endOfWorkout == 0) {
-            chronometer.stop()
+            stopWorkout()
         } else {
             if (last3sec == 0) {
                 changeTraining()

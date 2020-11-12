@@ -13,6 +13,15 @@ class AddRepository @Inject constructor(
 ) : Repository {
 
     @WorkerThread
+    suspend fun getTraining(
+            id: Int,
+            onSuccess: () -> Unit,
+            onError: (String) -> Unit
+    ) = flow {
+            emit(trainingDao.getTraining(id))
+        }.flowOn(Dispatchers.IO)
+
+    @WorkerThread
     suspend fun saveTraining(
         newTraining: Training,
         onSuccess: () -> Unit,

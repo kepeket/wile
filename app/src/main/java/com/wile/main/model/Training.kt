@@ -1,15 +1,17 @@
 package com.wile.main.model
 
+import androidx.databinding.Bindable
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity
 data class Training(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     var workout: Int = 0,
-    val name: String,
-    val reps: Int = 0,
-    val repRate: Int = 0,
-    val duration: Int = 30,
-    val sorting: Int
+    var name: String,
+    var reps: Int = 0,
+    var repRate: Int = 0,
+    var duration: Int = 30,
+    var sorting: Int
 )

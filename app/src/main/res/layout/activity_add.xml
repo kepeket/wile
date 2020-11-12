@@ -26,63 +26,38 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/form_padding"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <include
+            android:id="@+id/training_name_layout"
+            app:training="@{vm.training}"
+            layout="@layout/training_name"/>
 
-    <EditText
-            android:id="@+id/training_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Nom excercice" />
+        <include android:id="@+id/training_duration_layout"
+            app:training="@{vm.training}"
+            layout="@layout/training_duration"/>
 
-        <EditText
-            android:id="@+id/training_duration"
-            app:layout_constraintTop_toBottomOf="@+id/training_title"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Durée de l'excercice"/>
+        <include android:id="@+id/training_reps_layout"
+            app:training="@{vm.training}"
+            layout="@layout/training_reps"/>
 
-        <EditText
-            android:id="@+id/training_reps"
-            app:layout_constraintTop_toBottomOf="@+id/training_duration"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Reps"/>
-
-        <EditText
-            android:id="@+id/training_rep_rate"
-            app:layout_constraintTop_toBottomOf="@+id/training_reps"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Reps par minute"/>
+        <include android:id="@+id/training_rep_rate_layout"
+            app:training="@{vm.training}"
+            layout="@layout/training_rep_rate"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/training_rep_rate"
             android:layout_marginTop="@dimen/form_padding"
-            android:text="Ajouter"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="@string/save_new_training_btn"/>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

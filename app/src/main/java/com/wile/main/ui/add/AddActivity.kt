@@ -11,6 +11,9 @@ import com.wile.main.databinding.ActivityAddBinding
 import com.wile.main.model.Training
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add.*
+import kotlinx.android.synthetic.main.item_training.*
+import kotlinx.android.synthetic.main.training_name.*
+import kotlinx.android.synthetic.main.training_rep_rate.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -20,6 +23,7 @@ class AddActivity : DataBindingActivity() {
 
     private val viewModel: AddViewModel by viewModels()
     private val binding: ActivityAddBinding by binding(R.layout.activity_add)
+    private var editMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +36,14 @@ class AddActivity : DataBindingActivity() {
         setSupportActionBar(binding.mainToolbar.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val trainingParam = intent.getIntExtra(TRAINING_ID, -1)
+        if (trainingParam > 0){
+            editMode = true
+            supportActionBar?.title = getString(R.string.edit_training_toolbar_title)
+            save_btn.text = getString(R.string.save_training_btn)
+        }
+
+        viewModel.fetchTraining(trainingParam)
         save_btn.setOnClickListener {
             validateTraining()
         }
@@ -69,19 +81,25 @@ class AddActivity : DataBindingActivity() {
             computedDuration = reps * 60 / defaultRate // rate is on minute
         }
 
-        val training = Training(
-            name = training_title.text.toString(),
-            repRate = repRate,
-            reps = reps,
-            duration = computedDuration,
-            sorting = 10
-        )
-
-        runBlocking {
-            launch(Dispatchers.Default) {
-                viewModel.saveTraining(training)
+        val training = if (editMode){
+            viewModel.training.value
+        }
+        else {
+            Training(name = "", sorting = 10)
+        }
+        training?.apply {
+            this.name = training_title.text.toString()
+            this.repRate = repRate
+            this.reps = reps
+            this.duration = computedDuration
+        }?.let {
+            runBlocking {
+                launch(Dispatchers.Default) {
+                    viewModel.saveTraining(it)
+                }
             }
         }
+
 
         finish()
     }
@@ -106,5 +124,9 @@ class AddActivity : DataBindingActivity() {
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }
+
+    companion object {
+        const val TRAINING_ID = "traingin_id"
     }
 }
