@@ -17,6 +17,9 @@ import com.wile.main.ui.main.MainViewModel
 import com.wile.main.ui.main.WorkoutInterface
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import java.lang.Math.abs
+import java.lang.Math.round
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 
 class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterface {
@@ -26,7 +29,9 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
     private lateinit var chronometer: Chronometer
     private var currentWorkout = 0
     private var totalWorkoutTime = 0
-    private var timeLeftBeforeNextTraining = 0
+    private var nextTrainingTime = 0L
+    private var timeDeltaFromStart = 0
+    private var justSkipped = false
 
     override var chronometerIsRunning = false
     override var chronometerWarmup = true
@@ -44,9 +49,9 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
             if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                 sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
-            mediaplayer.playCountdown()
             currentWorkout = 0
             chronometer.isCountDown = false
+            nextTrainingTime = 0
             chronometer.base = SystemClock.elapsedRealtime() + TRAINING_COUNTDOWN_TIME
             chronometerWarmup = true
             chronometerIsRunning = true
@@ -56,7 +61,7 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
 
     private fun notifyNewTraining() {
         mediaplayer.playWhistle()
-        val v = getSystemService(context, VIBRATOR_SERVICE::class.java) as Vibrator?
+        val v = context.getSystemService(VIBRATOR_SERVICE) as Vibrator?
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v?.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
@@ -65,22 +70,22 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
         }
     }
 
-    private fun changeTraining(workout: Int, skip: Boolean = false){
+    private fun changeTraining(workout: Int){
         vm.trainingListLiveData.value?.let {
-            if (skip) {
-                chronometer.base -= timeLeftBeforeNextTraining * 1000
+            if (workout > it.count()){
+                stopWorkout()
+                return
             }
-            if (workout > 0) {
-                notifyNewTraining()
-            }
-            timeLeftBeforeNextTraining = it[workout].duration
+            notifyNewTraining()
+            nextTrainingTime = (timeDeltaFromStart + it[workout].duration).toLong()
+            Log.i("CHRONO", String.format("new training duration is %d", it[workout].duration ))
         }
     }
 
     override fun stopWorkout() {
         if (chronometerIsRunning) {
             chronometer.stop()
-            mediaplayer.release()
+            mediaplayer.playBell()
             chronometerIsRunning = false
         }
         val sheetBehavior = BottomSheetBehavior.from(bottomSheetView)
@@ -106,35 +111,38 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
     }
 
     override fun skipTraining() {
-        changeTraining(++currentWorkout, true)
+        if (!chronometerWarmup) {
+            chronometer.base -= kotlin.math.abs(timeDeltaFromStart - nextTrainingTime) * 1000
+        }
     }
 
     override fun chronometerTicking(chronometer: Chronometer) {
-        val timeDeltaFromStart = ((SystemClock.elapsedRealtime() - chronometer.base) / 1000).toInt()
-        Log.i("CRHONO", timeDeltaFromStart.toString())
-        Log.i("CRHONO", (totalWorkoutTime - timeDeltaFromStart).toString())
+        timeDeltaFromStart = ((SystemClock.elapsedRealtime() - chronometer.base) / 1000.0).roundToInt()
+        val last3sec = kotlin.math.abs(timeDeltaFromStart - nextTrainingTime)
+        if (last3sec in 1..4){
+            mediaplayer.playBip()
+        }
+        Log.i("CHRONO", String.format("EOT %d EOW %d", last3sec, timeDeltaFromStart))
         if (timeDeltaFromStart == 0) {
             if (chronometerWarmup) {
                 chronometerWarmup = false
                 vm.trainingDurationLiveData.value?.let {
                     totalWorkoutTime = it
                     chronometer.isCountDown = true
-                    chronometer.base = SystemClock.elapsedRealtime() + totalWorkoutTime * 1000
+                    chronometer.base = SystemClock.elapsedRealtime() + (totalWorkoutTime + 1) * 1000
                     changeTraining(currentWorkout)
                 }
             } else if (chronometerIsRunning) {
                 chronometer.stop()
             }
-        }
-/*        if (!chronometerWarmup) {
-            if (timeLeftBeforeNextTraining <= 0) {
+        } else {
+            if (!chronometerWarmup && last3sec == 0L) {
                 changeTraining(++currentWorkout)
             }
-            timeLeftBeforeNextTraining -= totalWorkoutTime - timeDeltaFromStart/1000
-        }*/
+        }
     }
 
     private companion object {
-        const val TRAINING_COUNTDOWN_TIME = 4 * 1000
+        const val TRAINING_COUNTDOWN_TIME = 6 * 1000
     }
 }

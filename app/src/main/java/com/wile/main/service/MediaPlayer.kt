@@ -45,8 +45,8 @@ class TrainingMediaPlayer(val context: Context) {
         }
     }
 
-    fun playCountdown(){
-        playSound(R.raw.countdown)
+    fun playBip(){
+        playSound(R.raw.beep)
     }
 
     fun playWhistle(){
