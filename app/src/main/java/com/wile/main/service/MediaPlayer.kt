@@ -9,51 +9,19 @@ class TrainingMediaPlayer(val context: Context) {
     private var released = false
     lateinit var mp: MediaPlayer
 
-    private fun playSound(soundResource: Int){
-        mp = MediaPlayer.create(context, soundResource)
-        released = false
-        mp.setOnCompletionListener {
-            it.release()
-            released = true
-        }
-        mp.start()
-    }
-
-    fun pause(){
-        mp.let {
-            if (!released && mp.isPlaying) {
-                it.pause()
-            }
-        }
-    }
-
-    fun resume(){
-        mp.let {
-            if (!released && !mp.isPlaying) {
-                it.start()
-            }
-        }
-    }
-
-    fun release(){
-        mp.let {
-            if (!released) {
-                it.stop()
-                it.release()
-                released = true
-            }
-        }
-    }
+    private val beepMedia = MediaPlayer.create(context, R.raw.beep)
+    private val whistleMedia = MediaPlayer.create(context, R.raw.whistle)
+    private val bellMedia = MediaPlayer.create(context, R.raw.bell)
 
     fun playBip(){
-        playSound(R.raw.beep)
+        beepMedia.start()
     }
 
     fun playWhistle(){
-        playSound(R.raw.whistle)
+        whistleMedia.start()
     }
 
     fun playBell(){
-        playSound(R.raw.bell)
+        bellMedia.start()
     }
 }

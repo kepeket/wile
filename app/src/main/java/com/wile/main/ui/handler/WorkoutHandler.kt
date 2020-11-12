@@ -12,6 +12,7 @@ import android.widget.Chronometer
 import androidx.core.content.ContextCompat.getSystemService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.main.R
+import com.wile.main.model.Training
 import com.wile.main.service.TrainingMediaPlayer
 import com.wile.main.ui.main.MainViewModel
 import com.wile.main.ui.main.WorkoutInterface
@@ -31,7 +32,8 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
     private var totalWorkoutTime = 0
     private var nextTrainingTime = 0L
     private var timeDeltaFromStart = 0
-    private var justSkipped = false
+    private val trainingList: MutableList<Training> = mutableListOf()
+    private var wantToSkip = false
 
     override var chronometerIsRunning = false
     override var chronometerWarmup = true
@@ -49,14 +51,31 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
             if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                 sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
-            currentWorkout = 0
-            chronometer.isCountDown = false
-            nextTrainingTime = 0
-            chronometer.base = SystemClock.elapsedRealtime() + TRAINING_COUNTDOWN_TIME
-            chronometerWarmup = true
-            chronometerIsRunning = true
-            chronometer.start()
+            vm.trainingListLiveData.value?.let {
+                if (it.count() > 0){
+                    trainingList.clear()
+                    trainingList.addAll(it)
+                    val warmup = Training(
+                            duration = 5,
+                            name = "Mise en place",
+                            sorting = 0
+                    )
+                    trainingList.add(0, warmup)
+                    currentWorkout = 0
+                    chronometer.isCountDown = true
+                    chronometerIsRunning = true
+                    setChronometerBase()
+                    chronometer.start()
+                }
+            }
         }
+    }
+
+    private fun setChronometerBase() {
+        totalWorkoutTime = trainingList.subList(currentWorkout, trainingList.lastIndex+1).map { t -> t.duration }.sum() + 1
+        nextTrainingTime = SystemClock.elapsedRealtime() + trainingList[currentWorkout].duration.toLong() * 1000
+        Log.i("CHRONO", String.format("new training duration is %d", trainingList[currentWorkout].duration ))
+        chronometer.base = SystemClock.elapsedRealtime() + totalWorkoutTime  * 1000
     }
 
     private fun notifyNewTraining() {
@@ -70,24 +89,21 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
         }
     }
 
-    private fun changeTraining(workout: Int){
-        vm.trainingListLiveData.value?.let {
-            if (workout > it.count()){
-                stopWorkout()
-                return
-            }
+    private fun changeTraining(){
+        trainingList.let {
+            currentWorkout++
             notifyNewTraining()
-            nextTrainingTime = (timeDeltaFromStart + it[workout].duration).toLong()
-            Log.i("CHRONO", String.format("new training duration is %d", it[workout].duration ))
+            nextTrainingTime = SystemClock.elapsedRealtime() + trainingList[currentWorkout].duration.toLong() * 1000
         }
     }
 
     override fun stopWorkout() {
         if (chronometerIsRunning) {
             chronometer.stop()
-            mediaplayer.playBell()
+            chronometer.base = SystemClock.elapsedRealtime()
             chronometerIsRunning = false
         }
+        mediaplayer.playBell()
         val sheetBehavior = BottomSheetBehavior.from(bottomSheetView)
         if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -98,12 +114,10 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
         if (chronometerIsRunning) {
             timeWhenPaused = (chronometer.base - SystemClock.elapsedRealtime()).toInt()
             chronometer.stop()
-            mediaplayer.pause()
             bottomSheetView.pause.setImageResource(R.drawable.ic_baseline_play_arrow_24)
         } else {
             chronometer.base = SystemClock.elapsedRealtime() + timeWhenPaused
             chronometer.start()
-            mediaplayer.resume()
             bottomSheetView.pause.setImageResource(R.drawable.ic_baseline_pause_24)
         }
 
@@ -111,38 +125,29 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
     }
 
     override fun skipTraining() {
-        if (!chronometerWarmup) {
-            chronometer.base -= kotlin.math.abs(timeDeltaFromStart - nextTrainingTime) * 1000
+        if (currentWorkout < trainingList.count() - 1) {
+            currentWorkout++
+            setChronometerBase()
+            notifyNewTraining()
+        }
+        else {
+            stopWorkout()
         }
     }
 
     override fun chronometerTicking(chronometer: Chronometer) {
-        timeDeltaFromStart = ((SystemClock.elapsedRealtime() - chronometer.base) / 1000.0).roundToInt()
-        val last3sec = kotlin.math.abs(timeDeltaFromStart - nextTrainingTime)
-        if (last3sec in 1..4){
+        val endOfWorkout = ((SystemClock.elapsedRealtime() - chronometer.base) / 1000.0).roundToInt()
+        val last3sec = kotlin.math.abs((SystemClock.elapsedRealtime() - nextTrainingTime) / 1000.0).roundToInt()
+        if (last3sec in 1..4) {
             mediaplayer.playBip()
         }
-        Log.i("CHRONO", String.format("EOT %d EOW %d", last3sec, timeDeltaFromStart))
-        if (timeDeltaFromStart == 0) {
-            if (chronometerWarmup) {
-                chronometerWarmup = false
-                vm.trainingDurationLiveData.value?.let {
-                    totalWorkoutTime = it
-                    chronometer.isCountDown = true
-                    chronometer.base = SystemClock.elapsedRealtime() + (totalWorkoutTime + 1) * 1000
-                    changeTraining(currentWorkout)
-                }
-            } else if (chronometerIsRunning) {
-                chronometer.stop()
-            }
+        Log.i("CHRONO", String.format("EOT %d (%d) EOW %d", nextTrainingTime, last3sec, endOfWorkout))
+        if (endOfWorkout == 0) {
+            chronometer.stop()
         } else {
-            if (!chronometerWarmup && last3sec == 0L) {
-                changeTraining(++currentWorkout)
+            if (last3sec == 0) {
+                changeTraining()
             }
         }
-    }
-
-    private companion object {
-        const val TRAINING_COUNTDOWN_TIME = 6 * 1000
     }
 }
