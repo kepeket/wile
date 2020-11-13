@@ -1,3 +1,3 @@
 package com.wile.main.repositories
 
-interface Repository
+interface TrainingRepository

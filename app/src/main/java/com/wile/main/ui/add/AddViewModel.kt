@@ -8,10 +8,10 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.wile.main.base.LiveCoroutinesViewModel
 import com.wile.main.model.Training
-import com.wile.main.repositories.AddRepository
+import com.wile.main.repositories.TrainingRepositoryImpl
 
 class AddViewModel @ViewModelInject constructor(
-    private val addRepository: AddRepository,
+    private val trainingRepositoryImpl: TrainingRepositoryImpl,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {
 
@@ -25,7 +25,7 @@ class AddViewModel @ViewModelInject constructor(
         training = trainingFetchLiveData.switchMap { id ->
             if (id > 0) {
                 launchOnViewModelScope {
-                    addRepository.getTraining(
+                    trainingRepositoryImpl.getTraining(
                             id = id,
                             onSuccess = { isLoading.set(false) },
                             onError = { _toastLiveData.postValue(it) }
@@ -41,7 +41,7 @@ class AddViewModel @ViewModelInject constructor(
 
     @WorkerThread
     suspend fun saveTraining(newTraining_: Training){
-        addRepository.saveTraining(
+        trainingRepositoryImpl.saveTraining(
             newTraining = newTraining_,
             onSuccess = { isLoading.set(false) },
             onError = { _toastLiveData.postValue(it) }

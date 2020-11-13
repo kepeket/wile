@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class AddRepository @Inject constructor(
+class TrainingRepositoryImpl @Inject constructor(
     private val trainingDao: TrainingDao
-) : Repository {
+) : TrainingRepository {
 
     @WorkerThread
     suspend fun getTraining(
@@ -29,4 +29,17 @@ class AddRepository @Inject constructor(
     )  {
         val training = trainingDao.insertTrainingList(newTraining)
     }
+
+    @WorkerThread
+    fun fetchTrainingList(
+        workout: Int,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) = trainingDao.getTrainingList(workout)
+
+    @WorkerThread
+    suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
+
+    @WorkerThread
+    suspend fun addAll(trainings: List<Training>) = trainingDao.insertAll(trainings)
 }
