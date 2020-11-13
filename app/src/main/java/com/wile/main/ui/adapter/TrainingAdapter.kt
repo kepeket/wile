@@ -17,7 +17,7 @@ class TrainingAdapter(
 
     private val items = mutableListOf<Training>()
 
-    val touchListener = TrainingTouchHelper(
+    val touchListener = TrainingTouchHelperCallback(
         onItemDeleted = ::onItemDeleted,
         onItemMoved = ::onItemMoved,
         onItemDropped = ::onItemDropped

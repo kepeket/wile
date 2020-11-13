@@ -10,7 +10,7 @@ import com.wile.main.repositories.TrainingRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MainViewModel @ViewModelInject constructor(
+class TrainingListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {

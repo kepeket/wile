@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="vm"
-            type="com.wile.main.ui.main.MainViewModel" />
+            name="viewModel"
+            type="com.wile.main.ui.main.TrainingListingViewModel" />
 
         <variable
             name="adapter"
@@ -16,7 +16,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity">
+    tools:context=".ui.main.TrainingListingActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@{@string/time_format(vm.trainingDurationLiveData)}"
+                android:text="@{@string/time_format(viewModel.trainingDurationLiveData)}"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -78,10 +78,10 @@
             android:scrollbars="vertical"
             app:adapter="@{adapter}"
             app:itemTouchListener="@{adapter.touchListener}"
-            app:adapterTrainingList="@{vm.trainingListLiveData}"
+            app:adapterTrainingList="@{viewModel.trainingListLiveData}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:spanCount="2"
-            app:toast="@{vm.toastLiveData}"
+            app:toast="@{viewModel.toastLiveData}"
             tools:listitem="@layout/item_training"
             tools:itemCount="3"
 

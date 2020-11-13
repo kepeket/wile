@@ -6,6 +6,7 @@ import com.wile.main.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+// FixMe : don't forget to release
 class TrainingMediaPlayer @Inject constructor(
     @ApplicationContext context: Context
 ) {

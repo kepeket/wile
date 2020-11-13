@@ -12,7 +12,6 @@ import com.wile.main.R
 import com.wile.main.logging.Logger
 import com.wile.main.model.Training
 import com.wile.main.service.TrainingMediaPlayer
-import com.wile.main.ui.main.MainViewModel
 import com.wile.main.ui.main.WorkoutInterface
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import javax.inject.Inject
@@ -21,7 +20,7 @@ import kotlin.math.roundToInt
 class WorkoutHandler @Inject constructor(
     private val vibrator: Vibrator?,
     // Todo : temporary commented as we don't want to provide the VM
-//    private val viewModel: MainViewModel,
+//    private val viewModel: TrainingListingViewModel,
     private val mediaPlayer: TrainingMediaPlayer,
 ): WorkoutInterface {
 

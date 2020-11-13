@@ -6,20 +6,20 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
-import com.wile.main.databinding.ActivityMainBinding
+import com.wile.main.databinding.ActivityTrainingListingBinding
 import com.wile.main.model.Training
 import com.wile.main.ui.adapter.TrainingAdapter
 import com.wile.main.ui.add.AddActivity
 import com.wile.main.ui.handler.WorkoutHandler
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_training_listing.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : DataBindingActivity() {
+class TrainingListingActivity : DataBindingActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
-    private val binding: ActivityMainBinding by binding(R.layout.activity_main)
+    private val viewModel: TrainingListingViewModel by viewModels()
+    private val binding: ActivityTrainingListingBinding by binding(R.layout.activity_training_listing)
     private val adapter by lazy { TrainingAdapter(
         onDeleteTraining = ::onDeleteTraining,
         onMoveTraining =  ::onMoveTraining,
@@ -32,9 +32,9 @@ class MainActivity : DataBindingActivity() {
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            lifecycleOwner = this@MainActivity
-            adapter = this@MainActivity.adapter
-            vm = viewModel
+            lifecycleOwner = this@TrainingListingActivity
+            adapter = this@TrainingListingActivity.adapter
+            viewModel = this@TrainingListingActivity.viewModel
         }
 
         binding.workoutGo.apply {

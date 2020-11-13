@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wile.main.R
 import com.wile.main.logging.Logger
 
-class TrainingTouchHelper(
+class TrainingTouchHelperCallback(
     private val onItemDeleted: (position: Int) -> Unit,
     private val onItemMoved: (from: Int, to: Int) -> Unit,
     private val onItemDropped: () -> Unit
