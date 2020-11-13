@@ -2,7 +2,6 @@ package com.wile.main.persistence.di
 
 import android.app.Application
 import androidx.room.Room
-import com.squareup.moshi.Moshi
 import com.wile.main.persistence.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -13,10 +12,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ApplicationComponent::class)
 object PersistenceModule {
-
-    @Provides
-    @Singleton
-    fun provideMoshi() =  Moshi.Builder().build()
 
     @Provides
     @Singleton
