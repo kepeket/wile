@@ -16,6 +16,7 @@ object ViewBinding {
     @JvmStatic
     @BindingAdapter("android:text")
     fun bindTextValue(view: TextView, text: String?){
+        // FixMe : i think the nullability check is not useful ; how did you do if you want to clear a field ?
         text?.let {
             view.text = text
         }
@@ -43,12 +44,11 @@ object ViewBinding {
                 textview.text = curValue.toString()
             }
         }
-        view.setOnClickListener {
-            lambda()
-        }
-        view.setOnTouchListener(RepeatListener(
-                initialInterval = 400, initialRepeatDelay = 100
-        ) { lambda() }
+
+        view.setOnClickListener { lambda() }
+
+        view.setOnTouchListener(
+            RepeatListener(initialInterval = 400, initialRepeatDelay = 100) { lambda() }
         )
     }
 
@@ -86,22 +86,10 @@ object ViewBinding {
     @JvmStatic
     @BindingAdapter("workoutController")
     fun bindWorkoutController(view: View, controller: WorkoutInterface) {
-        val stop = view.findViewById<ImageButton>(R.id.stop)
-        val pause = view.findViewById<ImageButton>(R.id.pause)
-        val skip = view.findViewById<ImageButton>(R.id.next)
-        val chronometer = view.findViewById<Chronometer>(R.id.chronometer)
+        view.findViewById<View>(R.id.stop).setOnClickListener { controller.stopWorkout() }
+        view.findViewById<View>(R.id.pause).setOnClickListener { controller.pauseWorkout() }
+        view.findViewById<View>(R.id.next).setOnClickListener { controller.skipTraining() }
+        view.findViewById<Chronometer>(R.id.chronometer).setOnClickListener { controller.chronometerTicking(it as Chronometer) }
         controller.setBottomSheetView(view)
-        stop?.setOnClickListener {
-            controller.stopWorkout()
-        }
-        pause?.setOnClickListener {
-            controller.pauseWorkout()
-        }
-        skip?.setOnClickListener {
-            controller.skipTraining()
-        }
-        chronometer?.setOnChronometerTickListener {
-            controller.chronometerTicking(it)
-        }
     }
 }
