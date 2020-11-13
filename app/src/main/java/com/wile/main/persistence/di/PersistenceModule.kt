@@ -1,4 +1,4 @@
-package com.wile.main.di
+package com.wile.main.persistence.di
 
 import android.app.Application
 import androidx.room.Room
