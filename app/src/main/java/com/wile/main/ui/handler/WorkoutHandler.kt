@@ -1,8 +1,5 @@
 package com.wile.main.ui.handler
 
-import android.content.Context
-import android.content.Context.VIBRATOR_SERVICE
-import android.os.Build
 import android.os.SystemClock
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -17,13 +14,12 @@ import com.wile.main.model.Training
 import com.wile.main.service.TrainingMediaPlayer
 import com.wile.main.ui.main.MainViewModel
 import com.wile.main.ui.main.WorkoutInterface
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class WorkoutHandler @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val vibrator: Vibrator?,
     // Todo : temporary commented as we don't want to provide the VM
 //    private val viewModel: MainViewModel,
     private val mediaPlayer: TrainingMediaPlayer,
@@ -104,13 +100,8 @@ class WorkoutHandler @Inject constructor(
     private fun notifyNewTraining() {
         updateInfoDisplay()
         mediaPlayer.playWhistle()
-        val v = context.getSystemService(VIBRATOR_SERVICE) as Vibrator?
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v?.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            //deprecated in API 26
-            v?.vibrate(500)
-        }
+
+        vibrator?.vibrate(VibrationEffect.createOneShot(VIBRATION_TIME, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 
     private fun changeTraining(){
@@ -169,5 +160,9 @@ class WorkoutHandler @Inject constructor(
         } else if (last3sec == 0) {
             changeTraining()
         }
+    }
+
+    private companion object {
+        const val VIBRATION_TIME = 500L
     }
 }
