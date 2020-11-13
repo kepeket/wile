@@ -2,11 +2,9 @@ package com.wile.main.ui.adapter
 
 import android.content.res.ColorStateList
 import android.content.res.Resources
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.Dimension
 import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -30,7 +28,7 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
             binding.root.setOnClickListener {
                 val position = adapterPosition.takeIf { it != NO_POSITION }
                     ?: return@setOnClickListener
-                    listerner?.onTouchTraining(items[position])
+                listerner?.onTouchTraining(items[position])
             }
         }
     }
@@ -42,9 +40,7 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
     }
 
     fun trainingMoved(from: Int, to: Int) {
-        val training = items[from]
-        items.remove(training)
-        items.add(to, training)
+        items.add(to, items.removeAt(from))
         notifyItemMoved(from, to)
     }
 
@@ -60,16 +56,15 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
     class TrainingViewHolder(val binding: ItemTrainingBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun setTouchListener(listener_: TouchListenerCallbackInterface?) {
-        listener_?.let{
-            listerner = it
-        }
+    fun setTouchListener(listener_: TouchListenerCallbackInterface) {
+        listerner = listener_
     }
 
-    val touchListener = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-
-        lateinit var previousBrackgroundColor: ColorStateList
+    val touchListener = object : ItemTouchHelper.SimpleCallback(
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+        lateinit var previousBackgroundColor: ColorStateList
         var previousElevation = 0F
 
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, targetViewHolder: RecyclerView.ViewHolder): Boolean {
@@ -92,10 +87,12 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
         override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
             if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
                 if (viewHolder is TrainingViewHolder) {
-                    previousBrackgroundColor = viewHolder.binding.cardView2.cardBackgroundColor
-                    viewHolder.binding.cardView2.setCardBackgroundColor(getColor(viewHolder.itemView.context, R.color.drag))
-                    previousElevation = viewHolder.binding.root.elevation
-                    viewHolder.binding.root.elevation = (3F / Resources.getSystem().displayMetrics.density)
+                    with(viewHolder) {
+                        previousBackgroundColor = binding.cardView2.cardBackgroundColor
+                        binding.cardView2.setCardBackgroundColor(getColor(itemView.context, R.color.drag))
+                        previousElevation = binding.root.elevation
+                        binding.root.elevation = (3F / Resources.getSystem().displayMetrics.density)
+                    }
                 }
                 Log.i("DD", "View has been taken")
             }
@@ -105,8 +102,10 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
         override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
             super.clearView(recyclerView, viewHolder)
             if (viewHolder is TrainingViewHolder) {
-                viewHolder.binding.cardView2.setCardBackgroundColor(previousBrackgroundColor)
-                viewHolder.binding.root.elevation = previousElevation
+                with(viewHolder.binding) {
+                    cardView2.setCardBackgroundColor(previousBackgroundColor)
+                    root.elevation = previousElevation
+                }
             }
             listerner?.onMoveTraining()
             Log.i("DD", "View has been dropped")
