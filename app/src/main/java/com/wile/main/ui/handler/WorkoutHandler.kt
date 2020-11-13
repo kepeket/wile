@@ -114,7 +114,6 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
     override fun stopWorkout() {
         if (chronometerIsRunning) {
             chronometer.stop()
-            chronometer.base = SystemClock.elapsedRealtime()
             chronometerIsRunning = false
         }
         mediaplayer.playBell()

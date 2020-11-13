@@ -48,4 +48,10 @@ class MainViewModel @ViewModelInject constructor(
             mainRepository.deleteTraining(id)
         }
     }
+
+    fun saveTrainings(trainings: List<Training>){
+        viewModelScope.launch {
+            mainRepository.addAll(trainings)
+        }
+    }
 }

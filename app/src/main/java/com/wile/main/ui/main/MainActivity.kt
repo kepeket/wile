@@ -71,8 +71,12 @@ class MainActivity : DataBindingActivity(),
         viewModel.deleteTraining(training.id)
     }
 
-    override fun onMoveTraining(training: Training) {
-        TODO("Not yet implemented")
+    override fun onMoveTraining() {
+        val trainings = adapter.items
+        trainings.mapIndexed { i, t ->
+            t.sorting = i * 10
+        }
+        viewModel.saveTrainings(trainings)
     }
 
     override fun onTouchTraining(training: Training) {

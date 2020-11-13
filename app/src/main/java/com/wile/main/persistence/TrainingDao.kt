@@ -13,7 +13,10 @@ interface TrainingDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrainingList(training: Training)
 
-    @Query("SELECT * FROM Training WHERE workout = :workout")
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(training: List<Training>)
+
+    @Query("SELECT * FROM Training WHERE workout = :workout ORDER BY sorting ASC")
     fun getTrainingList(workout: Int): Flow<List<Training>>
 
     @Query("SELECT * FROM Training WHERE id = :id")

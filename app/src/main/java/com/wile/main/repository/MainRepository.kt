@@ -1,6 +1,7 @@
 package com.wile.main.repository
 
 import androidx.annotation.WorkerThread
+import com.wile.main.model.Training
 import com.wile.main.persistence.TrainingDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -20,4 +21,7 @@ class MainRepository @Inject constructor(
 
     @WorkerThread
     suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
+
+    @WorkerThread
+    suspend fun addAll(trainings: List<Training>) = trainingDao.insertAll(trainings)
 }

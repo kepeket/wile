@@ -10,4 +10,5 @@
     <color name="blue_bullet">#0277BD</color>
     <color name="training_go_red">#C62828</color>
     <color name="training_go_btn_color">#F9A825</color>
+    <color name="drag">#929292</color>
 </resources>
