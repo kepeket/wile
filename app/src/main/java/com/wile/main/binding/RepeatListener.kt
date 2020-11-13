@@ -1,16 +1,17 @@
 package com.wile.main.binding
 
 import android.os.Handler
+import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 
 class RepeatListener(
-        initialInterval: Int,
-        initialRepeatDelay: Int,
-        clickListener: View.OnClickListener
+    initialInterval: Int,
+    initialRepeatDelay: Int,
+    clickListener: View.OnClickListener
 ) : View.OnTouchListener {
 
-    private val handler = Handler()
+    private val handler = Handler(Looper.getMainLooper())
 
     private var initialInterval: Int
     private var initialRepeatDelay: Int
