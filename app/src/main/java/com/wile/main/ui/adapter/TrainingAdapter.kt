@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.wile.main.R
 import com.wile.main.databinding.ItemTrainingBinding
+import com.wile.main.logging.Logger
 import com.wile.main.model.Training
 
 class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>() {
@@ -68,7 +69,7 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
         var previousElevation = 0F
 
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, targetViewHolder: RecyclerView.ViewHolder): Boolean {
-            Log.i("DD", String.format("Moving from %d to %d", viewHolder.adapterPosition, targetViewHolder.adapterPosition))
+            Log.i(Logger.TAG, String.format("Moving from %d to %d", viewHolder.adapterPosition, targetViewHolder.adapterPosition))
             val from = viewHolder.adapterPosition
             val to = targetViewHolder.adapterPosition
             trainingMoved(from, to)
@@ -94,7 +95,7 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
                         binding.root.elevation = (3F / Resources.getSystem().displayMetrics.density)
                     }
                 }
-                Log.i("DD", "View has been taken")
+                Log.i(Logger.TAG, "View has been taken")
             }
             super.onSelectedChanged(viewHolder, actionState)
         }
@@ -108,7 +109,7 @@ class TrainingAdapter : RecyclerView.Adapter<TrainingAdapter.TrainingViewHolder>
                 }
             }
             listerner?.onMoveTraining()
-            Log.i("DD", "View has been dropped")
+            Log.i(Logger.TAG, "View has been dropped")
         }
 
         override fun isLongPressDragEnabled() = true
