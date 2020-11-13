@@ -12,6 +12,7 @@ import android.widget.Chronometer
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.main.R
+import com.wile.main.logging.Logger
 import com.wile.main.model.Training
 import com.wile.main.service.TrainingMediaPlayer
 import com.wile.main.ui.main.MainViewModel
@@ -87,7 +88,7 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
     private fun setChronometerBase() {
         totalWorkoutTime = trainingList.subList(currentWorkout, trainingList.lastIndex + 1).map { t -> t.duration }.sum() + 1
         nextTrainingTime = SystemClock.elapsedRealtime() + trainingList[currentWorkout].duration.toLong() * 1000
-        Log.i("CHRONO", String.format("new training duration is %d", trainingList[currentWorkout].duration))
+        Log.i(Logger.TAG, String.format("new training duration is %d", trainingList[currentWorkout].duration))
         chronometer.base = SystemClock.elapsedRealtime() + totalWorkoutTime  * 1000
     }
 
@@ -154,7 +155,7 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
         if (last3sec in 1..4) {
             mediaplayer.playBip()
         }
-        Log.i("CHRONO", String.format("EOT %d (%d) EOW %d", nextTrainingTime, last3sec, endOfWorkout))
+        Log.i(Logger.TAG, String.format("EOT %d (%d) EOW %d", nextTrainingTime, last3sec, endOfWorkout))
         if (endOfWorkout == 0) {
             stopWorkout()
         } else {
