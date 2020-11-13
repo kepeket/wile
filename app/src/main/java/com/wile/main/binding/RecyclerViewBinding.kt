@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.wile.main.model.Training
 import com.wile.main.ui.adapter.TrainingAdapter
-import com.wile.main.ui.main.MainViewModel
 
 object RecyclerViewBinding {
 
@@ -20,7 +19,7 @@ object RecyclerViewBinding {
     @BindingAdapter("adapterTrainingList")
     fun bindAdapterTrainingList(view: RecyclerView, trainingList: List<Training>?) {
         trainingList?.let {
-            if (it.count() > 0) {
+            if (it.isNotEmpty()) {
                 (view.adapter as? TrainingAdapter)?.addTrainingList(it)
             }
         }
