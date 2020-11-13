@@ -1,5 +1,7 @@
 package com.wile.main.ui.add
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -127,6 +129,11 @@ class AddActivity : DataBindingActivity() {
     }
 
     companion object {
-        const val TRAINING_ID = "traingin_id"
+        const val TRAINING_ID = "training_id"
+
+        fun newIntent(context: Context) = Intent(context, AddActivity::class.java)
+        fun newIntent(context: Context, trainingId: Int) = newIntent(context).apply {
+            putExtra(TRAINING_ID, trainingId)
+        }
     }
 }

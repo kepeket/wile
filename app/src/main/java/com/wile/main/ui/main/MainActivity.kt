@@ -1,6 +1,5 @@
 package com.wile.main.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -41,10 +40,7 @@ class MainActivity : DataBindingActivity() {
         }
 
         setSupportActionBar(binding.mainToolbar.toolbar)
-        fab.setOnClickListener {
-            val intent = Intent(this, AddActivity::class.java)
-            startActivity(intent)
-        }
+        fab.setOnClickListener { startActivity(AddActivity.newIntent(this)) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -76,8 +72,6 @@ class MainActivity : DataBindingActivity() {
     }
 
     private fun onTouchTraining(training: Training) {
-        val intent = Intent(this, AddActivity::class.java)
-        intent.putExtra(AddActivity.TRAINING_ID, training.id)
-        startActivity(intent)
+        startActivity(AddActivity.newIntent(this, training.id))
     }
 }
