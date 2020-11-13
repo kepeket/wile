@@ -3,25 +3,27 @@ package com.wile.main.service
 import android.content.Context
 import android.media.MediaPlayer
 import com.wile.main.R
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class TrainingMediaPlayer(val context: Context) {
-
+class TrainingMediaPlayer @Inject constructor(
+    @ApplicationContext context: Context
+) {
     private var released = false
-    lateinit var mp: MediaPlayer
 
     private val beepMedia = MediaPlayer.create(context, R.raw.beep)
     private val whistleMedia = MediaPlayer.create(context, R.raw.whistle)
     private val bellMedia = MediaPlayer.create(context, R.raw.bell)
 
-    fun playBip(){
+    fun playBip() {
         beepMedia.start()
     }
 
-    fun playWhistle(){
+    fun playWhistle() {
         whistleMedia.start()
     }
 
-    fun playBell(){
+    fun playBell() {
         bellMedia.start()
     }
 }

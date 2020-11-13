@@ -17,12 +17,18 @@ import com.wile.main.model.Training
 import com.wile.main.service.TrainingMediaPlayer
 import com.wile.main.ui.main.MainViewModel
 import com.wile.main.ui.main.WorkoutInterface
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterface {
+class WorkoutHandler @Inject constructor(
+    @ApplicationContext private val context: Context,
+    // Todo : temporary commented as we don't want to provide the VM
+//    private val viewModel: MainViewModel,
+    private val mediaPlayer: TrainingMediaPlayer,
+): WorkoutInterface {
 
-    private val mediaplayer by lazy { TrainingMediaPlayer(context) }
     private lateinit var bottomSheetView: View
     private lateinit var chronometer: Chronometer
     private var currentWorkout = 0
@@ -50,25 +56,26 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
                 sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
 
-            vm.trainingListLiveData.value?.let {
-                if (it.isNotEmpty()) {
-                    trainingList.clear()
-                    trainingList.addAll(it)
-
-                    val warmup = Training(
-                            duration = 5,
-                            name = "Mise en place",
-                            sorting = 0
-                    )
-                    trainingList.add(0, warmup)
-                    currentWorkout = 0
-                    chronometer.isCountDown = true
-                    chronometerIsRunning = true
-                    setChronometerBase()
-                    updateInfoDisplay()
-                    chronometer.start()
-                }
-            }
+            // Todo : temporary commented as we don't want to provide the VM
+//            viewModel.trainingListLiveData.value?.let {
+//                if (it.isNotEmpty()) {
+//                    trainingList.clear()
+//                    trainingList.addAll(it)
+//
+//                    val warmup = Training(
+//                        duration = 5,
+//                        name = "Mise en place",
+//                        sorting = 0
+//                    )
+//                    trainingList.add(0, warmup)
+//                    currentWorkout = 0
+//                    chronometer.isCountDown = true
+//                    chronometerIsRunning = true
+//                    setChronometerBase()
+//                    updateInfoDisplay()
+//                    chronometer.start()
+//                }
+//            }
         }
     }
 
@@ -96,7 +103,7 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
 
     private fun notifyNewTraining() {
         updateInfoDisplay()
-        mediaplayer.playWhistle()
+        mediaPlayer.playWhistle()
         val v = context.getSystemService(VIBRATOR_SERVICE) as Vibrator?
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v?.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
@@ -119,7 +126,7 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
             chronometer.stop()
             chronometerIsRunning = false
         }
-        mediaplayer.playBell()
+        mediaPlayer.playBell()
         val sheetBehavior = BottomSheetBehavior.from(bottomSheetView)
         if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -154,7 +161,7 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
         val endOfWorkout = ((SystemClock.elapsedRealtime() - chronometer.base) / 1000.0).roundToInt()
         val last3sec = kotlin.math.abs((SystemClock.elapsedRealtime() - nextTrainingTime) / 1000.0).roundToInt()
         if (last3sec in 1..4) {
-            mediaplayer.playBip()
+            mediaPlayer.playBip()
         }
         Log.i(Logger.TAG, String.format("EOT %d (%d) EOW %d", nextTrainingTime, last3sec, endOfWorkout))
         if (endOfWorkout == 0) {

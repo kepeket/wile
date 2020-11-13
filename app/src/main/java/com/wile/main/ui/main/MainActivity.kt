@@ -13,6 +13,7 @@ import com.wile.main.ui.add.AddActivity
 import com.wile.main.ui.handler.WorkoutHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : DataBindingActivity() {
@@ -24,7 +25,8 @@ class MainActivity : DataBindingActivity() {
         onMoveTraining =  ::onMoveTraining,
         onTouchTraining = ::onTouchTraining
     )}
-    private val workoutHandler by lazy { WorkoutHandler(this, viewModel) }
+
+    @Inject lateinit var workoutHandler : WorkoutHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
