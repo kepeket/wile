@@ -1,8 +1,6 @@
 package com.wile.main.model
 
-import androidx.databinding.Bindable
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity

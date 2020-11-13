@@ -39,12 +39,12 @@ class WorkoutHandler @Inject constructor(
 
     var timeWhenPaused = 0
 
-    override fun setBottomSheetView(bottomSheet: View){
+    override fun setBottomSheetView(bottomSheet: View) {
         bottomSheetView = bottomSheet
         chronometer = bottomSheetView.chronometer
     }
 
-    override fun startWorkout(){
+    override fun startWorkout() {
         bottomSheetView.let {
             val sheetBehavior = BottomSheetBehavior.from(bottomSheetView)
 
@@ -104,7 +104,7 @@ class WorkoutHandler @Inject constructor(
         vibrator?.vibrate(VibrationEffect.createOneShot(VIBRATION_TIME, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 
-    private fun changeTraining(){
+    private fun changeTraining() {
         trainingList.let {
             currentWorkout++
             notifyNewTraining()
@@ -117,7 +117,9 @@ class WorkoutHandler @Inject constructor(
             chronometer.stop()
             chronometerIsRunning = false
         }
+
         mediaPlayer.playBell()
+
         val sheetBehavior = BottomSheetBehavior.from(bottomSheetView)
         if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED

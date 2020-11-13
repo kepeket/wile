@@ -67,9 +67,6 @@ class MainActivity : DataBindingActivity() {
     }
 
     private fun onMoveTraining(trainings: List<Training>) {
-        trainings.mapIndexed { i, t ->
-            t.sorting = i * 10
-        }
         viewModel.saveTrainings(trainings)
     }
 

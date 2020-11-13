@@ -47,7 +47,11 @@ class MainViewModel @ViewModelInject constructor(
         }
     }
 
-    fun saveTrainings(trainings: List<Training>){
+    fun saveTrainings(trainings: List<Training>) {
+        trainings.mapIndexed { i, t ->
+            t.sorting = i * 10
+        }
+
         viewModelScope.launch {
             trainingRepository.addAll(trainings)
         }
