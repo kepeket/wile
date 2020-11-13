@@ -8,7 +8,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.wile.main.base.LiveCoroutinesViewModel
 import com.wile.main.model.Training
-import com.wile.main.repository.AddRepository
+import com.wile.main.repositories.AddRepository
 
 class AddViewModel @ViewModelInject constructor(
     private val addRepository: AddRepository,

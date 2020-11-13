@@ -1,14 +1,12 @@
 package com.wile.main.ui.main
 
-import android.util.Log
-import androidx.annotation.MainThread
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.wile.main.base.LiveCoroutinesViewModel
 import com.wile.main.model.Training
-import com.wile.main.repository.MainRepository
+import com.wile.main.repositories.MainRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

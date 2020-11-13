@@ -1,11 +1,8 @@
-package com.wile.main.repository
+package com.wile.main.repositories
 
 import androidx.annotation.WorkerThread
 import com.wile.main.model.Training
 import com.wile.main.persistence.TrainingDao
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(

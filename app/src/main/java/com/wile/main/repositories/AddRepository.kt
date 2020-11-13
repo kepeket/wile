@@ -1,4 +1,4 @@
-package com.wile.main.repository
+package com.wile.main.repositories
 
 import androidx.annotation.WorkerThread
 import com.wile.main.model.Training
