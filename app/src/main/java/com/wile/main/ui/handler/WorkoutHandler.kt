@@ -20,7 +20,6 @@ import com.wile.main.ui.main.WorkoutInterface
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import kotlin.math.roundToInt
 
-
 class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterface {
 
     private val mediaplayer by lazy { TrainingMediaPlayer(context) }
@@ -46,13 +45,16 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
     override fun startWorkout(){
         bottomSheetView.let {
             val sheetBehavior = BottomSheetBehavior.from(bottomSheetView)
+
             if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                 sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
+
             vm.trainingListLiveData.value?.let {
-                if (it.count() > 0){
+                if (it.isNotEmpty()) {
                     trainingList.clear()
                     trainingList.addAll(it)
+
                     val warmup = Training(
                             duration = 5,
                             name = "Mise en place",
@@ -143,8 +145,7 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
             currentWorkout++
             setChronometerBase()
             notifyNewTraining()
-        }
-        else {
+        } else {
             stopWorkout()
         }
     }
@@ -158,10 +159,8 @@ class WorkoutHandler(val context: Context, val vm: MainViewModel): WorkoutInterf
         Log.i(Logger.TAG, String.format("EOT %d (%d) EOW %d", nextTrainingTime, last3sec, endOfWorkout))
         if (endOfWorkout == 0) {
             stopWorkout()
-        } else {
-            if (last3sec == 0) {
-                changeTraining()
-            }
+        } else if (last3sec == 0) {
+            changeTraining()
         }
     }
 }
