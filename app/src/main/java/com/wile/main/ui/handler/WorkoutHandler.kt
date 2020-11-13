@@ -12,6 +12,7 @@ import com.wile.main.R
 import com.wile.main.logging.Logger
 import com.wile.main.model.Training
 import com.wile.main.service.TrainingMediaPlayer
+import com.wile.main.ui.main.TrainingListingViewModel
 import com.wile.main.ui.main.WorkoutInterface
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import javax.inject.Inject
@@ -19,8 +20,6 @@ import kotlin.math.roundToInt
 
 class WorkoutHandler @Inject constructor(
     private val vibrator: Vibrator?,
-    // Todo : temporary commented as we don't want to provide the VM
-//    private val viewModel: TrainingListingViewModel,
     private val mediaPlayer: TrainingMediaPlayer,
 ): WorkoutInterface {
 
@@ -35,6 +34,9 @@ class WorkoutHandler @Inject constructor(
     override var chronometerWarmup = true
 
     override val currentWorkoutLiveData = MutableLiveData<String>()
+
+    // FixMe : temporary public
+    lateinit var viewModel: TrainingListingViewModel
 
     var timeWhenPaused = 0
 
@@ -51,26 +53,25 @@ class WorkoutHandler @Inject constructor(
                 sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
 
-            // Todo : temporary commented as we don't want to provide the VM
-//            viewModel.trainingListLiveData.value?.let {
-//                if (it.isNotEmpty()) {
-//                    trainingList.clear()
-//                    trainingList.addAll(it)
-//
-//                    val warmup = Training(
-//                        duration = 5,
-//                        name = "Mise en place",
-//                        sorting = 0
-//                    )
-//                    trainingList.add(0, warmup)
-//                    currentWorkout = 0
-//                    chronometer.isCountDown = true
-//                    chronometerIsRunning = true
-//                    setChronometerBase()
-//                    updateInfoDisplay()
-//                    chronometer.start()
-//                }
-//            }
+            viewModel.trainingListLiveData.value?.let {
+                if (it.isNotEmpty()) {
+                    trainingList.clear()
+                    trainingList.addAll(it)
+
+                    val warmup = Training(
+                        duration = 5,
+                        name = "Mise en place",
+                        sorting = 0
+                    )
+                    trainingList.add(0, warmup)
+                    currentWorkout = 0
+                    chronometer.isCountDown = true
+                    chronometerIsRunning = true
+                    setChronometerBase()
+                    updateInfoDisplay()
+                    chronometer.start()
+                }
+            }
         }
     }
 

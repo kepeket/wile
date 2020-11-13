@@ -31,6 +31,9 @@ class TrainingListingActivity : DataBindingActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // FixMe : temporary
+        workoutHandler.viewModel = viewModel
+
         binding.apply {
             lifecycleOwner = this@TrainingListingActivity
             adapter = this@TrainingListingActivity.adapter
