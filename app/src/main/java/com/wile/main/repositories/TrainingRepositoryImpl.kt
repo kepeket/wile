@@ -13,7 +13,7 @@ class TrainingRepositoryImpl @Inject constructor(
 ) : TrainingRepository {
 
     @WorkerThread
-    suspend fun getTraining(
+    override suspend fun getTraining(
             id: Int,
             onSuccess: () -> Unit,
             onError: (String) -> Unit
@@ -22,24 +22,24 @@ class TrainingRepositoryImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
 
     @WorkerThread
-    suspend fun saveTraining(
+    override suspend fun saveTraining(
         newTraining: Training,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
-    )  {
-        val training = trainingDao.insertTrainingList(newTraining)
+    ) {
+        trainingDao.insertTrainingList(newTraining)
     }
 
     @WorkerThread
-    fun fetchTrainingList(
+    override fun fetchTrainingList(
         workout: Int,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) = trainingDao.getTrainingList(workout)
 
     @WorkerThread
-    suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
+    override suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
 
     @WorkerThread
-    suspend fun addAll(trainings: List<Training>) = trainingDao.insertAll(trainings)
+    override suspend fun addAll(trainings: List<Training>) = trainingDao.insertAll(trainings)
 }

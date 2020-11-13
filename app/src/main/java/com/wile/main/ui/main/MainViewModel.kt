@@ -6,12 +6,12 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.wile.main.base.LiveCoroutinesViewModel
 import com.wile.main.model.Training
-import com.wile.main.repositories.TrainingRepositoryImpl
+import com.wile.main.repositories.TrainingRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainViewModel @ViewModelInject constructor(
-    private val trainingRepositoryImpl: TrainingRepositoryImpl,
+    private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {
 
@@ -26,7 +26,7 @@ class MainViewModel @ViewModelInject constructor(
 
         viewModelScope.launch {
             isLoading.set(true)
-            trainingRepositoryImpl.fetchTrainingList(
+            trainingRepository.fetchTrainingList(
                     workout = 0,
                     onSuccess = {
                         isLoading.set(false)
@@ -43,13 +43,13 @@ class MainViewModel @ViewModelInject constructor(
 
     fun deleteTraining(id: Int){
         viewModelScope.launch {
-            trainingRepositoryImpl.deleteTraining(id)
+            trainingRepository.deleteTraining(id)
         }
     }
 
     fun saveTrainings(trainings: List<Training>){
         viewModelScope.launch {
-            trainingRepositoryImpl.addAll(trainings)
+            trainingRepository.addAll(trainings)
         }
     }
 }
