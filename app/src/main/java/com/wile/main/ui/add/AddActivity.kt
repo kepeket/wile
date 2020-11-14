@@ -3,8 +3,10 @@ package com.wile.main.ui.add
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.wile.main.R
@@ -49,61 +51,32 @@ class AddActivity : DataBindingActivity() {
         save_btn.setOnClickListener {
             validateTraining()
         }
+
+        viewModel.customRepRateToggle.observe(this, {
+            binding.trainingRepRateLayout.trainingNameLabel.visibility = if (it) View.VISIBLE else View.GONE
+            binding.trainingRepRateLayout.valueLayout.visibility = if (it) View.VISIBLE else View.GONE
+        })
+
+        toggle_rep_rate.setOnCheckedChangeListener { _, b ->
+            viewModel.customRepRateChanged(b)
+        }
     }
 
     /* FixMe : you should use startActivityForResult in the calling class to get a result
         (did the user has effectively add something or not ?) and so call setResult here
     */
     private fun validateTraining() {
-        if (training_title.text.isNullOrEmpty()) {
-            Toast.makeText(this, getString(R.string.training_add_missing_name), Toast.LENGTH_SHORT).show()
-            return
-        }
+        val ok = viewModel.validateTraining()
 
-        var computedDuration = 30
-        if (training_duration.text.isNotBlank()) {
-            computedDuration = training_duration.text.toString().toInt()
-        }
-
-        var reps = 0
-        var repRate = 0
-        if (training_reps.text.isNotBlank()) {
-            reps = training_reps.text.toString().toInt()
-        }
-
-        if (training_rep_rate.text.isNotBlank()) {
-            repRate = training_rep_rate.text.toString().toInt()
-        }
-
-        if (reps != 0) {
-            var defaultRate = 30
-            if (repRate != 0) {
-                defaultRate = repRate
-            }
-            computedDuration = reps * 60 / defaultRate // rate is on minute
-        }
-
-        val training = if (editMode){
-            viewModel.training.value
-        }
-        else {
-            Training(name = "", sorting = 10)
-        }
-        training?.apply {
-            this.name = training_title.text.toString()
-            this.repRate = repRate
-            this.reps = reps
-            this.duration = computedDuration
-        }?.let {
+        if (ok) {
             runBlocking {
                 launch(Dispatchers.Default) {
-                    viewModel.saveTraining(it)
+                    viewModel.saveTraining()
                 }
             }
+
+            finish()
         }
-
-
-        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -130,9 +103,12 @@ class AddActivity : DataBindingActivity() {
 
     companion object {
         const val TRAINING_ID = "training_id"
+        const val TRAINING_COUNT = "training_count"
+        const val TAG = "AddActivith"
 
         fun newIntent(context: Context) = Intent(context, AddActivity::class.java)
-        fun newIntent(context: Context, trainingId: Int) = newIntent(context).apply {
+        fun addTraining(context: Context) = newIntent(context)
+        fun editTraining(context: Context, trainingId: Int) = newIntent(context).apply {
             putExtra(TRAINING_ID, trainingId)
         }
     }

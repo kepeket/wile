@@ -43,6 +43,9 @@ class WorkoutHandler @Inject constructor(
     override fun setBottomSheetView(bottomSheet: View) {
         bottomSheetView = bottomSheet
         chronometer = bottomSheetView.chronometer
+        chronometer.setOnChronometerTickListener {
+            chronometerTicking(it)
+        }
     }
 
     override fun startWorkout() {
@@ -78,7 +81,7 @@ class WorkoutHandler @Inject constructor(
     private fun updateInfoDisplay(){
         if (currentWorkout < trainingList.count()) {
             val train =  trainingList[currentWorkout]
-            var info = ""
+            var info: String
             val minutes: Int = train.duration / (60)
             val seconds: Int = train.duration % 60
             if (train.reps != 0){

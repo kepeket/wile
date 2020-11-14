@@ -45,10 +45,11 @@ android {
 
 dependencies {
     kapts(
-        Dependencies.hiltCompiler,
+        Dependencies.hiltAndroidCompiler,
         Dependencies.moshiCompiler,
         Dependencies.roomAnnotationProcessor,
-        "androidx.hilt:hilt-compiler:1.0.0-alpha02"
+        Dependencies.hiltCompiler,
+        Dependencies.databindingCompiler
     )
 
     implementations(

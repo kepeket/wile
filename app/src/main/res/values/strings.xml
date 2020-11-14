@@ -24,4 +24,8 @@
     <string name="training_form_duration_label">Durée</string>
     <string name="training_form_rep_label">Répétitions</string>
     <string name="training_form_reprate_label">Rep par minute</string>
+    <string name="training_add_or">ou</string>
+    <string name="training_form_reprate_toggle_label">Changer la vitesse de répétition</string>
+    <string name="custom_training_btn">Autre</string>
+    <string name="activity_quick_add_label">Ajout rapide</string>
 </resources>

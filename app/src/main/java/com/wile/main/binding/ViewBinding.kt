@@ -1,17 +1,19 @@
 package com.wile.main.binding
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.View
-import android.widget.Chronometer
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
 import com.wile.main.R
 import com.wile.main.ui.main.WorkoutInterface
+import java.lang.Integer.parseInt
 
 object ViewBinding {
+
+    const val TAG = "ViewBinding"
 
     @JvmStatic
     @BindingAdapter("android:text")
@@ -20,6 +22,15 @@ object ViewBinding {
         text?.let {
             view.text = text
         }
+    }
+
+    @JvmStatic
+    @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
+    fun binIntToTextValue(view: TextView): Int {
+        if (!view.text.isNullOrBlank()) {
+            return parseInt(view.text.toString())
+        }
+        return 0
     }
 
     @JvmStatic
@@ -37,7 +48,7 @@ object ViewBinding {
                 val stringNumber = textview.text.toString()
                 var curValue = if (stringNumber.isNotBlank()) stringNumber.toInt() else 0
                 if (counterDirection == "sub"){
-                    curValue--
+                    curValue = if (curValue > 0) { curValue-1 } else { 0 }
                 } else {
                     curValue++
                 }
@@ -54,6 +65,12 @@ object ViewBinding {
 
     @JvmStatic
     @BindingAdapter("toast")
+    fun bindToast(view: View, text: Int) {
+        Toast.makeText(view.context, view.context.getString(text), Toast.LENGTH_SHORT).show()
+    }
+
+    @JvmStatic
+    @BindingAdapter("toast")
     fun bindToast(view: View, text: String?) {
         text?.let {
             if (it.isNotEmpty()) {
@@ -65,6 +82,7 @@ object ViewBinding {
     @JvmStatic
     @BindingAdapter("gone")
     fun bindGone(view: View, shouldBeGone: Boolean) {
+        Log.d(TAG, String.format("view id %s",view.id))
         view.visibility = if (shouldBeGone) {
             View.GONE
         } else {

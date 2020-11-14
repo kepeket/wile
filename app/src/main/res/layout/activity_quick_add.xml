@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.wile.main.ui.add.QuickAddViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.wile.main.ui.adapter.TrainingPresetAdapter" />
+    </data>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.add.QuickAddActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/toolbar_home"
+            tools:viewBindingIgnore="true"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:adapter="@{adapter}"
+        app:adapterPresetList="@{vm.presets}"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        app:toast="@{vm.toastLiveData}"
+        tools:listitem="@layout/item_training_preset"
+        tools:itemCount="3"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

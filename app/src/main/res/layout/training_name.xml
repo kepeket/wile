@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/training_name_label"
         app:layout_constraintStart_toEndOf="parent"
         android:ems="10"
-        android:text="@{training.name}"
+        android:text="@={training.name}"
         android:inputType="textCapSentences"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

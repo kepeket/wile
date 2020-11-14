@@ -44,7 +44,8 @@ object Dependencies {
     // Release notes : https://developer.android.com/jetpack/androidx/releases/hilt
     const val hiltAndroid = "com.google.dagger:hilt-android"
     // Artifact : https://mvnrepository.com/artifact/androidx.hilt/hilt-compiler
-    const val hiltCompiler = "com.google.dagger:hilt-android-compiler"
+    const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler"
+    const val hiltCompiler = "androidx.hilt:hilt-compiler"
     // Artifact : https://mvnrepository.com/artifact/androidx.hilt/hilt-lifecycle-viewmodel
     const val hiltViewModel = "androidx.hilt:hilt-lifecycle-viewmodel"
 
@@ -64,5 +65,7 @@ object Dependencies {
 
     // Artifact : https://mvnrepository.com/artifact/androidx.room/room-compiler
     const val roomAnnotationProcessor = "androidx.room:room-compiler"
+
+    const val databindingCompiler = "com.android.databinding:compiler"
     // endregion
 }

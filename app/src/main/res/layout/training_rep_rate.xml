@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="training"
             type="com.wile.main.model.Training" />
+        <variable
+            name="vm"
+            type="com.wile.main.ui.add.AddViewModel" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_marginTop="@dimen/form_padding"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggle_rep_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Theme.Main.Training.Label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="@dimen/form_padding"
+        android:checked="@{training.customRepRate}"
+        android:text="@string/training_form_reprate_toggle_label" />
 
     <TextView
         android:id="@+id/training_name_label"
@@ -17,11 +34,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/training_form_reprate_label"
+        android:layout_marginTop="@dimen/form_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toggle_rep_rate" />
 
     <LinearLayout
+        android:id="@+id/value_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -44,7 +63,7 @@
             android:ems="10"
             android:textAlignment="center"
             android:inputType="number"
-            android:text="@{training.repRate}"
+            android:text="@={training.repRate}"
             android:layout_marginTop="@dimen/text_padding" />
 
         <ImageButton

@@ -28,6 +28,12 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Main.NoActionBar"/>
+        <activity android:name=".ui.add.QuickAddActivity"
+        android:label="@string/activity_quick_add_label"
+
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/Theme.Main.NoActionBar"/>
     </application>
 
 </manifest>

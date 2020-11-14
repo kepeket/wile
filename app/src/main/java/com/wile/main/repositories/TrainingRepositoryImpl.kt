@@ -1,9 +1,12 @@
 package com.wile.main.repositories
 
 import androidx.annotation.WorkerThread
+import com.wile.main.model.Preset
 import com.wile.main.model.Training
+import com.wile.main.model.TrainingTypes
 import com.wile.main.persistence.TrainingDao
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -12,6 +15,7 @@ class TrainingRepositoryImpl @Inject constructor(
     private val trainingDao: TrainingDao
 ) : TrainingRepository {
 
+    @ExperimentalCoroutinesApi
     @WorkerThread
     override suspend fun getTraining(
             id: Int,
@@ -27,7 +31,7 @@ class TrainingRepositoryImpl @Inject constructor(
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
-        trainingDao.insertTrainingList(newTraining)
+        trainingDao.insertTraining(newTraining)
     }
 
     @WorkerThread
@@ -42,4 +46,26 @@ class TrainingRepositoryImpl @Inject constructor(
 
     @WorkerThread
     override suspend fun addAll(trainings: List<Training>) = trainingDao.insertAll(trainings)
+
+    @WorkerThread
+    override suspend fun addTrainingFromPreset(preset: Preset)  {
+        val training = Training(
+            name = preset.name,
+            trainingType = preset.trainingType
+        )
+
+        when(preset.trainingType){
+            TrainingTypes.Timed -> {
+                training.duration = preset.duration
+            }
+            TrainingTypes.Repeated -> {
+                training.reps = preset.reps
+                training.customRepRate = true
+                training.repRate = preset.repRate
+            }
+            else -> TODO()
+        }
+
+        trainingDao.insertTraining(training)
+    }
 }

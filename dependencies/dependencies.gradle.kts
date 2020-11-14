@@ -21,13 +21,15 @@ dependencies {
         api("${Dependencies.androidXViewModelKTX}:${DependenciesVersions.androidXViewModelKTX}")
         api("${Dependencies.constraintLayout}:${DependenciesVersions.constraintLayout}")
         api("${Dependencies.hiltAndroid}:${DependenciesVersions.hiltAndroid}")
-        api("${Dependencies.hiltCompiler}:${DependenciesVersions.hiltAndroid}")
-        api("${Dependencies.hiltViewModel}:${DependenciesVersions.hiltViewModel}")
+        api("${Dependencies.hiltAndroidCompiler}:${DependenciesVersions.hiltAndroid}")
+        api("${Dependencies.hiltViewModel}:${DependenciesVersions.hiltCore}")
+        api("${Dependencies.hiltCompiler}:${DependenciesVersions.hiltCore}")
         api("${Dependencies.materialDesign}:${DependenciesVersions.materialDesign}")
         api("${Dependencies.moshi}:${DependenciesVersions.moshi}")
         api("${Dependencies.moshiCompiler}:${DependenciesVersions.moshi}")
         api("${Dependencies.room}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.roomAnnotationProcessor}:${DependenciesVersions.androidXRoom}")
+        api("${Dependencies.databindingCompiler}:${DependenciesVersions.databindingCompiler}")
         // endregion
     }
 }
@@ -47,7 +49,8 @@ object DependenciesVersions {
     const val constraintLayout                 = "2.0.4"
     const val firebaseBoM                      = "26.0.0"
     const val hiltAndroid                      = "2.29.1-alpha"
-    const val hiltViewModel                    = "1.0.0-alpha02"
+    const val hiltCore                         = "1.0.0-alpha02"
     const val materialDesign                   = "1.2.1"
     const val moshi                            = "1.11.0"
+    const val databindingCompiler              = "3.1.4"
 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface TrainingDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTrainingList(training: Training)
+    suspend fun insertTraining(training: Training)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(training: List<Training>)

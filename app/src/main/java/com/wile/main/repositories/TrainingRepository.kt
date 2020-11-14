@@ -1,5 +1,6 @@
 package com.wile.main.repositories
 
+import com.wile.main.model.Preset
 import com.wile.main.model.Training
 import kotlinx.coroutines.flow.Flow
 
@@ -26,4 +27,7 @@ interface TrainingRepository {
     suspend fun deleteTraining(id: Int)
 
     suspend fun addAll(trainings: List<Training>)
+
+    suspend fun addTrainingFromPreset(preset: Preset)
+
 }

@@ -10,6 +10,7 @@ import com.wile.main.databinding.ActivityTrainingListingBinding
 import com.wile.main.model.Training
 import com.wile.main.ui.adapter.TrainingAdapter
 import com.wile.main.ui.add.AddActivity
+import com.wile.main.ui.add.QuickAddActivity
 import com.wile.main.ui.handler.WorkoutHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
@@ -45,7 +46,10 @@ class TrainingListingActivity : DataBindingActivity() {
         }
 
         setSupportActionBar(binding.mainToolbar.toolbar)
-        fab.setOnClickListener { startActivity(AddActivity.newIntent(this)) }
+        fab.setOnClickListener {
+            //startActivity(AddActivity.addTraining(this))
+            startActivity(QuickAddActivity.newIntent(this))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,6 +78,6 @@ class TrainingListingActivity : DataBindingActivity() {
     }
 
     private fun onTouchTraining(training: Training) {
-        startActivity(AddActivity.newIntent(this, training.id))
+        startActivity(AddActivity.editTraining(this, training.id))
     }
 }

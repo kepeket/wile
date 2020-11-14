@@ -8,37 +8,31 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.wile.main.R
 import com.wile.main.databinding.ItemTrainingBinding
+import com.wile.main.databinding.ItemTrainingPresetBinding
+import com.wile.main.model.Preset
 import com.wile.main.model.Training
 import com.wile.main.model.TrainingTypes
 
-class TrainingAdapter(
-    val onDeleteTraining: (training: Training) -> Unit,
-    val onMoveTraining: (trainings: List<Training>) -> Unit,
-    val onTouchTraining: (training: Training) -> Unit
-) : RecyclerView.Adapter<TrainingViewHolder>() {
+class TrainingPresetAdapter(
+    val onTouchPreset: (preset: Preset) -> Unit
+) : RecyclerView.Adapter<TrainingPresetViewHolder>() {
 
-    private val items = mutableListOf<Training>()
+    private val items = mutableListOf<Preset>()
 
-    val touchListener = TrainingTouchHelperCallback(
-        onItemDeleted = ::onItemDeleted,
-        onItemMoved = ::onItemMoved,
-        onItemDropped = ::onItemDropped
-    )
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingPresetViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding =
-            DataBindingUtil.inflate<ItemTrainingBinding>(inflater, R.layout.item_training, parent, false)
-        return TrainingViewHolder(binding).apply {
+            DataBindingUtil.inflate<ItemTrainingPresetBinding>(inflater, R.layout.item_training_preset, parent, false)
+        return TrainingPresetViewHolder(binding).apply {
             binding.root.setOnClickListener {
                 val position = adapterPosition.takeIf { it != NO_POSITION }
                     ?: return@setOnClickListener
-                onTouchTraining(items[position])
+                onTouchPreset(items[position])
             }
         }
     }
 
-    override fun onBindViewHolder(holder: TrainingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TrainingPresetViewHolder, position: Int) {
         val colorByType = when(items[position].trainingType){
             TrainingTypes.Timed -> ContextCompat.getColor(holder.itemView.context, R.color.timed_preset)
             TrainingTypes.Repeated -> ContextCompat.getColor(holder.itemView.context, R.color.repeated_preset)
@@ -47,7 +41,7 @@ class TrainingAdapter(
         }
 
         holder.binding.apply {
-            training = items[position]
+            preset = items[position]
             color = colorByType
             executePendingBindings()
         }
@@ -55,23 +49,9 @@ class TrainingAdapter(
 
     override fun getItemCount() = items.size
 
-    fun addTrainingList(trainingList: List<Training>) {
+    fun addTrainingPresetList(presetList: List<Preset>) {
         items.clear()
-        items.addAll(trainingList)
+        items.addAll(presetList)
         notifyDataSetChanged()
-    }
-
-    private fun onItemDeleted(position: Int) {
-        onDeleteTraining(items.removeAt(position))
-        notifyItemRemoved(position)
-    }
-
-    private fun onItemMoved(from: Int, to: Int) {
-        items.add(to, items.removeAt(from))
-        notifyItemMoved(from, to)
-    }
-
-    private fun onItemDropped() {
-        onMoveTraining(items)
     }
 }
