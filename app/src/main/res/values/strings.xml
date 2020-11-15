@@ -12,7 +12,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="activity_add_label">Ajouter un exo</string>
 
-    <string name="time_format">%d secondes</string>
     <string name="training_add_missing_name">Il faut au moins choisir un exercice</string>
 
     <string name="menu_training_main_go">Go</string>
@@ -28,4 +27,16 @@
     <string name="training_form_reprate_toggle_label">Changer la vitesse de répétition</string>
     <string name="custom_training_btn">Autre</string>
     <string name="activity_quick_add_label">Ajout rapide</string>
+    <string name="activity_tabata_add_label">Ajouter un tabata</string>
+    <string name="training_tabata_missing_main">Il manque le nom du premier excercice</string>
+    <string name="training_tabata_missing_alter">Il manque le nom du deuxieme excercice</string>
+    <string name="training_tabata_error">Il y\'a un probleme, désolé</string>
+    <string name="training_tabata_missing_duration">Il faut une durée supérieur à 0s</string>
+    <string name="tabata_form_alter_label">Nom du second exercice</string>
+    <string name="tabata_form_main_label">Nom du premier excercice</string>
+    <string name="tabata_form_cycles_label">Nombre de cycles</string>
+    <string name="training_timed_description">Un maximum de répétitions</string>
+    <string name="training_tabata_description">%ds/%ds x %d - %s et %s</string>
+    <string name="training_repeated_description">%d reps</string>
+    <string name="overall_duration">%dm%02ds</string>
 </resources>

@@ -32,6 +32,8 @@ class QuickAddViewModel @ViewModelInject constructor(
             Preset(name = "Repos", trainingType = TrainingTypes.Timed, duration = 20),
             // Custom
             Preset(name = "Sur mesure", trainingType = TrainingTypes.Custom),
+            // Tabata
+            Preset(name = "Tabata", trainingType = TrainingTypes.Tabata),
             // Repeated
             Preset(name = "Pompes", trainingType = TrainingTypes.Repeated, reps = 20),
             Preset(name = "Dips", trainingType = TrainingTypes.Repeated, reps = 20),
@@ -48,8 +50,6 @@ class QuickAddViewModel @ViewModelInject constructor(
             Preset(name = "Talons/fesses", trainingType = TrainingTypes.Timed),
             Preset(name = "Corde à sauter", trainingType = TrainingTypes.Timed, duration = 60),
             Preset(name = "Shadow boxing", trainingType = TrainingTypes.Timed, duration = 45),
-            // Tabata
-            Preset(name = "Tabata", trainingType = TrainingTypes.Tabata),
         )
     }
 

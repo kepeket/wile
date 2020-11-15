@@ -9,10 +9,17 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
 import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
 import com.wile.main.databinding.ActivityAddBinding
+import com.wile.main.databinding.ActivityQuickAddBinding
+import com.wile.main.databinding.ActivityTabataAddBinding
+import com.wile.main.model.Preset
 import com.wile.main.model.Training
+import com.wile.main.model.TrainingTypes
+import com.wile.main.ui.adapter.TrainingAdapter
+import com.wile.main.ui.adapter.TrainingPresetAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.item_training.*
@@ -21,19 +28,21 @@ import kotlinx.android.synthetic.main.training_rep_rate.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.lang.Integer.parseInt
 
 @AndroidEntryPoint
-class AddActivity : DataBindingActivity() {
+class TabataAddActivity : DataBindingActivity() {
 
-    private val viewModel: AddViewModel by viewModels()
-    private val binding: ActivityAddBinding by binding(R.layout.activity_add)
-    private var editMode = false
+    private val viewModel: TabataAddViewModel by viewModels()
+    private val binding: ActivityTabataAddBinding by binding(R.layout.activity_tabata_add)
+    private var editMode: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            lifecycleOwner = this@AddActivity
+            lifecycleOwner = this@TabataAddActivity
             vm = viewModel
         }
 
@@ -46,49 +55,47 @@ class AddActivity : DataBindingActivity() {
             supportActionBar?.title = getString(R.string.edit_training_toolbar_title)
             save_btn.text = getString(R.string.save_training_btn)
         }
-
         viewModel.fetchTraining(trainingParam)
-        save_btn.setOnClickListener {
-            validateTraining()
+
+        binding.tabataMainName.trainingNameLabel.text = getString(R.string.tabata_form_main_label)
+        binding.tabataAlterName.trainingNameLabel.text = getString(R.string.tabata_form_alter_label)
+        binding.tabataCycles.trainingNameLabel.text = getString(R.string.tabata_form_cycles_label)
+
+
+        binding.tabataMainName.trainingTitle.addTextChangedListener {
+            viewModel.updateMainName(it.toString())
+        }
+        binding.tabataMainDuration.trainingDuration.addTextChangedListener {
+            viewModel.updateMainDuration(parseInt(it.toString()))
         }
 
-        viewModel.customRepRateToggle.observe(this, {
-            binding.trainingRepRateLayout.trainingNameLabel.visibility = if (it) View.VISIBLE else View.GONE
-            binding.trainingRepRateLayout.valueLayout.visibility = if (it) View.VISIBLE else View.GONE
-        })
+        binding.tabataAlterName.trainingTitle.addTextChangedListener {
+            viewModel.updateAlterName(it.toString())
+        }
+        binding.tabataAlterDuration.trainingDuration.addTextChangedListener {
+            viewModel.updateAlterDuration(parseInt(it.toString()))
+        }
+        binding.tabataCycles.trainingDuration.addTextChangedListener {
+            viewModel.updateCycles(parseInt(it.toString()))
+        }
 
-        toggle_rep_rate.setOnCheckedChangeListener { _, b ->
-            viewModel.customRepRateChanged(b)
+        binding.saveBtn.setOnClickListener {
+            this.saveTraining()
         }
     }
 
-    /* FixMe : you should use startActivityForResult in the calling class to get a result
-        (did the user has effectively add something or not ?) and so call setResult here
-    */
-    private fun validateTraining() {
-        val ok = viewModel.validateTraining()
-
-        if (ok) {
+    fun saveTraining(){
+        if (viewModel.validateTraining()){
             runBlocking {
                 launch(Dispatchers.Default) {
                     viewModel.saveTraining()
                 }
             }
-
             finish()
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.training_add_menu, menu)
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.training_main_go -> {
-            validateTraining()
-            true
-        }
         android.R.id.home -> {
             onBackPressed()
             true
@@ -103,11 +110,9 @@ class AddActivity : DataBindingActivity() {
 
     companion object {
         const val TRAINING_ID = "training_id"
-        const val TRAINING_COUNT = "training_count"
-        const val TAG = "AddActivith"
 
-        fun newIntent(context: Context) = Intent(context, AddActivity::class.java)
-        fun editTraining(context: Context, trainingId: Int) = newIntent(context).apply {
+        fun newIntent(context: Context) = Intent(context, TabataAddActivity::class.java)
+        fun editTabata(context: Context, trainingId: Int) = newIntent(context).apply {
             putExtra(TRAINING_ID, trainingId)
         }
     }

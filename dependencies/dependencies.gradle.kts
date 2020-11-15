@@ -30,6 +30,8 @@ dependencies {
         api("${Dependencies.room}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.roomAnnotationProcessor}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.databindingCompiler}:${DependenciesVersions.databindingCompiler}")
+        api("${Dependencies.gson}:${DependenciesVersions.gson}")
+
         // endregion
     }
 }
@@ -53,4 +55,5 @@ object DependenciesVersions {
     const val materialDesign                   = "1.2.1"
     const val moshi                            = "1.11.0"
     const val databindingCompiler              = "3.1.4"
+    const val gson                             = "2.8.6"
 }

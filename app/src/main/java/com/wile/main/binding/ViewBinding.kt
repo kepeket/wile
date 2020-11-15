@@ -33,10 +33,19 @@ object ViewBinding {
         return 0
     }
 
+
     @JvmStatic
     @BindingAdapter("android:text")
     fun bindIntValue(view: TextView, value: Int) {
         view.text = value.toString()
+    }
+
+    @JvmStatic
+    @BindingAdapter("duration")
+    fun bindDurationValue(view: TextView, duration: Int){
+        val sec = duration % 60
+        val min = duration / 60
+        view.text = view.context.getString(R.string.overall_duration, min, sec)
     }
 
     @SuppressLint("ClickableViewAccessibility")

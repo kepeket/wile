@@ -10,7 +10,9 @@
         <variable
             name="color"
             type="int" />
-
+        <variable
+            name="description"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,8 +66,7 @@
                     style="@style/Theme.Main.Training.Reps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{training.reps + ` reps`}"
-                    app:gone="@{training.reps == 0}"
+                    android:text="@{description}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/training_name"
                     tools:text="15 reps" />

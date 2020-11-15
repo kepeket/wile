@@ -48,7 +48,9 @@ class QuickAddActivity : DataBindingActivity() {
                 }
                 finish()
             }
-            TrainingTypes.Tabata -> TODO()
+            TrainingTypes.Tabata -> {
+                startActivityForResult(TabataAddActivity.newIntent(this), NEW_CUSTOM_TRAINING)
+            }
             TrainingTypes.Custom -> {
                 startActivityForResult(AddActivity.newIntent(this), NEW_CUSTOM_TRAINING)
             }

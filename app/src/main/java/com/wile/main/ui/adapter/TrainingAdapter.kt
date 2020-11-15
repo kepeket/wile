@@ -46,9 +46,42 @@ class TrainingAdapter(
             TrainingTypes.Custom -> ContextCompat.getColor(holder.itemView.context, R.color.dark_grey)
         }
 
+        val trainingDescription = when(items[position].trainingType) {
+            TrainingTypes.Timed -> {
+                holder.itemView.context.getString(R.string.training_timed_description)
+            }
+            TrainingTypes.Repeated -> {
+                holder.itemView.context.getString(
+                    R.string.training_repeated_description,
+                    items[position].reps
+                )
+            }
+            TrainingTypes.Tabata -> {
+                items[position].tabataConfig?.let {
+                    holder.itemView.context.getString(
+                        R.string.training_tabata_description,
+                        it.mainDuration,
+                        it.alterDuration,
+                        it.cycles,
+                        it.mainName,
+                        it.alterName
+                    )
+                }
+            }
+            TrainingTypes.Custom -> {
+                if (items[position].reps != 0){
+                    holder.itemView.context.getString(R.string.training_repeated_description,
+                    items[position].reps)
+                } else {
+                    holder.itemView.context.getString(R.string.training_timed_description)
+                }
+            }
+        }
+
         holder.binding.apply {
             training = items[position]
             color = colorByType
+            description = trainingDescription
             executePendingBindings()
         }
     }

@@ -67,5 +67,7 @@ object Dependencies {
     const val roomAnnotationProcessor = "androidx.room:room-compiler"
 
     const val databindingCompiler = "com.android.databinding:compiler"
+
+    const val gson = "com.google.code.gson:gson"
     // endregion
 }

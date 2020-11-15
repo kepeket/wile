@@ -7,9 +7,12 @@ import com.wile.main.model.Training
 
 @Database(entities = [
     Training::class],
-    version = 2
+    version = 4
 )
-@TypeConverters(SealedClassConverter::class)
+@TypeConverters(
+    SealedClassConverter::class,
+    TabataConfigConverter::class
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun trainingDao(): TrainingDao
 }

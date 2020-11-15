@@ -8,9 +8,11 @@ import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
 import com.wile.main.databinding.ActivityTrainingListingBinding
 import com.wile.main.model.Training
+import com.wile.main.model.TrainingTypes
 import com.wile.main.ui.adapter.TrainingAdapter
 import com.wile.main.ui.add.AddActivity
 import com.wile.main.ui.add.QuickAddActivity
+import com.wile.main.ui.add.TabataAddActivity
 import com.wile.main.ui.handler.WorkoutHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
@@ -47,7 +49,6 @@ class TrainingListingActivity : DataBindingActivity() {
 
         setSupportActionBar(binding.mainToolbar.toolbar)
         fab.setOnClickListener {
-            //startActivity(AddActivity.addTraining(this))
             startActivity(QuickAddActivity.newIntent(this))
         }
     }
@@ -78,6 +79,13 @@ class TrainingListingActivity : DataBindingActivity() {
     }
 
     private fun onTouchTraining(training: Training) {
-        startActivity(AddActivity.editTraining(this, training.id))
+        when(training.trainingType){
+            TrainingTypes.Tabata -> {
+                startActivity(TabataAddActivity.editTabata(this, training.id))
+            }
+            else -> {
+                startActivity(AddActivity.editTraining(this, training.id))
+            }
+        }
     }
 }

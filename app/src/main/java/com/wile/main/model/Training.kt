@@ -1,5 +1,6 @@
 package com.wile.main.model
 
+import androidx.annotation.Nullable
 import androidx.databinding.BaseObservable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,7 +16,8 @@ data class Training(
 
     var sorting: Int = 1000,
     var customRepRate: Boolean = false,
-    var trainingType: TrainingTypes = TrainingTypes.Custom
+    var trainingType: TrainingTypes = TrainingTypes.Custom,
+    var tabataConfig: TabataConfig? = null
 ) : BaseObservable()
 
 sealed class TrainingTypes {
@@ -28,6 +30,3 @@ sealed class TrainingTypes {
 const val TRAINING_DEFAULT_REP_RATE = 30
 const val TRAINING_DEFAULT_REP_COUNT = 40
 const val TRAINING_DEFAULT_DURATION = 30
-const val TRAINING_DEFAULT_TABATA_1_DURATION = 20
-const val TRAINING_DEFAULT_TABATA_2_DURATION = 10
-const val TRAINING_DEFAULT_TABATA_REPEAT = 8

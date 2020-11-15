@@ -68,7 +68,8 @@ dependencies {
         Dependencies.kotlinStdlibJdk7,
         Dependencies.materialDesign,
         Dependencies.moshi,
-        Dependencies.room
+        Dependencies.room,
+        Dependencies.gson
     )
 
     testImplementations(

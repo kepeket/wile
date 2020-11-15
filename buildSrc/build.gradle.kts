@@ -21,7 +21,7 @@ dependencies {
 
     // Firebase Crashlytics
     // https://mvnrepository.com/artifact/com.google.firebase/firebase-crashlytics-gradle?repo=google
-    implementation("com.google.firebase:firebase-crashlytics-gradle:2.3.0")
+    implementation("com.google.firebase:firebase-crashlytics-gradle:2.4.1")
 
     // Google services
     // https://bintray.com/android/android-tools/com.google.gms.google-services/
