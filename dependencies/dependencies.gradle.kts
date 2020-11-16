@@ -46,7 +46,7 @@ object DependenciesVersions {
     const val androidXAppCompat                = "1.2.0"
     const val androidXLiveDataKtx              = "2.2.0"
     const val androidXNavigation               = "2.3.1"
-    const val androidXRoom                     = "2.2.5"
+    const val androidXRoom                     = "2.3.0-alpha03"
     const val androidXViewModelKTX             = "2.2.0"
     const val constraintLayout                 = "2.0.4"
     const val firebaseBoM                      = "26.0.0"
