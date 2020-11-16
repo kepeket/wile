@@ -4,22 +4,18 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Chronometer
 import androidx.activity.viewModels
-import com.google.android.material.behavior.SwipeDismissBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
 import com.wile.main.databinding.ActivityTrainingListingBinding
-import com.wile.main.logging.Logger
 import com.wile.main.model.Training
 import com.wile.main.model.TrainingTypes
-import com.wile.main.service.TrainingMediaPlayer
+import com.wile.main.sound.WorkoutSoundPlayer
 import com.wile.main.ui.adapter.TrainingAdapter
 import com.wile.main.ui.add.AddActivity
 import com.wile.main.ui.add.QuickAddActivity
@@ -51,7 +47,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
 
     var vibrator: Vibrator? = null
         @Inject set
-    @Inject lateinit var mediaPlayer: TrainingMediaPlayer
+    @Inject lateinit var workoutSoundPlayer: WorkoutSoundPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -151,7 +147,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
             currentWorkout = -1
         }
 
-        mediaPlayer.playBell()
+        workoutSoundPlayer.playBell()
 
         if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -233,7 +229,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
         }
         binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = endOfTraining.toString()
         if (endOfTraining in 1..4 && chronometerIsRunning) {
-            mediaPlayer.playBip()
+            workoutSoundPlayer.playBeep()
         }
         if (endOfTraining <= 0) {
             if (expendedTrainings[currentWorkout].trainingType != TrainingTypes.Repeated) {
@@ -246,7 +242,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
     }
 
     private fun notifyNewTraining() {
-        mediaPlayer.playWhistle()
+        workoutSoundPlayer.playWhistle()
 
         vibrator?.vibrate(VibrationEffect.createOneShot(VIBRATION_TIME, VibrationEffect.DEFAULT_AMPLITUDE))
     }
