@@ -72,7 +72,7 @@ dependencies {
     )
 
     implementationProjects(
-        ":libraries:Database",
-        ":libraries:Sound"
+        ":Libraries:Database",
+        ":Libraries:Sound"
     )
 }
