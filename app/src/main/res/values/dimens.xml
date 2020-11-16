@@ -3,4 +3,5 @@
     <dimen name="form_padding">16dp</dimen>
     <dimen name="text_padding">8dp</dimen>
     <dimen name="toolbar_padding">5dp</dimen>
+    <dimen name="big_padding">24dp</dimen>
 </resources>

@@ -35,8 +35,11 @@
     <string name="tabata_form_alter_label">Nom du second exercice</string>
     <string name="tabata_form_main_label">Nom du premier excercice</string>
     <string name="tabata_form_cycles_label">Nombre de cycles</string>
-    <string name="training_timed_description">Un maximum de répétitions</string>
+    <string name="training_timed_description">Tenir jusqu\'au bout</string>
     <string name="training_tabata_description">%ds/%ds x %d - %s et %s</string>
     <string name="training_repeated_description">%d reps</string>
     <string name="overall_duration">%dm%02ds</string>
+    <string name="workout_tap_to_end_reps">Tap quand tu as fini l\'excercice</string>
+    <string name="workout_im_done">J\'ai fini!</string>
+    <string name="workout_go_till_the_end">∞</string>
 </resources>

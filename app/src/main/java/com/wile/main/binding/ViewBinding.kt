@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedDispatcherOwner
+import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.wile.main.R
@@ -116,7 +117,7 @@ object ViewBinding {
         view.findViewById<View>(R.id.stop).setOnClickListener { controller.stopWorkout() }
         view.findViewById<View>(R.id.pause).setOnClickListener { controller.pauseWorkout() }
         view.findViewById<View>(R.id.next).setOnClickListener { controller.skipTraining() }
-        view.findViewById<Chronometer>(R.id.chronometer).setOnClickListener { controller.chronometerTicking(it as Chronometer) }
-        controller.setBottomSheetView(view)
+        view.findViewById<Chronometer>(R.id.chronometer).setOnChronometerTickListener { controller.chronometerTicking(it as Chronometer) }
+        view.findViewById<CardView>(R.id.muscle_up_card).setOnClickListener { controller.skipTraining() }
     }
 }

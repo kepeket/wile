@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="workoutController"
@@ -10,25 +11,27 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/training_go_bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/training_go_red"
     android:paddingBottom="40dp"
+    android:paddingTop="40dp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="0dp"
     app:workoutController="@{workoutController}"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <ProgressBar
+        android:id="@+id/workout_progress"
+        style="?android:attr/progressBarStyleHorizontal"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/form_padding"
-        tools:text="50 Pompes (1:20)"
-        style="@style/Theme.Main.BottomSheet.TrainingInfo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/currentWorkoutInfo"
-        android:text="@{workoutController.currentWorkoutLiveData}"/>
+        android:layout_marginTop="@dimen/fab_margin"
+        android:progressTintMode="@color/training_go_btn_color"
+        android:layout_width="match_parent"
+        tools:progress="5"
+        tools:max="10"
+        android:layout_height="wrap_content" />
+
 
     <Chronometer
         android:id="@+id/chronometer"
@@ -39,57 +42,146 @@
         android:layout_marginBottom="@dimen/form_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentWorkoutInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/workout_progress" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="161dp" />
-
-    <ImageButton
-        android:id="@+id/stop"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:scaleType="fitCenter"
-        android:background="@drawable/circle"
-        android:src="@drawable/ic_baseline_stop_24"
-        app:layout_constraintEnd_toStartOf="@+id/pause"
-        app:layout_constraintHorizontal_bias="0.5"
+        tools:text="Pompes"
+        style="@style/Theme.Main.BottomSheet.TrainingInfo"
         app:layout_constraintStart_toStartOf="parent"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:backgroundTint="@color/training_go_btn_color"
-        app:layout_constraintTop_toBottomOf="@id/guideline" />
-
-    <ImageButton
-        android:id="@+id/pause"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="fitCenter"
-        android:background="@drawable/circle"
-        android:src="@drawable/ic_baseline_pause_24"
-        app:layout_constraintEnd_toStartOf="@+id/next"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/stop"
-        android:backgroundTint="@color/training_go_btn_color"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintTop_toBottomOf="@id/guideline" />
-
-    <ImageButton
-        android:id="@+id/next"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:scaleType="fitCenter"
-        android:background="@drawable/circle"
-        android:src="@drawable/ic_baseline_skip_next_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/pause"
-        android:backgroundTint="@color/training_go_btn_color"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
-        />
+        android:id="@+id/currentWorkoutInfo"
+        app:layout_constraintBottom_toTopOf="@id/currenTrainDescription"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="50 répétitions"
+        style="@style/Theme.Main.BottomSheet.TrainingSubInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/currenTrainDescription"
+        app:layout_constraintBottom_toTopOf="@id/trainingCountdown"/>
+    <FrameLayout
+        android:id="@+id/frame_cardview"
+        android:layout_width="250dp"
+        android:clipChildren="false"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chronometer"
+        app:layout_constraintBottom_toTopOf="@id/trainingCountdown">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/muscle_up_card"
+            android:layout_width="match_parent"
+            app:cardElevation="@dimen/form_padding"
+            app:cardCornerRadius="@dimen/form_padding"
+            app:cardBackgroundColor="@color/training_go_btn_color"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:padding="@dimen/form_padding"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/workout_training_done_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@string/workout_tap_to_end_reps">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/muscle_up"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="@dimen/big_padding"
+                    android:background="@color/training_go_btn_color"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/muscle_up"
+                    app:layout_constraintBottom_toTopOf="@+id/workout_training_im_done"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/workout_training_done_label" />
+
+                <TextView
+                    android:id="@+id/workout_training_im_done"
+                    style="@style/Theme.Main.Training.Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/form_padding"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/muscle_up"
+                    android:text="@string/workout_im_done">
+
+                </TextView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/form_padding"
+        tools:text="48"
+        style="@style/Theme.Main.BottomSheet.Countdown"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/controls"
+        android:id="@+id/trainingCountdown"/>
+
+    <LinearLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:gravity="center|top">
+        <ImageButton
+            android:id="@+id/stop"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="@dimen/form_padding"
+            android:scaleType="fitCenter"
+            android:background="@drawable/circle"
+            android:src="@drawable/ic_baseline_stop_24"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:backgroundTint="@color/training_go_btn_color"
+            />
+
+        <ImageButton
+            android:id="@+id/pause"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitCenter"
+            android:layout_marginHorizontal="@dimen/form_padding"
+            android:background="@drawable/circle"
+            android:src="@drawable/ic_baseline_pause_24"
+            android:backgroundTint="@color/training_go_btn_color"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+ />
+
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitCenter"
+            android:layout_marginHorizontal="@dimen/form_padding"
+            android:background="@drawable/circle"
+            android:src="@drawable/ic_baseline_skip_next_24"
+            android:backgroundTint="@color/training_go_btn_color"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            />
+    </LinearLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

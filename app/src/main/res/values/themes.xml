@@ -17,12 +17,25 @@
     <style name="Theme.Main.BottomSheet.TrainingInfo" parent="Theme.Main">
         <item name="textAllCaps">true</item>
         <item name="android:textSize">@dimen/workout_info</item>
-    </style>
-
-    <style name="Theme.Main.BottomSheet.Chronometer" parent="Theme.Main">
-        <item name="android:textSize">54sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="Theme.Main.BottomSheet.TrainingSubInfo" parent="Theme.Main">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+    <style name="Theme.Main.BottomSheet.Chronometer" parent="Theme.Main">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+    <style name="Theme.Main.BottomSheet.Countdown" parent="Theme.Main">
+        <item name="android:textSize">120sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 
     <style name="Theme.Main.Training.Label" parent="Theme.Main">
         <item name="textAllCaps">true</item>
