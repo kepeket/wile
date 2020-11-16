@@ -1,5 +1,6 @@
 object BuildScript {
     const val AndroidApplication = "com.android.application"
+    const val AndroidLibrary = "com.android.library"
     const val Crashlytics = "com.google.firebase.crashlytics"
     const val DaggerHilt = "dagger.hilt.android.plugin"
     const val GoogleServices = "com.google.gms.google-services"

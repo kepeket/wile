@@ -80,4 +80,8 @@ dependencies {
         Dependencies.androidJunitRunner,
         Dependencies.espresso
     )
+
+    implementationProjects(
+        ":libraries:Sound"
+    )
 }

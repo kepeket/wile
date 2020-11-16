@@ -1,4 +1,6 @@
+import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.kotlin.dsl.DependencyHandlerScope
+import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
 
 // https://guides.gradle.org/migrating-build-logic-from-groovy-to-kotlin/#configurations-and-dependencies
@@ -38,3 +40,13 @@ fun DependencyHandlerScope.testImplementations(vararg dependencies: String)
 fun DependencyHandlerScope.androidTestImplementations(vararg dependencies: String)
         = dependencies.forEach { androidTestImplementation(it) }
 // endregion
+
+
+// region Project
+private fun DependencyHandlerScope.implementation(dependency: ProjectDependency)
+        = "implementation"(dependency)
+
+fun DependencyHandlerScope.implementationProjects(vararg dependencies: String) {
+    dependencies.map { project(it) }
+        .forEach { implementation(it) }
+}// endregion

@@ -22,6 +22,10 @@ subprojects {
             }
         }
 
+        withPlugin(BuildScript.AndroidLibrary) {
+            configureAndroidProject()
+        }
+
         withPlugin(BuildScript.AndroidApplication) {
             configureAndroidProject()
         }
