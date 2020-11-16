@@ -4,7 +4,8 @@ include(":dependencies")
 include(":app")
 
 includeModulesDirs(
-    "libraries"
+    "libraries",
+    "Repositories"
 )
 
 /**

@@ -11,7 +11,7 @@ import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.database.model.TabataConfig
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
-import com.wile.app.repositories.TrainingRepository
+import com.wile.training.TrainingRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

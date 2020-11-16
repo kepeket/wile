@@ -3,7 +3,7 @@ package com.wile.app.binding
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.wile.app.model.Preset
+import com.wile.training.model.Preset
 import com.wile.database.model.Training
 import com.wile.app.ui.adapter.TrainingAdapter
 import com.wile.app.ui.adapter.TrainingPresetAdapter
@@ -29,7 +29,7 @@ object RecyclerViewBinding {
 
     @JvmStatic
     @BindingAdapter("adapterPresetList")
-    fun bindAdapterTrainingPresetList(view: RecyclerView, presetList: List<Preset>?) {
+    fun bindAdapterTrainingPresetList(view: RecyclerView, presetList: List<com.wile.training.model.Preset>?) {
         presetList?.let {
             if (it.isNotEmpty()) {
                 (view.adapter as? TrainingPresetAdapter)?.addTrainingPresetList(it)

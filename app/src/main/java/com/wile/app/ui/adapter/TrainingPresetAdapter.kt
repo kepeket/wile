@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.wile.app.R
 import com.wile.app.databinding.ItemTrainingPresetBinding
-import com.wile.app.model.Preset
+import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes
 
 class TrainingPresetAdapter(
-    val onTouchPreset: (preset: Preset) -> Unit
+    val onTouchPreset: (preset: com.wile.training.model.Preset) -> Unit
 ) : RecyclerView.Adapter<TrainingPresetViewHolder>() {
 
-    private val items = mutableListOf<Preset>()
+    private val items = mutableListOf<com.wile.training.model.Preset>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingPresetViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -47,7 +47,7 @@ class TrainingPresetAdapter(
 
     override fun getItemCount() = items.size
 
-    fun addTrainingPresetList(presetList: List<Preset>) {
+    fun addTrainingPresetList(presetList: List<com.wile.training.model.Preset>) {
         items.clear()
         items.addAll(presetList)
         notifyDataSetChanged()
