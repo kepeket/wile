@@ -13,8 +13,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
 import com.wile.main.databinding.ActivityTrainingListingBinding
-import com.wile.main.model.Training
-import com.wile.main.model.TrainingTypes
+import com.wile.database.model.Training
+import com.wile.database.model.TrainingTypes
 import com.wile.main.sound.WorkoutSoundPlayer
 import com.wile.main.ui.adapter.TrainingAdapter
 import com.wile.main.ui.add.AddActivity
@@ -23,7 +23,6 @@ import com.wile.main.ui.add.TabataAddActivity
 import com.wile.main.ui.handler.WorkoutInterface
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
-import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 

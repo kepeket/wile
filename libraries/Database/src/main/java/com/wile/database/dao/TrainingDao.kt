@@ -1,10 +1,10 @@
-package com.wile.main.persistence
+package com.wile.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.wile.main.model.Training
+import com.wile.database.model.Training
 import kotlinx.coroutines.flow.Flow
 
 @Dao

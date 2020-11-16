@@ -5,12 +5,11 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.wile.main.base.LiveCoroutinesViewModel
-import com.wile.main.model.Training
-import com.wile.main.model.TrainingTypes
+import com.wile.database.model.Training
+import com.wile.database.model.TrainingTypes
 import com.wile.main.repositories.TrainingRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlin.math.exp
 
 class TrainingListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,

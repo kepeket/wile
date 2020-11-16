@@ -1,7 +1,7 @@
-package com.wile.main.persistence
+package com.wile.database.converters
 
 import androidx.room.TypeConverter
-import com.wile.main.model.TrainingTypes
+import com.wile.database.model.TrainingTypes
 
 class SealedClassConverter {
     @TypeConverter
@@ -15,7 +15,7 @@ class SealedClassConverter {
     }
 
     @TypeConverter
-    fun toTrainingTypes(value: String): TrainingTypes{
+    fun toTrainingTypes(value: String): TrainingTypes {
         return when(value){
             TIMED -> TrainingTypes.Timed
             REPEATED -> TrainingTypes.Repeated

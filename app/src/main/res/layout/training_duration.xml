@@ -7,7 +7,7 @@
             type="com.wile.main.ui.add.AddViewModel" />
         <variable
             name="training"
-            type="com.wile.main.model.Training" />
+            type="com.wile.database.model.Training" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"

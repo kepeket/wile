@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.wile.main.base.LiveCoroutinesViewModel
 import com.wile.main.model.Preset
-import com.wile.main.model.TrainingTypes
+import com.wile.database.model.TrainingTypes
 import com.wile.main.repositories.TrainingRepository
 
 class QuickAddViewModel @ViewModelInject constructor(

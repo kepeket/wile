@@ -6,7 +6,7 @@
 
         <variable
             name="training"
-            type="com.wile.main.model.Training" />
+            type="com.wile.database.model.Training" />
         <variable
             name="color"
             type="int" />

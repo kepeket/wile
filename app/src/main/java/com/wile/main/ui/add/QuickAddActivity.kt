@@ -9,7 +9,7 @@ import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
 import com.wile.main.databinding.ActivityQuickAddBinding
 import com.wile.main.model.Preset
-import com.wile.main.model.TrainingTypes
+import com.wile.database.model.TrainingTypes
 import com.wile.main.ui.adapter.TrainingPresetAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
