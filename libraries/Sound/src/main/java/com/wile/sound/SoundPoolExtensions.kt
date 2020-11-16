@@ -1,4 +1,4 @@
-package com.wile.main.sound
+package com.wile.sound
 
 import android.content.Context
 import android.media.SoundPool

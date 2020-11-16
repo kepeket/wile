@@ -1,4 +1,4 @@
-package com.wile.main.sound
+package com.wile.sound
 
 class Sound(
     val resId: Int,
