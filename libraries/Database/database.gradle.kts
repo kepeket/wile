@@ -17,6 +17,7 @@ android {
 
 dependencies {
     implementations(
+            Dependencies.hiltAndroid,
             Dependencies.gson,
             Dependencies.room
     )
