@@ -20,6 +20,7 @@ import com.wile.main.ui.adapter.TrainingAdapter
 import com.wile.main.ui.add.AddActivity
 import com.wile.main.ui.add.QuickAddActivity
 import com.wile.main.ui.add.TabataAddActivity
+import com.wile.main.ui.handler.WorkoutInterface
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
 import kotlinx.android.synthetic.main.bottom_sheet.view.*

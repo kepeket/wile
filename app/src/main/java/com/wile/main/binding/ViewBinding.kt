@@ -9,7 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.wile.main.R
-import com.wile.main.ui.main.WorkoutInterface
+import com.wile.main.ui.handler.WorkoutInterface
 import java.lang.Integer.parseInt
 
 object ViewBinding {
