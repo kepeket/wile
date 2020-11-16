@@ -13,7 +13,7 @@ plugins {
 dependencies {
     // Android Gradle
     // https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
-    implementation("com.android.tools.build:gradle:4.1.0")
+    implementation("com.android.tools.build:gradle:4.1.1")
 
     // Dagger Hilt
     // https://mvnrepository.com/artifact/com.google.dagger/hilt-android-gradle-plugin
