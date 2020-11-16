@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.wile.app.R
 import com.wile.app.databinding.ItemTrainingBinding
 import com.wile.app.databinding.ItemTrainingPresetBinding
-import com.wile.app.model.Preset
+import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes
 
 class TrainingPresetAdapter(

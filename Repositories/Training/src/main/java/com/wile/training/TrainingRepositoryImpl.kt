@@ -1,7 +1,7 @@
-package com.wile.app.repositories
+package com.wile.training
 
 import androidx.annotation.WorkerThread
-import com.wile.app.model.Preset
+import com.wile.training.model.Preset
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import com.wile.database.dao.TrainingDao

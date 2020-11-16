@@ -9,7 +9,7 @@ import androidx.lifecycle.*
 import com.wile.app.R
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.database.model.Training
-import com.wile.app.repositories.TrainingRepository
+import com.wile.training.TrainingRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow

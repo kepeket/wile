@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityQuickAddBinding
-import com.wile.app.model.Preset
+import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes
 import com.wile.app.ui.adapter.TrainingPresetAdapter
 import dagger.hilt.android.AndroidEntryPoint

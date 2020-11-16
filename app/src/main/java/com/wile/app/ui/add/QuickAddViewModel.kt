@@ -8,9 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.wile.app.base.LiveCoroutinesViewModel
-import com.wile.app.model.Preset
+import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes
-import com.wile.app.repositories.TrainingRepository
+import com.wile.training.TrainingRepository
 
 class QuickAddViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,

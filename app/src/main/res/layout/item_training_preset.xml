@@ -6,7 +6,7 @@
 
         <variable
             name="preset"
-            type="com.wile.app.model.Preset" />
+            type="com.wile.training.model.Preset" />
         <variable
             name="color"
             type="int" />
