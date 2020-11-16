@@ -1,4 +1,4 @@
-package com.wile.database.di
+package com.wile.app.database.di
 
 import android.app.Application
 import androidx.room.Room
