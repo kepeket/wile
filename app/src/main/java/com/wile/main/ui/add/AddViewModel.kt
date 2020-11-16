@@ -8,7 +8,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.wile.main.R
 import com.wile.main.base.LiveCoroutinesViewModel
-import com.wile.database.model.Training
+import com.wile.main.model.Training
 import com.wile.main.repositories.TrainingRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

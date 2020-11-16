@@ -1,4 +1,4 @@
-package com.wile.database.model
+package com.wile.main.model
 
 data class TabataConfig(
     var cycles: Int = TRAINING_DEFAULT_TABATA_REPEAT,

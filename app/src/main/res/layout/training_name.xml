@@ -6,7 +6,7 @@
     <data>
         <variable
             name="training"
-            type="com.wile.database.model.Training" />
+            type="com.wile.main.model.Training" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"

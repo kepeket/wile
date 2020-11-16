@@ -5,7 +5,7 @@
     <data>
         <variable
             name="training"
-            type="com.wile.database.model.Training" />
+            type="com.wile.main.model.Training" />
         <variable
             name="vm"
             type="com.wile.main.ui.add.AddViewModel" />

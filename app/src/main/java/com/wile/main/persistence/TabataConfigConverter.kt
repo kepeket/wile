@@ -1,9 +1,9 @@
-package com.wile.database.converters
+package com.wile.main.persistence
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.wile.database.model.TabataConfig
+import com.wile.main.model.TabataConfig
 
 @ProvidedTypeConverter
 class TabataConfigConverter(

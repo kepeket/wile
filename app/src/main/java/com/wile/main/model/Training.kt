@@ -1,5 +1,6 @@
-package com.wile.database.model
+package com.wile.main.model
 
+import androidx.annotation.Nullable
 import androidx.databinding.BaseObservable
 import androidx.room.Entity
 import androidx.room.PrimaryKey

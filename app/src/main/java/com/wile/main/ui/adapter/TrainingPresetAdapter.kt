@@ -7,9 +7,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.wile.main.R
+import com.wile.main.databinding.ItemTrainingBinding
 import com.wile.main.databinding.ItemTrainingPresetBinding
 import com.wile.main.model.Preset
-import com.wile.database.model.TrainingTypes
+import com.wile.main.model.Training
+import com.wile.main.model.TrainingTypes
 
 class TrainingPresetAdapter(
     val onTouchPreset: (preset: Preset) -> Unit
