@@ -1,7 +1,7 @@
-package com.wile.training.di
+package com.wile.app.repositories.di
 
-import com.wile.training.TrainingRepository
-import com.wile.training.TrainingRepositoryImpl
+import com.wile.app.repositories.TrainingRepository
+import com.wile.app.repositories.TrainingRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

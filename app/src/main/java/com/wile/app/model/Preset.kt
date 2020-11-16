@@ -1,4 +1,4 @@
-package com.wile.training.model
+package com.wile.app.model
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable

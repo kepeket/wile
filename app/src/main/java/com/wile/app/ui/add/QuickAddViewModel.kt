@@ -8,9 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.wile.app.base.LiveCoroutinesViewModel
-import com.wile.training.model.Preset
+import com.wile.app.model.Preset
 import com.wile.database.model.TrainingTypes
-import com.wile.training.TrainingRepository
+import com.wile.app.repositories.TrainingRepository
 
 class QuickAddViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
@@ -20,83 +20,37 @@ class QuickAddViewModel @ViewModelInject constructor(
     private val _toastLiveData: MutableLiveData<Any> = MutableLiveData()
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val toastLiveData: LiveData<Any> get() = _toastLiveData
-    val presets: MutableLiveData<List<com.wile.training.model.Preset>> = MutableLiveData()
+    val presets: MutableLiveData<List<Preset>> = MutableLiveData()
 
     init {
         presets.value = getPresets()
     }
 
     // FixMe : this is typicaly something that comes from a UC and not from a VM (Business related)
-    private fun getPresets(): List<com.wile.training.model.Preset> {
+    private fun getPresets(): List<Preset> {
         return listOf(
             // Rest
-            com.wile.training.model.Preset(
-                name = "Repos",
-                trainingType = TrainingTypes.Timed,
-                duration = 20
-            ),
+            Preset(name = "Repos", trainingType = TrainingTypes.Timed, duration = 20),
             // Custom
-            com.wile.training.model.Preset(
-                name = "Sur mesure",
-                trainingType = TrainingTypes.Custom
-            ),
+            Preset(name = "Sur mesure", trainingType = TrainingTypes.Custom),
             // Tabata
-            com.wile.training.model.Preset(name = "Tabata", trainingType = TrainingTypes.Tabata),
+            Preset(name = "Tabata", trainingType = TrainingTypes.Tabata),
             // Repeated
-            com.wile.training.model.Preset(
-                name = "Pompes",
-                trainingType = TrainingTypes.Repeated,
-                reps = 20
-            ),
-            com.wile.training.model.Preset(
-                name = "Dips",
-                trainingType = TrainingTypes.Repeated,
-                reps = 20
-            ),
-            com.wile.training.model.Preset(name = "Crunch", trainingType = TrainingTypes.Repeated),
-            com.wile.training.model.Preset(name = "Fentes", trainingType = TrainingTypes.Repeated),
-            com.wile.training.model.Preset(name = "Squats", trainingType = TrainingTypes.Repeated),
-            com.wile.training.model.Preset(
-                name = "Burpees",
-                trainingType = TrainingTypes.Repeated,
-                reps = 20
-            ),
-            com.wile.training.model.Preset(
-                name = "Russian twist",
-                trainingType = TrainingTypes.Repeated
-            ),
+            Preset(name = "Pompes", trainingType = TrainingTypes.Repeated, reps = 20),
+            Preset(name = "Dips", trainingType = TrainingTypes.Repeated, reps = 20),
+            Preset(name = "Crunch", trainingType = TrainingTypes.Repeated),
+            Preset(name = "Fentes", trainingType = TrainingTypes.Repeated),
+            Preset(name = "Squats", trainingType = TrainingTypes.Repeated),
+            Preset(name = "Burpees", trainingType = TrainingTypes.Repeated, reps = 20),
+            Preset(name = "Russian twist", trainingType = TrainingTypes.Repeated),
             // Timed
-            com.wile.training.model.Preset(
-                name = "Jumping jacks",
-                trainingType = TrainingTypes.Timed
-            ),
-            com.wile.training.model.Preset(
-                name = "Montée de genoux",
-                trainingType = TrainingTypes.Timed
-            ),
-            com.wile.training.model.Preset(
-                name = "Gainage",
-                trainingType = TrainingTypes.Timed,
-                duration = 60
-            ),
-            com.wile.training.model.Preset(
-                name = "Mountain climbers",
-                trainingType = TrainingTypes.Timed
-            ),
-            com.wile.training.model.Preset(
-                name = "Talons/fesses",
-                trainingType = TrainingTypes.Timed
-            ),
-            com.wile.training.model.Preset(
-                name = "Corde à sauter",
-                trainingType = TrainingTypes.Timed,
-                duration = 60
-            ),
-            com.wile.training.model.Preset(
-                name = "Shadow boxing",
-                trainingType = TrainingTypes.Timed,
-                duration = 45
-            ),
+            Preset(name = "Jumping jacks", trainingType = TrainingTypes.Timed),
+            Preset(name = "Montée de genoux", trainingType = TrainingTypes.Timed),
+            Preset(name = "Gainage", trainingType = TrainingTypes.Timed, duration = 60),
+            Preset(name = "Mountain climbers", trainingType = TrainingTypes.Timed),
+            Preset(name = "Talons/fesses", trainingType = TrainingTypes.Timed),
+            Preset(name = "Corde à sauter", trainingType = TrainingTypes.Timed, duration = 60),
+            Preset(name = "Shadow boxing", trainingType = TrainingTypes.Timed, duration = 45),
         )
     }
 
@@ -105,7 +59,7 @@ class QuickAddViewModel @ViewModelInject constructor(
       to Repository, but to UC that have reference to Repository
      */
     @WorkerThread
-    suspend fun addTrainingFromPreset(preset: com.wile.training.model.Preset){
+    suspend fun addTrainingFromPreset(preset: Preset){
         trainingRepository.addTrainingFromPreset(preset)
     }
 }
