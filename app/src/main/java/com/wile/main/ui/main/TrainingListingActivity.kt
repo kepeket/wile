@@ -68,6 +68,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
         }
 
         chronoBind = binding.workoutGo.trainingGoBottomSheet.chronometer
+        chronoBind.format = getString(R.string.chronometer_format)
         bottomSheetBehavior = BottomSheetBehavior.from(binding.workoutGo.trainingGoBottomSheet)
 
         bottomSheetBehavior.isHideable = false

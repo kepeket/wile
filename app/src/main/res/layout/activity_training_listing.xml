@@ -97,7 +97,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@android:drawable/ic_menu_add"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            app:tint="@color/white"
             android:contentDescription="Add training" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <include

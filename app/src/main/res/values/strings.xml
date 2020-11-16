@@ -42,4 +42,5 @@
     <string name="workout_tap_to_end_reps">Tap quand tu as fini l\'excercice</string>
     <string name="workout_im_done">J\'ai fini!</string>
     <string name="workout_go_till_the_end">∞</string>
+    <string name="chronometer_format">Durée totale de l\'entrainement: %s</string>
 </resources>
