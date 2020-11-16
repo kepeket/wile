@@ -8,7 +8,7 @@
             type="com.wile.database.model.Training" />
         <variable
             name="vm"
-            type="com.wile.main.ui.add.AddViewModel" />
+            type="com.wile.app.ui.add.AddViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_marginTop="@dimen/form_padding"

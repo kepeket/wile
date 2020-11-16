@@ -6,7 +6,7 @@
     <data>
         <variable
             name="workoutController"
-            type="com.wile.main.ui.handler.WorkoutInterface" />
+            type="com.wile.app.ui.handler.WorkoutInterface" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/training_go_bottom_sheet"
