@@ -7,11 +7,11 @@
     <data>
         <variable
             name="vm"
-            type="com.wile.app.ui.add.QuickAddViewModel" />
+            type="com.wile.main.ui.add.QuickAddViewModel" />
 
         <variable
             name="adapter"
-            type="com.wile.app.ui.adapter.TrainingPresetAdapter" />
+            type="com.wile.main.ui.adapter.TrainingPresetAdapter" />
     </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
