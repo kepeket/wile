@@ -16,6 +16,10 @@ android {
 }
 
 dependencies {
+    kapts(
+        Dependencies.hiltAndroidCompiler
+    )
+
     implementations(
             Dependencies.hiltAndroid,
             Dependencies.gson,
