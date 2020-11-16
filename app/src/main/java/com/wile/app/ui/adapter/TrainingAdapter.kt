@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.wile.app.R
 import com.wile.app.databinding.ItemTrainingBinding
-import com.wile.app.model.Training
-import com.wile.app.model.TrainingTypes
+import com.wile.database.model.Training
+import com.wile.database.model.TrainingTypes
 
 class TrainingAdapter(
     val onDeleteTraining: (training: Training) -> Unit,

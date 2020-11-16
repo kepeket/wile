@@ -5,8 +5,8 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.wile.app.base.LiveCoroutinesViewModel
-import com.wile.app.model.Training
-import com.wile.app.model.TrainingTypes
+import com.wile.database.model.Training
+import com.wile.database.model.TrainingTypes
 import com.wile.app.repositories.TrainingRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

@@ -2,9 +2,9 @@ package com.wile.app.repositories
 
 import androidx.annotation.WorkerThread
 import com.wile.app.model.Preset
-import com.wile.app.model.Training
-import com.wile.app.model.TrainingTypes
-import com.wile.app.persistence.TrainingDao
+import com.wile.database.model.Training
+import com.wile.database.model.TrainingTypes
+import com.wile.database.dao.TrainingDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow

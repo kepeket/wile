@@ -1,7 +1,7 @@
 package com.wile.app.repositories
 
 import com.wile.app.model.Preset
-import com.wile.app.model.Training
+import com.wile.database.model.Training
 import kotlinx.coroutines.flow.Flow
 
 interface TrainingRepository {

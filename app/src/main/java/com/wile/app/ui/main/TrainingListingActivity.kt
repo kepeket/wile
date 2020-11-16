@@ -13,8 +13,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
-import com.wile.app.model.Training
-import com.wile.app.model.TrainingTypes
+import com.wile.database.model.Training
+import com.wile.database.model.TrainingTypes
 import com.wile.app.sound.WorkoutSoundPlayer
 import com.wile.app.ui.adapter.TrainingAdapter
 import com.wile.app.ui.add.AddActivity

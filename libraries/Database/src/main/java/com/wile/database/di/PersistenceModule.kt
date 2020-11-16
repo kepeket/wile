@@ -1,10 +1,10 @@
-package com.wile.app.persistence.di
+package com.wile.database.di
 
 import android.app.Application
 import androidx.room.Room
 import com.google.gson.Gson
-import com.wile.app.persistence.AppDatabase
-import com.wile.app.persistence.TabataConfigConverter
+import com.wile.database.AppDatabase
+import com.wile.database.converters.TabataConfigConverter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

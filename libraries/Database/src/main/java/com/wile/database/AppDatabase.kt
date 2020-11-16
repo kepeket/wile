@@ -1,9 +1,12 @@
-package com.wile.app.persistence
+package com.wile.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.wile.app.model.Training
+import com.wile.database.converters.SealedClassConverter
+import com.wile.database.converters.TabataConfigConverter
+import com.wile.database.dao.TrainingDao
+import com.wile.database.model.Training
 
 @Database(entities = [
     Training::class],

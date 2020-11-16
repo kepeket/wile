@@ -10,7 +10,7 @@ import com.wile.app.R
 import com.wile.app.databinding.ItemTrainingBinding
 import com.wile.app.databinding.ItemTrainingPresetBinding
 import com.wile.app.model.Preset
-import com.wile.app.model.TrainingTypes
+import com.wile.database.model.TrainingTypes
 
 class TrainingPresetAdapter(
     val onTouchPreset: (preset: Preset) -> Unit
