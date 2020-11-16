@@ -46,13 +46,13 @@ class AddViewModel @ViewModelInject constructor(
         }
     }
 
-    fun customRepRateChanged(value: Boolean){
+    fun customRepRateChanged(value: Boolean) {
         customRepRateToggle.value= value
         training.value?.customRepRate = value
     }
 
     @WorkerThread
-    suspend fun saveTraining(){
+    suspend fun saveTraining() {
         training.value?.let {t ->
             trainingRepository.saveTraining(
                 newTraining = t,
@@ -63,13 +63,13 @@ class AddViewModel @ViewModelInject constructor(
     }
 
     @MainThread
-    fun fetchTraining(id: Int){
+    fun fetchTraining(id: Int) {
         trainingFetchLiveData.value = id
     }
 
-    fun validateTraining(): Boolean{
+    fun validateTraining(): Boolean {
         training.value?.let {
-            if (it.name.isNullOrEmpty()) {
+            if (it.name.isEmpty()) {
                 _toastLiveData.value =  R.string.training_add_missing_name
                 return false
             }

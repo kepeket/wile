@@ -8,7 +8,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.wile.main.R
 import com.wile.main.base.LiveCoroutinesViewModel
-import com.wile.main.model.Preset
 import com.wile.main.model.TabataConfig
 import com.wile.main.model.Training
 import com.wile.main.model.TrainingTypes
@@ -55,6 +54,7 @@ class TabataAddViewModel @ViewModelInject constructor(
             t.tabataConfig?.let {
                 t.duration = it.cycles * (it.mainDuration + it.alterDuration)
             }
+
             trainingRepository.saveTraining(
                 newTraining = t,
                 onSuccess = { isLoading.set(false) },
@@ -64,43 +64,33 @@ class TabataAddViewModel @ViewModelInject constructor(
     }
 
     @MainThread
-    fun fetchTraining(id: Int){
+    fun fetchTraining(id: Int) {
         trainingFetchLiveData.value = id
     }
 
-    fun updateMainName(name: String){
-        with (training.value?.tabataConfig){
-            this?.mainName = name
-        }
+    fun updateMainName(name: String) {
+        training.value?.tabataConfig?.mainName = name
     }
 
-    fun updateAlterName(name: String){
-        with (training.value?.tabataConfig){
-            this?.alterName = name
-        }
+    fun updateAlterName(name: String) {
+        training.value?.tabataConfig?.alterName = name
     }
 
-    fun updateMainDuration(duration: Int){
-        with (training.value?.tabataConfig){
-            this?.mainDuration = duration
-        }
+    fun updateMainDuration(duration: Int) {
+        training.value?.tabataConfig?.mainDuration = duration
     }
 
-    fun updateAlterDuration(duration: Int){
-        with (training.value?.tabataConfig){
-            this?.alterDuration = duration
-        }
+    fun updateAlterDuration(duration: Int) {
+        training.value?.tabataConfig?.alterDuration = duration
     }
 
-    fun updateCycles(count: Int){
-        with (training.value?.tabataConfig){
-            this?.cycles = count
-        }
+    fun updateCycles(count: Int) {
+        training.value?.tabataConfig?.cycles = count
     }
 
-    fun validateTraining(): Boolean{
+    fun validateTraining(): Boolean {
         training.value?.let {
-            if (it.name.isNullOrEmpty()) {
+            if (it.name.isEmpty()) {
                 _toastLiveData.value =  R.string.training_add_missing_name
                 return false
             }

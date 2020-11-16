@@ -26,6 +26,7 @@ class QuickAddViewModel @ViewModelInject constructor(
         presets.value = getPresets()
     }
 
+    // FixMe : this is typicaly something that comes from a UC and not from a VM (Business related)
     private fun getPresets(): List<Preset> {
         return listOf(
             // Rest
@@ -53,6 +54,10 @@ class QuickAddViewModel @ViewModelInject constructor(
         )
     }
 
+    /*
+     FixMe : in a "strict" application of Clean Architecture, VM should not have a reference
+      to Repository, but to UC that have reference to Repository
+     */
     @WorkerThread
     suspend fun addTrainingFromPreset(preset: Preset){
         trainingRepository.addTrainingFromPreset(preset)

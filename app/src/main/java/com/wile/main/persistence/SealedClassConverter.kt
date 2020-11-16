@@ -7,20 +7,28 @@ class SealedClassConverter {
     @TypeConverter
     fun fromTrainingTypes(value: TrainingTypes): String{
         return when(value){
-            TrainingTypes.Timed -> "timed"
-            TrainingTypes.Repeated -> "repeated"
-            TrainingTypes.Tabata -> "tabata"
-            TrainingTypes.Custom -> "custom"
+            TrainingTypes.Timed -> TIMED
+            TrainingTypes.Repeated -> REPEATED
+            TrainingTypes.Tabata -> TABATA
+            TrainingTypes.Custom -> CUSTOM
         }
     }
 
     @TypeConverter
     fun toTrainingTypes(value: String): TrainingTypes{
         return when(value){
-            "timed" -> TrainingTypes.Timed
-            "repeated" -> TrainingTypes.Repeated
-            "tabata" -> TrainingTypes.Tabata
+            TIMED -> TrainingTypes.Timed
+            REPEATED -> TrainingTypes.Repeated
+            TABATA -> TrainingTypes.Tabata
             else -> TrainingTypes.Custom
         }
+    }
+
+    // Fixed keys to avoid mismatch
+    private companion object {
+        const val TIMED = "timed"
+        const val REPEATED = "repeated"
+        const val TABATA = "tabata"
+        const val CUSTOM = "custom"
     }
 }

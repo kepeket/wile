@@ -3,28 +3,14 @@ package com.wile.main.ui.add
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import com.wile.main.R
 import com.wile.main.base.DataBindingActivity
-import com.wile.main.databinding.ActivityAddBinding
-import com.wile.main.databinding.ActivityQuickAddBinding
 import com.wile.main.databinding.ActivityTabataAddBinding
-import com.wile.main.model.Preset
-import com.wile.main.model.Training
-import com.wile.main.model.TrainingTypes
-import com.wile.main.ui.adapter.TrainingAdapter
-import com.wile.main.ui.adapter.TrainingPresetAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add.*
-import kotlinx.android.synthetic.main.item_training.*
-import kotlinx.android.synthetic.main.training_name.*
-import kotlinx.android.synthetic.main.training_rep_rate.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -80,12 +66,12 @@ class TabataAddActivity : DataBindingActivity() {
         }
 
         binding.saveBtn.setOnClickListener {
-            this.saveTraining()
+            saveTraining()
         }
     }
 
-    fun saveTraining(){
-        if (viewModel.validateTraining()){
+    private fun saveTraining(){
+        if (viewModel.validateTraining()) {
             runBlocking {
                 launch(Dispatchers.Default) {
                     viewModel.saveTraining()
