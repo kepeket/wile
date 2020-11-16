@@ -4,10 +4,10 @@
     <data>
         <variable
             name="vm"
-            type="com.wile.main.ui.add.AddViewModel" />
+            type="com.wile.app.ui.add.AddViewModel" />
         <variable
             name="training"
-            type="com.wile.main.model.Training" />
+            type="com.wile.app.model.Training" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
