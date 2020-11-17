@@ -27,7 +27,8 @@ android {
 
 dependencies {
     kapts(
-        Dependencies.hiltAndroidCompiler
+        Dependencies.hiltAndroidCompiler,
+        Dependencies.roomAnnotationProcessor
     )
 
     implementations(

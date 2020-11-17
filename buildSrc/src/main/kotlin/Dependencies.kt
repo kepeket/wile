@@ -19,6 +19,10 @@ object Dependencies {
     // Artifact : https://mvnrepository.com/artifact/androidx.appcompat/appcompat
     const val androidXAppCompat = "androidx.appcompat:appcompat"
 
+    // Artifact : https://mvnrepository.com/artifact/androidx.startup/startup-runtime
+    // Guide : https://developer.android.com/topic/libraries/app-startup
+    const val androidXAppStartup = "androidx.startup:startup-runtime"
+
     // Artifact : https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-livedata-ktx
     const val androidXLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx"
 

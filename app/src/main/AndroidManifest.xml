@@ -22,18 +22,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name="com.wile.app.ui.add.AddActivity"
             android:label="@string/activity_add_label"
 
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Main.NoActionBar"/>
-        <activity android:name="com.wile.app.ui.add.QuickAddActivity"
-        android:label="@string/activity_quick_add_label"
 
-        android:launchMode="singleTop"
-        android:screenOrientation="portrait"
-        android:theme="@style/Theme.Main.NoActionBar"/>
+        <activity android:name="com.wile.app.ui.add.QuickAddActivity"
+            android:label="@string/activity_quick_add_label"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Main.NoActionBar"/>
+
         <activity android:name="com.wile.app.ui.add.TabataAddActivity"
             android:label="@string/activity_tabata_add_label"
 
