@@ -12,6 +12,7 @@ I just tried to apply Clean Arch on an android app, with the help of talended @S
 * Room
 * Hilt
 * Websockets
+* Databindings
 
 ## Features
 
