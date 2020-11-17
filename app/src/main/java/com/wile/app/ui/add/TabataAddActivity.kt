@@ -12,10 +12,12 @@ import com.wile.app.databinding.ActivityTabataAddBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.lang.Integer.parseInt
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class TabataAddActivity : DataBindingActivity() {
 

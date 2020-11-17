@@ -14,9 +14,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.training_rep_rate.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AddActivity : DataBindingActivity() {
 
@@ -24,6 +26,7 @@ class AddActivity : DataBindingActivity() {
     private val binding: ActivityAddBinding by binding(R.layout.activity_add)
     private var editMode = false
 
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,6 +63,7 @@ class AddActivity : DataBindingActivity() {
     /* FixMe : you should use startActivityForResult in the calling class to get a result
         (did the user has effectively add something or not ?) and so call setResult here
     */
+    @ExperimentalCoroutinesApi
     private fun validateTraining() {
         val ok = viewModel.validateTraining()
 

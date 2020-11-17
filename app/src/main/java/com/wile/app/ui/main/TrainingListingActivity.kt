@@ -24,9 +24,11 @@ import com.wile.app.ui.handler.WorkoutInterface
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
 
