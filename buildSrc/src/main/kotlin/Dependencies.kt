@@ -36,9 +36,14 @@ object Dependencies {
     // Release notes : https://developer.android.com/jetpack/androidx/releases/constraintlayout
     const val constraintLayout = "androidx.constraintlayout:constraintlayout"
 
+    const val databindingCompiler = "com.android.databinding:compiler"
+
     // https://firebase.google.com/docs/android
     const val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+
+    // https://github.com/google/gson
+    const val gson = "com.google.code.gson:gson"
 
     // Artifact : https://mvnrepository.com/artifact/com.google.dagger/hilt-android
     // Release notes : https://developer.android.com/jetpack/androidx/releases/hilt
@@ -66,8 +71,7 @@ object Dependencies {
     // Artifact : https://mvnrepository.com/artifact/androidx.room/room-compiler
     const val roomAnnotationProcessor = "androidx.room:room-compiler"
 
-    const val databindingCompiler = "com.android.databinding:compiler"
-
-    const val gson = "com.google.code.gson:gson"
+    // https://github.com/JakeWharton/timber
+    const val timber = "com.jakewharton.timber:timber"
     // endregion
 }

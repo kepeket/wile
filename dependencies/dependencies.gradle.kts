@@ -20,6 +20,8 @@ dependencies {
         api("${Dependencies.androidXNavigationUiKTX}:${DependenciesVersions.androidXNavigation}")
         api("${Dependencies.androidXViewModelKTX}:${DependenciesVersions.androidXViewModelKTX}")
         api("${Dependencies.constraintLayout}:${DependenciesVersions.constraintLayout}")
+        api("${Dependencies.databindingCompiler}:${DependenciesVersions.databindingCompiler}")
+        api("${Dependencies.gson}:${DependenciesVersions.gson}")
         api("${Dependencies.hiltAndroid}:${DependenciesVersions.hiltAndroid}")
         api("${Dependencies.hiltAndroidCompiler}:${DependenciesVersions.hiltAndroid}")
         api("${Dependencies.hiltViewModel}:${DependenciesVersions.hiltCore}")
@@ -29,9 +31,7 @@ dependencies {
         api("${Dependencies.moshiCompiler}:${DependenciesVersions.moshi}")
         api("${Dependencies.room}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.roomAnnotationProcessor}:${DependenciesVersions.androidXRoom}")
-        api("${Dependencies.databindingCompiler}:${DependenciesVersions.databindingCompiler}")
-        api("${Dependencies.gson}:${DependenciesVersions.gson}")
-
+        api("${Dependencies.timber}:${DependenciesVersions.timber}")
         // endregion
     }
 }
@@ -49,11 +49,12 @@ object DependenciesVersions {
     const val androidXRoom                     = "2.3.0-alpha03"
     const val androidXViewModelKTX             = "2.2.0"
     const val constraintLayout                 = "2.0.4"
+    const val databindingCompiler              = "3.1.4"
     const val firebaseBoM                      = "26.0.0"
+    const val gson                             = "2.8.6"
     const val hiltAndroid                      = "2.29.1-alpha"
     const val hiltCore                         = "1.0.0-alpha02"
     const val materialDesign                   = "1.2.1"
     const val moshi                            = "1.11.0"
-    const val databindingCompiler              = "3.1.4"
-    const val gson                             = "2.8.6"
+    const val timber                           = "4.7.1"
 }
