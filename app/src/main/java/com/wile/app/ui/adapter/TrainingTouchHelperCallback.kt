@@ -2,12 +2,11 @@ package com.wile.app.ui.adapter
 
 import android.content.res.ColorStateList
 import android.content.res.Resources
-import android.util.Log
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.wile.app.R
-import com.wile.app.logging.Logger
+import timber.log.Timber
 
 class TrainingTouchHelperCallback(
     private val onItemDeleted: (position: Int) -> Unit,
@@ -33,7 +32,7 @@ class TrainingTouchHelperCallback(
                     binding.root.elevation = selectedElevation
                 }
             }
-            Log.i(Logger.TAG, "View has been taken")
+            Timber.i("View has been taken")
         }
         super.onSelectedChanged(viewHolder, actionState)
     }
@@ -49,7 +48,7 @@ class TrainingTouchHelperCallback(
         }
 
         onItemDropped()
-        Log.i(Logger.TAG, "View has been dropped")
+        Timber.i("View has been dropped")
     }
 
     override fun isLongPressDragEnabled() = true
@@ -59,7 +58,7 @@ class TrainingTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        Log.i(Logger.TAG, String.format("Moving from %d to %d", viewHolder.adapterPosition, target.adapterPosition))
+        Timber.i("Moving from %d to %d", viewHolder.adapterPosition, target.adapterPosition)
         onItemMoved(viewHolder.adapterPosition, target.adapterPosition)
         return true
     }

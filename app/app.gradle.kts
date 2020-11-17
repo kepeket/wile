@@ -52,6 +52,7 @@ dependencies {
         Dependencies.constraintLayout,
         Dependencies.firebaseAnalytics,
         Dependencies.firebaseCrashlytics,
+        Dependencies.gson,
         Dependencies.hiltAndroid,
         Dependencies.hiltViewModel,
         Dependencies.kotlinReflect,
@@ -59,7 +60,7 @@ dependencies {
         Dependencies.materialDesign,
         Dependencies.moshi,
         Dependencies.room,
-        Dependencies.gson
+        Dependencies.timber
     )
 
     testImplementations(

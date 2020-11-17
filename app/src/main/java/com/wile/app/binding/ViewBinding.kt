@@ -1,7 +1,6 @@
 package com.wile.app.binding
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedDispatcherOwner
@@ -10,11 +9,10 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.wile.app.R
 import com.wile.app.ui.handler.WorkoutInterface
+import timber.log.Timber
 import java.lang.Integer.parseInt
 
 object ViewBinding {
-
-    const val TAG = "ViewBinding"
 
     @JvmStatic
     @BindingAdapter("android:text")
@@ -92,7 +90,7 @@ object ViewBinding {
     @JvmStatic
     @BindingAdapter("gone")
     fun bindGone(view: View, shouldBeGone: Boolean) {
-        Log.d(TAG, String.format("view id %s",view.id))
+        Timber.d("view id %s", view.id)
         view.visibility = if (shouldBeGone) {
             View.GONE
         } else {
