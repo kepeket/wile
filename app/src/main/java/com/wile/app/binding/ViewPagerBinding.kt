@@ -2,7 +2,7 @@ package com.wile.app.binding
 
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.wile.app.ui.adapter.WorkoutAdapter
+import com.wile.app.ui.adapter.WorkoutListingAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -10,7 +10,7 @@ object ViewPagerBinding {
 
     @JvmStatic
     @BindingAdapter("adapter")
-    fun bindAdapter(view: ViewPager2, adapter: WorkoutAdapter) {
+    fun bindAdapter(view: ViewPager2, adapter: WorkoutListingAdapter) {
         view.adapter = adapter
     }
 
@@ -20,7 +20,7 @@ object ViewPagerBinding {
     fun bindAdapterTrainingList(view: ViewPager2, workoutList: List<Int>?) {
         workoutList?.let {
             if (it.isNotEmpty()) {
-                (view.adapter as? WorkoutAdapter)?.addWorkoutList(it)
+                (view.adapter as? WorkoutListingAdapter)?.addWorkoutList(it)
             }
         }
     }

@@ -8,7 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
-import com.wile.app.ui.adapter.WorkoutAdapter
+import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
 import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +21,7 @@ class TrainingListingActivity : DataBindingActivity() {
 
     private val viewModel: WorkoutListingViewModel by viewModels()
     private val binding: ActivityTrainingListingBinding by binding(R.layout.activity_training_listing)
-    private val adapter by lazy { WorkoutAdapter(this) }
+    private val adapter by lazy { WorkoutListingAdapter(this) }
     private var currentWorkout = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class TrainingListingActivity : DataBindingActivity() {
         binding.pager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int){
                 super.onPageSelected(position);
-                currentWorkout = position
+                currentWorkout = adapter.getItem(position)
             }
         })
 

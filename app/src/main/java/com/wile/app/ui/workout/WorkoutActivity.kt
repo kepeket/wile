@@ -73,7 +73,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     - stop, pause, skip
 */
     override fun startStopWorkout(){
-        if (expendedTrainings.count() > 0){
+        if (expendedTrainings.count() > 1){
             if (currentTraining < 0){
                 startWorkout()
             } else {
@@ -88,6 +88,8 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     override fun startWorkout(){
         expendedTrainings = viewModel.getExpendedTrainingList()
 
+        binding.workoutGo.trainingGoBottomSheet.prepareText.visibility = View.GONE
+        binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_pause_24)
         binding.workoutGo.trainingGoBottomSheet.workout_progress.max = expendedTrainings.count()
         binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = 0
 
@@ -127,7 +129,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         if (currentTraining > 0) {
             notifyNewTraining()
         }
-        if (currentTraining < expendedTrainings.count() -1) {
+        if (currentTraining <= expendedTrainings.count() -1) {
             displayTrainingInfo()
             binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = expendedTrainings[currentTraining].duration.toString()
             binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = currentTraining

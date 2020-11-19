@@ -31,6 +31,8 @@ interface TrainingRepository {
 
     suspend fun deleteTraining(id: Int)
 
+    suspend fun deleteTrainings(workoutId: Int)
+
     suspend fun addAll(trainings: List<Training>)
 
     suspend fun addTrainingFromPreset(preset: Preset, workout: Int)

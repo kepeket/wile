@@ -39,6 +39,18 @@
         app:layout_constraintTop_toBottomOf="@+id/workout_progress" />
 
     <TextView
+        android:layout_width="200dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:text="@string/workout_press_play_ready"
+        style="@style/Theme.Main.BottomSheet.TrainingInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/prepareText"
+        app:layout_constraintTop_toBottomOf="@+id/chronometer"
+        app:layout_constraintBottom_toTopOf="@id/currentWorkoutInfo"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Pompes"
@@ -67,6 +79,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent">
         <androidx.cardview.widget.CardView
             android:id="@+id/muscle_up_card"

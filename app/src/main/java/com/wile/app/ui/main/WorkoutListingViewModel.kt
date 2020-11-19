@@ -17,7 +17,7 @@ class WorkoutListingViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {
 
-    val workoutListLiveData: MutableLiveData<List<Int>> = MutableLiveData(listOf(0))
+    val workoutListLiveData: MutableLiveData<List<Int>> = MutableLiveData()
 
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData

@@ -53,6 +53,9 @@ class TrainingRepositoryImpl @Inject constructor(
     override suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
 
     @WorkerThread
+    override suspend fun deleteTrainings(workoutId: Int) = trainingDao.deleteByWorkoutId(workoutId)
+
+    @WorkerThread
     override suspend fun addAll(trainings: List<Training>) = trainingDao.insertAll(trainings)
 
     @WorkerThread

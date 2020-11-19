@@ -10,7 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
 @ExperimentalCoroutinesApi
-class WorkoutAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+class WorkoutListingAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
     private val items = mutableListOf<Int>()
 
@@ -43,5 +43,12 @@ class WorkoutAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         val removedPos = items.indexOf(workout)
         items.remove(removedPos)
         notifyItemRemoved(removedPos)
+    }
+
+    fun getItem(position: Int): Int {
+        if (position < itemCount){
+            return items[position]
+        }
+        return 0
     }
 }

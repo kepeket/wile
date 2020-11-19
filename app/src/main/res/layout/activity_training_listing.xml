@@ -11,7 +11,7 @@
 
         <variable
             name="adapter"
-            type="com.wile.app.ui.adapter.WorkoutAdapter" />
+            type="com.wile.app.ui.adapter.WorkoutListingAdapter" />
     </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
