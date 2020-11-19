@@ -35,6 +35,11 @@ class TrainingAdapter(
                     ?: return@setOnClickListener
                 onTouchTraining(items[position])
             }
+            binding.delete.setOnClickListener {
+                val position = adapterPosition.takeIf { it != NO_POSITION }
+                    ?: return@setOnClickListener
+                onDeleteTraining(items[position])
+            }
         }
     }
 

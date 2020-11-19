@@ -12,6 +12,7 @@ import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes
 import com.wile.app.ui.adapter.TrainingPresetAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ class QuickAddActivity : DataBindingActivity() {
             onTouchPreset = ::onTouchPreset
         )
     }
+    private var workoutId: Int = 0
 
     private fun onTouchPreset(preset: Preset) {
         when(preset.trainingType){
@@ -34,16 +36,16 @@ class QuickAddActivity : DataBindingActivity() {
             TrainingTypes.Timed -> {
                 runBlocking {
                     launch(Dispatchers.Default) {
-                        viewModel.addTrainingFromPreset(preset)
+                        viewModel.addTrainingFromPreset(preset, workoutId)
                     }
                 }
                 finish()
             }
             TrainingTypes.Tabata -> {
-                startActivityForResult(TabataAddActivity.newIntent(this), NEW_CUSTOM_TRAINING)
+                startActivityForResult(TabataAddActivity.newTabata(this, workoutId), NEW_CUSTOM_TRAINING)
             }
             TrainingTypes.Custom -> {
-                startActivityForResult(AddActivity.newIntent(this), NEW_CUSTOM_TRAINING)
+                startActivityForResult(AddActivity.newTraining(this, workoutId), NEW_CUSTOM_TRAINING)
             }
         }
     }
@@ -60,6 +62,7 @@ class QuickAddActivity : DataBindingActivity() {
         setSupportActionBar(binding.mainToolbar.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        workoutId = intent.getIntExtra(WORKOUT_ID, 0)
     }
 
 
@@ -83,7 +86,10 @@ class QuickAddActivity : DataBindingActivity() {
 
     companion object {
         const val NEW_CUSTOM_TRAINING = 100
+        const val WORKOUT_ID = "workout_id"
 
-        fun newIntent(context: Context) = Intent(context, QuickAddActivity::class.java)
+        fun newIntent(context: Context, workoutId: Int) = Intent(context, QuickAddActivity::class.java).apply {
+            putExtra(WORKOUT_ID, workoutId)
+        }
     }
 }

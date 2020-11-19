@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="adapter"
+            type="com.wile.app.ui.adapter.TrainingAdapter" />
+        <variable
+            name="viewModel"
+            type="com.wile.app.ui.main.TrainingListingViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/blue_bullet"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="25dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fadeScrollbars="false"
+            android:padding="6dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            app:adapter="@{adapter}"
+            app:itemTouchListener="@{adapter.touchListener}"
+            app:adapterTrainingList="@{viewModel.trainingListLiveData}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:spanCount="2"
+            app:toast="@{viewModel.toastLiveData}"
+            tools:listitem="@layout/item_training"
+            tools:itemCount="3"
+
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

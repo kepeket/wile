@@ -19,8 +19,8 @@ class WorkoutSoundPlayer @Inject constructor(
     listOf(Beep, Bell, Whistle)
 ) {
     fun playBeep() = play(Beep)
-    fun playWhistle() = play(Bell)
-    fun playBell() = play(Whistle)
+    fun playWhistle() = play(Whistle)
+    fun playBell() = play(Bell)
 
     private companion object {
         val Beep = Sound(R.raw.beep, 0)

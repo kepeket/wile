@@ -23,18 +23,17 @@ class TrainingListingViewModel @ViewModelInject constructor(
     val toastLiveData: LiveData<String> get() = _toastLiveData
     val isLoading: ObservableBoolean = ObservableBoolean(false)
 
-    init {
-
+    fun fetchTrainings(workout: Int) {
         viewModelScope.launch {
             isLoading.set(true)
             trainingRepository.fetchTrainingList(
-                    workout = 0,
-                    onSuccess = {
-                        isLoading.set(false)
-                    },
-                    onError = {
-                        _toastLiveData.postValue(it)
-                    }
+                workout = workout,
+                onSuccess = {
+                    isLoading.set(false)
+                },
+                onError = {
+                    _toastLiveData.postValue(it)
+                }
             ).collect {
                 trainingListLiveData.value = it
                 trainingDurationLiveData.value = it.map { t -> t.duration }.sum()

@@ -77,5 +77,7 @@ object Dependencies {
 
     // https://github.com/JakeWharton/timber
     const val timber = "com.jakewharton.timber:timber"
+
+    const val viewpager2 = "androidx.viewpager2:viewpager2"
     // endregion
 }

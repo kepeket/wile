@@ -33,6 +33,7 @@ dependencies {
         api("${Dependencies.room}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.roomAnnotationProcessor}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.timber}:${DependenciesVersions.timber}")
+        api("${Dependencies.viewpager2}:${DependenciesVersions.viewpager2}")
         // endregion
     }
 }
@@ -59,4 +60,5 @@ object DependenciesVersions {
     const val materialDesign                   = "1.2.1"
     const val moshi                            = "1.11.0"
     const val timber                           = "4.7.1"
+    const val viewpager2                       = "1.0.0"
 }

@@ -25,6 +25,7 @@ class AddActivity : DataBindingActivity() {
     private val viewModel: AddViewModel by viewModels()
     private val binding: ActivityAddBinding by binding(R.layout.activity_add)
     private var editMode = false
+    private var workoutId = -1
 
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,7 @@ class AddActivity : DataBindingActivity() {
             save_btn.text = getString(R.string.save_training_btn)
         }
 
+        workoutId = intent.getIntExtra(WORKOUT_ID, -1)
         viewModel.fetchTraining(trainingParam)
         save_btn.setOnClickListener {
             validateTraining()
@@ -70,7 +72,7 @@ class AddActivity : DataBindingActivity() {
         if (ok) {
             runBlocking {
                 launch(Dispatchers.Default) {
-                    viewModel.saveTraining()
+                    viewModel.saveTraining(workoutId)
                 }
             }
 
@@ -104,8 +106,12 @@ class AddActivity : DataBindingActivity() {
         const val TRAINING_ID = "training_id"
         const val TRAINING_COUNT = "training_count"
         const val TAG = "AddActivith"
+        const val WORKOUT_ID = "workout_id"
 
         fun newIntent(context: Context) = Intent(context, AddActivity::class.java)
+        fun newTraining(context: Context, workoutId: Int) = newIntent(context).apply {
+            putExtra(WORKOUT_ID, workoutId)
+        }
         fun editTraining(context: Context, trainingId: Int) = newIntent(context).apply {
             putExtra(TRAINING_ID, trainingId)
         }

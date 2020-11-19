@@ -14,7 +14,7 @@ class TrainingTouchHelperCallback(
     private val onItemDropped: () -> Unit
 ): ItemTouchHelper.SimpleCallback(
     ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    0
 ) {
 
     lateinit var previousBackgroundColor: ColorStateList
@@ -64,6 +64,6 @@ class TrainingTouchHelperCallback(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        onItemDeleted(viewHolder.adapterPosition)
+        return
     }
 }

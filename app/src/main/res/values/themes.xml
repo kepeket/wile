@@ -36,10 +36,21 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="Theme.Main.Paragraph" parent="Theme.Main">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_margin">@dimen/big_padding</item>
+    </style>
 
     <style name="Theme.Main.Training.Label" parent="Theme.Main">
         <item name="textAllCaps">true</item>
-        <item name="android:textSize">@dimen/trainin_label</item>
+        <item name="android:textSize">@dimen/training_label</item>
+    </style>
+
+    <style name="Theme.Main.Social.RoomID" parent="Theme.Main">
+        <item name="textAllCaps">true</item>
+        <item name="android:textSize">@dimen/training_label</item>
+        <item name="background">@color/dark_grey</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Theme.Main.Training.MoreLessBtn" parent="Theme.Main">
@@ -48,7 +59,6 @@
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:layout_marginHorizontal">@dimen/form_padding</item>
     </style>
 
 
@@ -83,5 +93,5 @@
     <style name="Theme.Main.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <dimen name="workout_info">24sp</dimen>
-    <dimen name="trainin_label">18sp</dimen>
+    <dimen name="training_label">18sp</dimen>
 </resources>

@@ -7,11 +7,11 @@
     <data>
         <variable
             name="viewModel"
-            type="com.wile.app.ui.main.TrainingListingViewModel" />
+            type="com.wile.app.ui.main.WorkoutListingViewModel" />
 
         <variable
             name="adapter"
-            type="com.wile.app.ui.adapter.TrainingAdapter" />
+            type="com.wile.app.ui.adapter.WorkoutAdapter" />
     </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
@@ -30,10 +30,9 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/workout_header"
             app:layout_constraintTop_toTopOf="parent"
@@ -54,38 +53,17 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:duration="@{viewModel.trainingDurationLiveData}"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:layout_width="3dp"
-            android:layout_height="match_parent"
-            android:background="@color/blue_bullet"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="25dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            app:layout_constraintTop_toBottomOf="@+id/workout_header"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:fadeScrollbars="false"
-            android:padding="6dp"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
             app:adapter="@{adapter}"
-            app:itemTouchListener="@{adapter.touchListener}"
-            app:adapterTrainingList="@{viewModel.trainingListLiveData}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:spanCount="2"
-            app:toast="@{viewModel.toastLiveData}"
-            tools:listitem="@layout/item_training"
-            tools:itemCount="3"
-
-            />
+            app:adapterWorkoutList="@{viewModel.workoutListLiveData}"
+            app:layout_constraintTop_toBottomOf="@+id/workout_header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="0dp"
+            android:layout_width="match_parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

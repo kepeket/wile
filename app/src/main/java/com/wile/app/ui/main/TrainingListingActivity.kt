@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Chronometer
 import androidx.activity.viewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
@@ -16,10 +17,8 @@ import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import com.wile.app.sound.WorkoutSoundPlayer
-import com.wile.app.ui.adapter.TrainingAdapter
-import com.wile.app.ui.add.AddActivity
+import com.wile.app.ui.adapter.WorkoutAdapter
 import com.wile.app.ui.add.QuickAddActivity
-import com.wile.app.ui.add.TabataAddActivity
 import com.wile.app.ui.handler.WorkoutInterface
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
@@ -32,17 +31,14 @@ import kotlin.math.roundToInt
 @AndroidEntryPoint
 class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
 
-    private val viewModel: TrainingListingViewModel by viewModels()
+    private val viewModel: WorkoutListingViewModel by viewModels()
     private val binding: ActivityTrainingListingBinding by binding(R.layout.activity_training_listing)
-    private val adapter by lazy { TrainingAdapter(
-        onDeleteTraining = ::onDeleteTraining,
-        onMoveTraining =  ::onMoveTraining,
-        onTouchTraining = ::onTouchTraining
-    )}
+    private val adapter by lazy { WorkoutAdapter(this) }
     private lateinit var chronoBind: Chronometer
     private lateinit var expendedTrainings: List<Training>
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private var currentWorkout = -1
+    private var currentTraining = -1
+    private var currentWorkout = 0
     private var trainingCountdown = 0
     private var lastTrainingChange = 0L
     private var timeWhenPaused = 0L
@@ -73,9 +69,16 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.isDraggable = false
 
+        binding.pager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int){
+                super.onPageSelected(position);
+                currentWorkout = position
+            }
+        })
+
         setSupportActionBar(binding.mainToolbar.toolbar)
         fab.setOnClickListener {
-            startActivity(QuickAddActivity.newIntent(this))
+            startActivity(QuickAddActivity.newIntent(this, currentWorkout))
         }
     }
 
@@ -86,32 +89,19 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.training_main_go -> {
-            startWorkout()
+            /*viewModel.trainingListLiveData.value?.let {
+                if (it.count() > 0){
+                    if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                        startWorkout()
+                    }
+                }
+            }*/
             true
         }
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun onDeleteTraining(training: Training) {
-        viewModel.deleteTraining(training.id)
-    }
-
-    private fun onMoveTraining(trainings: List<Training>) {
-        viewModel.saveTrainings(trainings)
-    }
-
-    private fun onTouchTraining(training: Training) {
-        when(training.trainingType){
-            TrainingTypes.Tabata -> {
-                startActivity(TabataAddActivity.editTabata(this, training.id))
-            }
-            else -> {
-                startActivity(AddActivity.editTraining(this, training.id))
-            }
         }
     }
 
@@ -125,12 +115,10 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
         - stop, pause, skip
     */
     override fun startWorkout(){
-        expendedTrainings = viewModel.getExpendedTrainingList()
+/*        expendedTrainings = viewModel.getExpendedTrainingList()
 
-        val sheetBehavior = BottomSheetBehavior.from(binding.workoutGo.trainingGoBottomSheet)
-
-        if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
         binding.workoutGo.trainingGoBottomSheet.workout_progress.max = expendedTrainings.count()
         binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = 0
@@ -139,7 +127,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
         skipTraining()
         chronometerIsRunning = true
         chronoBind.base = SystemClock.elapsedRealtime()
-        chronoBind.start()
+        chronoBind.start()*/
 
     }
 
@@ -147,7 +135,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
         if (chronometerIsRunning) {
             chronoBind.stop()
             chronometerIsRunning = false
-            currentWorkout = -1
+            currentTraining = -1
         }
 
         workoutSoundPlayer.playBell()
@@ -170,16 +158,16 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
     }
 
     override fun skipTraining() {
-        currentWorkout++
-        if (currentWorkout > 0) {
+        currentTraining++
+        if (currentTraining > 0) {
             notifyNewTraining()
         }
-        if (currentWorkout < expendedTrainings.count() -1) {
+        if (currentTraining < expendedTrainings.count() -1) {
             displayTrainingInfo()
-            binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = expendedTrainings[currentWorkout].duration.toString()
-            binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = currentWorkout
+            binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = expendedTrainings[currentTraining].duration.toString()
+            binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = currentTraining
             binding.workoutGo.trainingGoBottomSheet.frame_cardview.visibility = View.GONE
-            trainingCountdown = expendedTrainings[currentWorkout].duration
+            trainingCountdown = expendedTrainings[currentTraining].duration
             lastTrainingChange = SystemClock.elapsedRealtime()
         } else {
             stopWorkout()
@@ -188,24 +176,24 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
 
     private fun displayTrainingInfo(){
         binding.workoutGo.trainingGoBottomSheet.currentWorkoutInfo.text =
-            expendedTrainings[currentWorkout].name
-        if (currentWorkout > 0){
+            expendedTrainings[currentTraining].name
+        if (currentTraining > 0){
             binding.workoutGo.trainingGoBottomSheet.currenTrainDescription.text =
-                when (expendedTrainings[currentWorkout].trainingType) {
+                when (expendedTrainings[currentTraining].trainingType) {
                     TrainingTypes.Timed -> {
                         getString(R.string.training_timed_description)
                     }
                     TrainingTypes.Repeated -> {
                         getString(
                             R.string.training_repeated_description,
-                            expendedTrainings[currentWorkout].reps
+                            expendedTrainings[currentTraining].reps
                         )
                     }
                     TrainingTypes.Custom -> {
-                        if (expendedTrainings[currentWorkout].reps != 0) {
+                        if (expendedTrainings[currentTraining].reps != 0) {
                             getString(
                                 R.string.training_repeated_description,
-                                expendedTrainings[currentWorkout].reps
+                                expendedTrainings[currentTraining].reps
                             )
                         } else {
                             getString(R.string.training_timed_description)
@@ -225,7 +213,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
             ((timeWhenPaused - lastTrainingChange) / 1000.0).roundToInt()
         }
         val endOfTraining = trainingCountdown - elapsedTime
-        if (expendedTrainings[currentWorkout].trainingType is TrainingTypes.Repeated) {
+        if (expendedTrainings[currentTraining].trainingType is TrainingTypes.Repeated) {
             if (endOfTraining < 5) {
                 binding.workoutGo.trainingGoBottomSheet.frame_cardview.visibility = View.VISIBLE
             }
@@ -235,7 +223,7 @@ class TrainingListingActivity : DataBindingActivity(), WorkoutInterface {
             workoutSoundPlayer.playBeep()
         }
         if (endOfTraining <= 0) {
-            if (expendedTrainings[currentWorkout].trainingType != TrainingTypes.Repeated) {
+            if (expendedTrainings[currentTraining].trainingType != TrainingTypes.Repeated) {
                 skipTraining()
             } else {
                 binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text =

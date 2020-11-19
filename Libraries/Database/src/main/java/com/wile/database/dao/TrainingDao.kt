@@ -19,6 +19,9 @@ interface TrainingDao {
     @Query("SELECT * FROM Training WHERE workout = :workout ORDER BY sorting ASC")
     fun getTrainingList(workout: Int): Flow<List<Training>>
 
+    @Query("SELECT DISTINCT workout FROM Training ORDER BY workout")
+    fun getWorkoutIds(): Flow<List<Int>>
+
     @Query("SELECT * FROM Training WHERE id = :id")
     fun getTraining(id: Int): Training
 

@@ -59,7 +59,7 @@ class QuickAddViewModel @ViewModelInject constructor(
       to Repository, but to UC that have reference to Repository
      */
     @WorkerThread
-    suspend fun addTrainingFromPreset(preset: Preset){
-        trainingRepository.addTrainingFromPreset(preset)
+    suspend fun addTrainingFromPreset(preset: Preset, workoutId: Int){
+        trainingRepository.addTrainingFromPreset(preset, workoutId)
     }
 }

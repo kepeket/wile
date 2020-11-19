@@ -51,10 +51,14 @@ class TabataAddViewModel @ViewModelInject constructor(
     }
 
     @WorkerThread
-    suspend fun saveTraining(){
+    suspend fun saveTraining(workoutId: Int){
         training.value?.let {t ->
             t.tabataConfig?.let {
                 t.duration = it.cycles * (it.mainDuration + it.alterDuration)
+            }
+
+            if (workoutId > 0) {
+                t.workout = workoutId
             }
 
             trainingRepository.saveTraining(

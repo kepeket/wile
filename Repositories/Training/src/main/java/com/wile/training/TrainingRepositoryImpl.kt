@@ -7,6 +7,7 @@ import com.wile.database.model.TrainingTypes
 import com.wile.database.dao.TrainingDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -43,16 +44,23 @@ class TrainingRepositoryImpl @Inject constructor(
     ) = trainingDao.getTrainingList(workout)
 
     @WorkerThread
+    override suspend fun fetchWorkoutIds(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) = trainingDao.getWorkoutIds()
+
+    @WorkerThread
     override suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
 
     @WorkerThread
     override suspend fun addAll(trainings: List<Training>) = trainingDao.insertAll(trainings)
 
     @WorkerThread
-    override suspend fun addTrainingFromPreset(preset: Preset)  {
+    override suspend fun addTrainingFromPreset(preset: Preset, workout: Int)  {
         val training = Training(
             name = preset.name,
-            trainingType = preset.trainingType
+            trainingType = preset.trainingType,
+            workout = workout
         )
 
         when(preset.trainingType){

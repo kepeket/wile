@@ -24,6 +24,7 @@ class TabataAddActivity : DataBindingActivity() {
     private val viewModel: TabataAddViewModel by viewModels()
     private val binding: ActivityTabataAddBinding by binding(R.layout.activity_tabata_add)
     private var editMode: Boolean = false
+    private var workoutId = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,7 @@ class TabataAddActivity : DataBindingActivity() {
             supportActionBar?.title = getString(R.string.edit_training_toolbar_title)
             save_btn.text = getString(R.string.save_training_btn)
         }
+        workoutId = intent.getIntExtra(WORKOUT_ID, -1)
         viewModel.fetchTraining(trainingParam)
 
         binding.tabataMainName.trainingNameLabel.text = getString(R.string.tabata_form_main_label)
@@ -76,7 +78,7 @@ class TabataAddActivity : DataBindingActivity() {
         if (viewModel.validateTraining()) {
             runBlocking {
                 launch(Dispatchers.Default) {
-                    viewModel.saveTraining()
+                    viewModel.saveTraining(workoutId)
                 }
             }
             finish()
@@ -98,8 +100,12 @@ class TabataAddActivity : DataBindingActivity() {
 
     companion object {
         const val TRAINING_ID = "training_id"
+        const val WORKOUT_ID = "workout_id"
 
         fun newIntent(context: Context) = Intent(context, TabataAddActivity::class.java)
+        fun newTabata(context: Context, workoutId: Int) = newIntent(context).apply {
+            putExtra(WORKOUT_ID, workoutId)
+        }
         fun editTabata(context: Context, trainingId: Int) = newIntent(context).apply {
             putExtra(TRAINING_ID, trainingId)
         }

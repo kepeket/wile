@@ -60,7 +60,8 @@ dependencies {
         Dependencies.materialDesign,
         Dependencies.moshi,
         Dependencies.room,
-        Dependencies.timber
+        Dependencies.timber,
+        Dependencies.viewpager2
     )
 
     testImplementations(

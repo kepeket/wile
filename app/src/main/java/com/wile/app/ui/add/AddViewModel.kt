@@ -52,8 +52,11 @@ class AddViewModel @ViewModelInject constructor(
     }
 
     @WorkerThread
-    suspend fun saveTraining() {
+    suspend fun saveTraining(workout: Int) {
         training.value?.let {t ->
+            if (workout > 0) {
+                t.workout = workout
+            }
             trainingRepository.saveTraining(
                 newTraining = t,
                 onSuccess = { isLoading.set(false) },

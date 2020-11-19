@@ -43,4 +43,9 @@
     <string name="workout_im_done">J\'ai fini!</string>
     <string name="workout_go_till_the_end">∞</string>
     <string name="chronometer_format">Durée totale de l\'entrainement: %s</string>
+    <string name="activity_social_join_label">Entrainement entre amis</string>
+    <string name="social_join_username">Votre pseudo</string>
+    <string name="social_join_room">Nom de la salle</string>
+    <string name="social_join_btn">Rejoindre</string>
+    <string name="social_how_to_join">Saisissez un pseudo et un nom de salle que vous partagerez à vos amis pour vous retrouver.</string>
 </resources>

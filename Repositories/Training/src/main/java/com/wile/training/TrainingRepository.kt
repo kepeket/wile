@@ -24,10 +24,15 @@ interface TrainingRepository {
         onError: (String) -> Unit
     ): Flow<List<Training>>
 
+    suspend fun fetchWorkoutIds(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ): Flow<List<Int>>
+
     suspend fun deleteTraining(id: Int)
 
     suspend fun addAll(trainings: List<Training>)
 
-    suspend fun addTrainingFromPreset(preset: Preset)
+    suspend fun addTrainingFromPreset(preset: Preset, workout: Int)
 
 }
