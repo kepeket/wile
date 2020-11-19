@@ -52,5 +52,5 @@
     <string name="delete_workout">Supprimer l\'entrainement</string>
     <string name="share_workout">Partager l\'entrainement</string>
     <string name="no_excercice">Il n\'y a aucun exercice dans cet entrainement</string>
-    <string name="workout_press_play_ready">Appuies sur Play quand t\'es prêt à te partir</string>
+    <string name="workout_press_play_ready">Appuies sur Play quand t\'es prêt-e à te lancer</string>
 </resources>
