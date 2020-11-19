@@ -101,8 +101,5 @@
             android:backgroundTint="@color/white"
             android:contentDescription="Add training" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <include
-        android:id="@+id/workout_go"
-        layout="@layout/bottom_sheet" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

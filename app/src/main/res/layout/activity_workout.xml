@@ -11,11 +11,12 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="match_parent"
+        android:id="@+id/workout_activity_content"
         android:layout_width="match_parent"
         tools:context=".ui.workout.WorkoutActivity">
         <include
             android:id="@+id/workout_go"
-            layout="@layout/bottom_sheet" />
+            layout="@layout/workout_controller" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -40,9 +40,8 @@ class WorkoutListingViewModel @ViewModelInject constructor(
     }
 
     fun deleteWorkout(id: Int){
-        // @TODO
-/*        viewModelScope.launch {
-            trainingRepository.deleteTraining(id)
-        }*/
+        viewModelScope.launch {
+            trainingRepository.deleteTrainings(id)
+        }
     }
 }

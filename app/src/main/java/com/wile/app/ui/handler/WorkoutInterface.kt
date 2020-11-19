@@ -5,6 +5,7 @@ import android.widget.Chronometer
 interface WorkoutInterface {
     var chronometerIsRunning: Boolean
 
+    fun startStopWorkout()
     fun startWorkout()
     fun stopWorkout()
     fun pauseWorkout()

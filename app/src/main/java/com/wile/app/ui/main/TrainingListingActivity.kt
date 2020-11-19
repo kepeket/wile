@@ -1,32 +1,19 @@
 package com.wile.app.ui.main
 
 import android.os.Bundle
-import android.os.SystemClock
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Chronometer
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
-import com.wile.database.model.Training
-import com.wile.database.model.TrainingTypes
-import com.wile.app.sound.WorkoutSoundPlayer
 import com.wile.app.ui.adapter.WorkoutAdapter
 import com.wile.app.ui.add.QuickAddActivity
-import com.wile.app.ui.handler.WorkoutInterface
 import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
-import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
-import kotlin.math.roundToInt
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -76,6 +63,11 @@ class TrainingListingActivity : DataBindingActivity() {
             binding.pager.post {
                 binding.pager.setCurrentItem(lastPos, true)
             }
+            true
+        }
+        R.id.training_delete_workout -> {
+            adapter.deleteWorkout(currentWorkout)
+            viewModel.deleteWorkout(currentWorkout)
             true
         }
         else -> {

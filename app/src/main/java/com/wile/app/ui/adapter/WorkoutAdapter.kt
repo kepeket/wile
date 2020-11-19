@@ -39,4 +39,9 @@ class WorkoutAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         return itemCount -1
     }
 
+    fun deleteWorkout(workout: Int){
+        val removedPos = items.indexOf(workout)
+        items.remove(removedPos)
+        notifyItemRemoved(removedPos)
+    }
 }

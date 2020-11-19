@@ -8,6 +8,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.widget.Chronometer
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
@@ -17,7 +18,7 @@ import com.wile.app.ui.handler.WorkoutInterface
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.bottom_sheet.view.*
+import kotlinx.android.synthetic.main.workout_controller.view.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -71,6 +72,19 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     - expend tabata training automatically
     - stop, pause, skip
 */
+    override fun startStopWorkout(){
+        if (expendedTrainings.count() > 0){
+            if (currentTraining < 0){
+                startWorkout()
+            } else {
+                pauseWorkout()
+            }
+        }
+        else {
+            Toast.makeText(this, getString(R.string.no_excercice), Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun startWorkout(){
         expendedTrainings = viewModel.getExpendedTrainingList()
 
@@ -93,7 +107,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         }
 
         workoutSoundPlayer.playBell()
-
+        finish()
     }
 
     override fun pauseWorkout() {

@@ -65,7 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/black_opacity_5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTop="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent">
         <androidx.cardview.widget.CardView
@@ -160,7 +160,7 @@
             android:scaleType="fitCenter"
             android:layout_marginHorizontal="@dimen/form_padding"
             android:background="@drawable/circle"
-            android:src="@drawable/ic_baseline_pause_24"
+            android:src="@drawable/ic_baseline_play_arrow_24"
             android:backgroundTint="@color/training_go_btn_color"
             android:foreground="?attr/selectableItemBackgroundBorderless"
  />
