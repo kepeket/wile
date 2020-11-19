@@ -125,6 +125,9 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     }
 
     override fun skipTraining() {
+        if (currentTraining < 0){
+            return
+        }
         currentTraining++
         if (currentTraining > 0) {
             notifyNewTraining()
