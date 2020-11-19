@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Wile: keep up with the Bipbip</string>
+    <string name="app_name">Wile</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -48,4 +48,7 @@
     <string name="social_join_room">Nom de la salle</string>
     <string name="social_join_btn">Rejoindre</string>
     <string name="social_how_to_join">Saisissez un pseudo et un nom de salle que vous partagerez à vos amis pour vous retrouver.</string>
+    <string name="activity_workout_label">Au travail !</string>
+    <string name="delete_workout">Supprimer l\'entrainement</string>
+    <string name="share_workout">Partager l\'entrainement</string>
 </resources>

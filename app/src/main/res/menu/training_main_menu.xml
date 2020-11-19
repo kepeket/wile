@@ -4,12 +4,20 @@
 
     <item
         android:id="@+id/training_main_go"
-        android:icon="@drawable/ic_baseline_play_arrow_24"
-        android:title="@string/menu_training_main_go"
+        android:icon="@drawable/ic_baseline_library_add_24"
+        android:title="@string/activity_add_label"
         android:visible="true"
         app:showAsAction="always" />
     <item
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:title="@string/menu_training_main_parameters"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/training_delete_workout"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="@string/delete_workout"
+        android:visible="true"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/training_share_workout"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="@string/share_workout"
+        android:visible="true"
+        app:showAsAction="never" />
 </menu>

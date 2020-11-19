@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:elevation="3dp"
             app:cardCornerRadius="6dp"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:foreground="?selectableItemBackgroundBorderless"
             app:cardBackgroundColor="@{color}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -14,6 +14,36 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/workout_header"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorOnSecondary"
+            android:elevation="1dp"
+            android:padding="@dimen/text_padding">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/form_padding"
+                style="@style/Theme.Main.Workout.Duration"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="23m35"
+                app:duration="@{viewModel.trainingDurationLiveData}" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/form_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Workout #1"
+                style="@style/Theme.Main.Workout.Duration"
+                android:text="@{viewModel.workoutName}"
+
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <View
             android:layout_width="3dp"
             android:layout_height="match_parent"
@@ -22,11 +52,11 @@
             android:layout_marginStart="25dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/workout_header"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:clipToPadding="false"
             android:fadeScrollbars="false"
             android:padding="6dp"

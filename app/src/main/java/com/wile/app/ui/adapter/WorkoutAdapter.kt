@@ -17,7 +17,6 @@ class WorkoutAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
     fun addWorkoutList(workout: List<Int>){
         items.clear()
         items.addAll(workout)
-        items.add(getNextId())
         notifyDataSetChanged()
     }
 
@@ -32,6 +31,12 @@ class WorkoutAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
     override fun createFragment(position: Int): Fragment {
         val workoutId = items[position]
         return TrainingListingFragment.newFragment(workoutId)
+    }
+
+    fun addWorkout(): Int{
+        items.add(getNextId())
+        notifyDataSetChanged()
+        return itemCount -1
     }
 
 }

@@ -14,5 +14,6 @@
     <color name="timed_preset">#1565C0</color>
     <color name="repeated_preset">#AF2323</color>
     <color name="tabata_preset">#558B2F</color>
+    <color name="dark_grey_variant">#454545</color>
     <color name="dark_grey">#2C2C2C</color>
 </resources>

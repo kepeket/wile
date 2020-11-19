@@ -40,7 +40,7 @@
             app:cardCornerRadius="6dp"
             android:layout_marginStart="@dimen/fab_margin"
             app:cardBackgroundColor="@{color}"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:foreground="?selectableItemBackgroundBorderless"
             app:layout_constraintStart_toEndOf="@+id/training_duration"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -79,7 +79,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:src="@drawable/ic_baseline_delete_24"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="?selectableItemBackgroundBorderless"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

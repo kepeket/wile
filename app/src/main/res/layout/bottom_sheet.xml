@@ -77,7 +77,7 @@
             app:cardElevation="@dimen/form_padding"
             app:cardCornerRadius="@dimen/form_padding"
             app:cardBackgroundColor="@color/training_go_btn_color"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:foreground="?selectableItemBackgroundBorderless"
             android:layout_height="match_parent">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:padding="@dimen/form_padding"
