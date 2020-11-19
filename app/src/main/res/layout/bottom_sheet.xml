@@ -12,14 +12,8 @@
     android:id="@+id/training_go_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/training_go_red"
-    android:paddingBottom="40dp"
-    android:paddingTop="40dp"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="0dp"
-    app:workoutController="@{workoutController}"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
+    android:background="@color/training_go_blue"
+    app:workoutController="@{workoutController}">
 
     <ProgressBar
         android:id="@+id/workout_progress"
@@ -62,23 +56,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/currenTrainDescription"
         app:layout_constraintBottom_toTopOf="@id/trainingCountdown"/>
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/frame_cardview"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:clipChildren="false"
-        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/black_opacity_5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chronometer"
-        app:layout_constraintBottom_toTopOf="@id/trainingCountdown">
+        app:layout_constraintTop_toTop="parent"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent">
         <androidx.cardview.widget.CardView
             android:id="@+id/muscle_up_card"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             app:cardElevation="@dimen/form_padding"
             app:cardCornerRadius="@dimen/form_padding"
             app:cardBackgroundColor="@color/training_go_btn_color"
             android:foreground="?selectableItemBackgroundBorderless"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:padding="@dimen/form_padding"
                 android:layout_width="match_parent"
@@ -123,7 +120,7 @@
 
 
         </androidx.cardview.widget.CardView>
-    </FrameLayout>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -140,6 +137,7 @@
         android:id="@+id/controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="horizontal"
         android:gravity="center|top">

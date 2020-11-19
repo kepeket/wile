@@ -16,4 +16,7 @@
     <color name="tabata_preset">#558B2F</color>
     <color name="dark_grey_variant">#454545</color>
     <color name="dark_grey">#2C2C2C</color>
+    <color name="training_go_blue">#0277BD</color>
+    <color name="black_opacity_9">#BF000000</color>
+    <color name="black_opacity_5">#80000000</color>
 </resources>

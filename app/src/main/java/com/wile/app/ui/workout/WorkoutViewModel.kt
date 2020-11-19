@@ -1,5 +1,6 @@
 package com.wile.app.ui.workout
 
+import android.graphics.Color
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
@@ -18,6 +19,7 @@ class WorkoutViewModel @ViewModelInject constructor(
 
     val trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
     val trainingDurationLiveData: MutableLiveData<Int> = MutableLiveData(0)
+    val trainingColorLiveData: MutableLiveData<Color> = MutableLiveData()
 
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData

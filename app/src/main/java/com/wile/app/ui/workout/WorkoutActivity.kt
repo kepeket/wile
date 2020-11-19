@@ -126,6 +126,14 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     }
 
     private fun displayTrainingInfo(){
+        val bgColor = when(expendedTrainings[currentTraining].trainingType){
+            TrainingTypes.Timed -> getColor(R.color.training_go_blue)
+            TrainingTypes.Repeated -> getColor(R.color.repeated_preset)
+            TrainingTypes.Tabata -> getColor(R.color.tabata_preset)
+            TrainingTypes.Custom -> getColor(R.color.dark_grey_variant)
+        }
+        binding.workoutGo.trainingGoBottomSheet.setBackgroundColor(bgColor)
+
         binding.workoutGo.trainingGoBottomSheet.currentWorkoutInfo.text =
             expendedTrainings[currentTraining].name
         if (currentTraining > 0){
