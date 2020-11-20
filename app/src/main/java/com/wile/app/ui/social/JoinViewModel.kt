@@ -18,7 +18,8 @@ import javax.inject.Inject
 
 class JoinViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    @Assisted private val savedStateHandle: SavedStateHandle,
+    val workoutController: SocialWorkoutController
 ) : LiveCoroutinesViewModel() {
 
     lateinit var useCase: SocialWorkoutUseCase
@@ -35,7 +36,7 @@ class JoinViewModel @ViewModelInject constructor(
     }
 
     fun setWebSocketListener(listener: WebSocketListener) {
-        useCase = SocialWorkoutUseCase(listener)
+        useCase = SocialWorkoutUseCase(listener, workoutController)
     }
 
     fun connect(){

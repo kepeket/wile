@@ -4,10 +4,10 @@ import com.wile.app.model.JoinRoomModels
 import okhttp3.WebSocketListener
 import javax.inject.Inject
 
-class SocialWorkoutUseCase(val listener: WebSocketListener) {
-
-    @Inject
-    lateinit var workoutController: SocialWorkoutController
+class SocialWorkoutUseCase @Inject constructor(
+    val listener: WebSocketListener,
+    val workoutController: SocialWorkoutController
+    ) {
 
     fun connect(){
         workoutController.connect(listener)

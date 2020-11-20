@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.social.JoinActivity"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:padding="@dimen/form_padding">
+       >
 
         <TextView
             android:id="@+id/information"
@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:text="@string/social_how_to_join"
             style="@style/Theme.Main.Paragraph"
+            android:layout_marginTop="@dimen/big_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -145,20 +146,68 @@
             android:layout_marginBottom="@dimen/form_padding"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/connection_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            >
+            android:background="@color/timed_preset"
+            android:padding="@dimen/form_padding"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
             <TextView
+                android:id="@+id/connection_label"
+                style="@style/Theme.Main.Training.Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/text_padding"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/social_workout_connect_label"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="Connexion en cours"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/connection_log"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:layout_marginVertical="@dimen/big_padding"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textColor="@color/dark_grey_variant"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/go_social_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/connection_label"
+                tools:ignore="SmallSp"
+                tools:text="Machin s'est co" />
+
+            <ImageButton
+                android:id="@+id/cancel_social_btn"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:scaleType="fitCenter"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/white"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/training_go_red"
+                android:src="@drawable/ic_baseline_cancel_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/go_social_btn"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/go_social_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:text="@string/go_social_btn_label"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cancel_social_btn" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

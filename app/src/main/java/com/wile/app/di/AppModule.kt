@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Vibrator
 import com.google.gson.Gson
 import com.wile.app.ui.social.SocialWorkoutController
+import com.wile.app.ui.social.SocialWorkoutUseCase
 import com.wile.app.ui.social.WileServer
 import com.wile.app.ui.social.WileSocketListener
 import dagger.Module
@@ -13,6 +14,7 @@ import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.WebSocketListener
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
