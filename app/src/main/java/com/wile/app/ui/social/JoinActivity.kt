@@ -10,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
+import com.wile.app.model.*
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -70,7 +71,7 @@ class JoinActivity : DataBindingActivity(), WileSocketListener {
         }
     }
 
-    fun toggleBottomSheet(toggle: Boolean){
+    private fun toggleBottomSheet(toggle: Boolean){
         if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED && !toggle){
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         } else if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED && toggle){
@@ -79,22 +80,45 @@ class JoinActivity : DataBindingActivity(), WileSocketListener {
     }
 
 
-    fun onOpen(response: Response) {
+    private fun onOpen(response: Response) {
         Timber.d(response.message())
     }
 
-    fun onMessage(text: String) {
+    private fun onMessage(type: EnvelopType, response: WileMessage) {
+        var text = ""
+        when(type){
+            EnvelopType.Room -> {
+                with(response as JoinRoomModels.JoinRoomMessage){
+                    text = when(response.action){
+                        RoomMessageAction.Joined -> {
+                            getString(R.string.room_someone_has_joined, this.userId, this.name)
+                        }
+                        RoomMessageAction.Created -> {
+                            getString(R.string.room_created, this.name)
+                        }
+                    }
+                }
+            }
+            EnvelopType.Pong -> {
+                with(response as PingModels.PongMessage){
+                    text = getString(R.string.pong_received)
+                }
+            }
+            else -> {
+                text = getString(R.string.ws_unknown_message)
+            }
+        }
         binding.connectionLog.setText(
             String.format("%s\n%s", binding.connectionLog.text.toString(), text)
         )
     }
 
-    fun onClosed(code: Int, reason: String) {
+    private fun onClosed(code: Int, reason: String) {
         toggleBottomSheet(false)
         Toast.makeText(this, getString(R.string.ws_connection_list, reason), Toast.LENGTH_SHORT).show()
     }
 
-    fun onFailure(t: Throwable, response: Response?) {
+    private fun onFailure(t: Throwable, response: Response?) {
         toggleBottomSheet(false)
         Toast.makeText(this, t.message, Toast.LENGTH_SHORT).show()
     }

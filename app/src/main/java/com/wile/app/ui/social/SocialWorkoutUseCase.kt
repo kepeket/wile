@@ -19,8 +19,8 @@ class SocialWorkoutUseCase @Inject constructor(
 
     fun join(roomName: String, userId: String){
         val message = JoinRoomModels.JoinRoomRequest(
-            roomName,
-            userId
+            userId = userId,
+            name = roomName
         )
         workoutController.join(message)
     }

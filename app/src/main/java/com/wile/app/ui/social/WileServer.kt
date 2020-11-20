@@ -2,6 +2,7 @@ package com.wile.app.ui.social
 
 import com.google.gson.Gson
 import com.wile.app.model.EnvelopModel
+import com.wile.app.model.EnvelopType
 import com.wile.app.model.JoinRoomModels
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -27,7 +28,7 @@ class WileServer @Inject constructor(
 
     fun joinRoom(roomPayload: JoinRoomModels.JoinRoomRequest): Boolean {
         ws?.let {
-            val envelop = EnvelopModel("room", roomPayload)
+            val envelop = EnvelopModel(EnvelopType.Room, roomPayload)
             return it.send(gson.toJson(envelop))
         }
         return false

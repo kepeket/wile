@@ -1,22 +1,42 @@
 package com.wile.app.ui.social
 
+import com.google.gson.Gson
+import com.wile.app.model.EnvelopModel
+import com.wile.app.model.EnvelopType
+import com.wile.app.model.WileMessage
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import javax.inject.Inject
 
 class WileSocketListenerImpl(
     val onOpen: (response: Response) -> Unit,
-    val onMessage: (text: String) -> Unit,
+    val onMessage: (type: EnvelopType, response: WileMessage) -> Unit,
     val onClosed: (code: Int, reason: String) -> Unit,
     val onFailure : (t: Throwable, response: Response?) -> Unit
 ) : WileSocketListener, WebSocketListener() {
+
+    @Inject
+    lateinit var gson: Gson
+
     override fun onOpen(webSocket: WebSocket, response: Response) {
        onOpen(response)
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        onMessage(text)
+        val env:EnvelopModel = gson.fromJson(text, EnvelopModel::class.java)
+
+        when(env.type){
+            EnvelopType.Room -> {
+                onMessage(env.type, env.message)
+            }
+            EnvelopType.Ping -> {
+                onMessage(env.type, env.message)
+            }
+        }
+
+
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {

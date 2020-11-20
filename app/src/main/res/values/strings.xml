@@ -61,4 +61,8 @@
     <string name="ws_connection_list">Connexion au serveur perdues [%s]</string>
     <string name="social_workout_connect_label">Salle d\'entrainement</string>
     <string name="go_social_btn_label">Lancer l\'entrainement</string>
+    <string name="room_someone_has_joined">%s a rejoint la salle %s</string>
+    <string name="room_created">La salle %s a bien été crée</string>
+    <string name="pong_received">Message PONG</string>
+    <string name="ws_unknown_message">Message inconnu</string>
 </resources>

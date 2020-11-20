@@ -1,6 +1,13 @@
 package com.wile.app.model
 
 data class EnvelopModel(
-    val type: String,
+    val type: EnvelopType,
     val message: WileMessage
 )
+
+sealed class EnvelopType {
+    object Room: EnvelopType()
+    object Ping: EnvelopType()
+    object Pong: EnvelopType()
+}
+
