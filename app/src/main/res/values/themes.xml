@@ -39,7 +39,7 @@
 
     <style name="Theme.Main.Paragraph" parent="Theme.Main">
         <item name="android:textSize">18sp</item>
-        <item name="android:layout_margin">@dimen/big_padding</item>
+        <item name="android:layout_marginBottom">@dimen/paragraph_margin</item>
     </style>
 
     <style name="Theme.Main.Training.Label" parent="Theme.Main">
@@ -99,4 +99,5 @@
 
     <dimen name="workout_info">24sp</dimen>
     <dimen name="training_label">18sp</dimen>
+    <dimen name="paragraph_margin">34dp</dimen>
 </resources>

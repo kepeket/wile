@@ -79,5 +79,7 @@ object Dependencies {
     const val timber = "com.jakewharton.timber:timber"
 
     const val viewpager2 = "androidx.viewpager2:viewpager2"
+
+    const val hashids = "org.hashids:hashids"
     // endregion
 }

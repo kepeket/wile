@@ -45,12 +45,15 @@
     <string name="chronometer_format">Durée totale de l\'entrainement: %s</string>
     <string name="activity_social_join_label">Entrainement entre amis</string>
     <string name="social_join_username">Votre pseudo</string>
-    <string name="social_join_room">Nom de la salle</string>
+    <string name="social_join_room">Rejoindre une salle</string>
     <string name="social_join_btn">Rejoindre</string>
-    <string name="social_how_to_join">Saisissez un pseudo et un nom de salle que vous partagerez à vos amis pour vous retrouver.</string>
+    <string name="social_create_btn">Créer</string>
+    <string name="social_how_to_join">Saisissez un pseudo et le code d\'une salle d\entrainement à rejoindre.</string>
+    <string name="social_how_to_create">Créer une salle d\'entrainement</string>
     <string name="activity_workout_label">Au travail !</string>
     <string name="delete_workout">Supprimer l\'entrainement</string>
     <string name="share_workout">Partager l\'entrainement</string>
     <string name="no_excercice">Il n\'y a aucun exercice dans cet entrainement</string>
     <string name="workout_press_play_ready">Appuies sur Play quand t\'es prêt-e à te lancer</string>
+    <string name="add_training">Add training</string>
 </resources>

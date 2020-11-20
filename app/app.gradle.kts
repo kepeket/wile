@@ -61,7 +61,8 @@ dependencies {
         Dependencies.moshi,
         Dependencies.room,
         Dependencies.timber,
-        Dependencies.viewpager2
+        Dependencies.viewpager2,
+        Dependencies.hashids
     )
 
     testImplementations(

@@ -2,11 +2,32 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-<data></data>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.wile.app.ui.social.JoinViewModel" />
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.main.AddActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/toolbar_home"
+            tools:viewBindingIgnore="true"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".ui.social.JoinActivity"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:padding="@dimen/form_padding">
 
         <TextView
@@ -27,6 +48,7 @@
             style="@style/Theme.Main.Training.Label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/big_padding"
             app:layout_constraintTop_toBottomOf="@+id/information" />
 
         <EditText
@@ -36,9 +58,23 @@
             android:ems="10"
             android:inputType="textPersonName"
             tools:text="Name"
+            android:text="@{viewModel.userName}"
+            android:layout_marginTop="@dimen/form_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username_label" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username"
+            android:layout_marginTop="@dimen/big_padding"
+            android:background="?android:attr/listDivider"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="374dp" />
 
         <TextView
             android:id="@+id/room_label"
@@ -46,7 +82,8 @@
             android:layout_height="wrap_content"
             style="@style/Theme.Main.Training.Label"
             android:text="@string/social_join_room"
-            app:layout_constraintTop_toBottomOf="@+id/username"
+            android:layout_marginTop="@dimen/big_padding"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -56,12 +93,13 @@
             android:layout_height="wrap_content"
             android:ems="10"
             tools:text="Name"
+            android:layout_marginTop="@dimen/form_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/room_label" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/join"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/social_join_btn"
@@ -71,5 +109,41 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="@dimen/form_padding"/>
 
+        <ImageView
+            android:id="@+id/separator"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/circle"
+            app:tint="?attr/colorPrimary"
+            android:layout_marginTop="@dimen/form_padding"
+            app:layout_constraintTop_toBottomOf="@+id/join"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/create_label"/>
+
+        <TextView
+            android:id="@+id/create_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Theme.Main.Training.Label"
+            android:text="@string/social_how_to_create"
+            android:layout_marginTop="@dimen/big_padding"
+            app:layout_constraintTop_toBottomOf="@+id/separator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <Button
+            android:id="@+id/create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/social_create_btn"
+            android:layout_marginTop="@dimen/form_padding"
+            app:layout_constraintTop_toBottomOf="@+id/create_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="@dimen/form_padding"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

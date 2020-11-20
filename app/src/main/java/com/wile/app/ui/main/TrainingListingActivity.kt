@@ -10,6 +10,7 @@ import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
+import com.wile.app.ui.social.JoinActivity
 import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
@@ -44,6 +45,10 @@ class TrainingListingActivity : DataBindingActivity() {
 
         binding.newTraining.setOnClickListener {
             startActivity(QuickAddActivity.newIntent(this, currentWorkout))
+        }
+
+        binding.goSocial.setOnClickListener {
+            startActivity(JoinActivity.startWorkout(this, currentWorkout))
         }
 
         setSupportActionBar(binding.mainToolbar.toolbar)

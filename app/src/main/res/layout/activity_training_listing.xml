@@ -62,6 +62,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageButton
+                android:id="@+id/go_social"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_people_24"
@@ -88,7 +89,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
             android:layout_width="wrap_content"
             app:elevation="0dp"
@@ -99,7 +99,7 @@
             app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_baseline_play_arrow_24"
             android:backgroundTint="@color/go_fab_backgroung"
-            android:contentDescription="Add training" />
+            android:contentDescription="@string/add_training" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
