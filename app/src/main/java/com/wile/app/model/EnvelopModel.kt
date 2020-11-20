@@ -9,5 +9,6 @@ sealed class EnvelopType {
     object Room: EnvelopType()
     object Ping: EnvelopType()
     object Pong: EnvelopType()
+    object Error: EnvelopType()
 }
 

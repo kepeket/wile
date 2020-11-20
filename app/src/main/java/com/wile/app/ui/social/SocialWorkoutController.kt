@@ -20,8 +20,8 @@ class SocialWorkoutController @Inject constructor(
         server.disconnect()
     }
 
-    fun join(roomRequest: JoinRoomModels.JoinRoomRequest){
-        server.joinRoom(roomRequest)
+    fun join(roomRequest: JoinRoomModels.JoinRoomRequest): Boolean{
+        return server.joinRoom(roomRequest)
     }
 
     override fun startStopWorkout() {

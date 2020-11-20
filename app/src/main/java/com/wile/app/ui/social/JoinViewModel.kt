@@ -88,6 +88,9 @@ class JoinViewModel @ViewModelInject constructor(
                     Timber.d("time space between %s and me = %d", response.userId, now - response.timecode)
                 }
             }
+            EnvelopType.Error -> {
+                callbackListener.onError((response as ErrorModels.Error).message)
+            }
         }
     }
 
@@ -108,7 +111,6 @@ class JoinViewModel @ViewModelInject constructor(
     }
 
     fun create(): Boolean{
-        connect()
         userName.value?.let {
             useCase.join(roomNameCreate, it)
             return true
@@ -117,7 +119,6 @@ class JoinViewModel @ViewModelInject constructor(
     }
 
     fun join(): Boolean {
-        connect()
         if (userName.value.isNullOrEmpty() ||
                 roomNameInput.value.isNullOrEmpty()){
             return false

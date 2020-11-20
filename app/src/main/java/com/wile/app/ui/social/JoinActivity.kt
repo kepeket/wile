@@ -1,5 +1,6 @@
 package com.wile.app.ui.social
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -33,9 +34,12 @@ class JoinActivity : DataBindingActivity() {
                 onUserLeft = ::onUserLeft,
                 connectionClosed = ::onConnectionClosed,
                 connectionOpen = ::onConnectionOpen,
-                onPong = ::onPongReceived
+                onPong = ::onPongReceived,
+                onError = ::onError
             )
         )
+
+        viewModel.connect()
 
         binding.apply {
             lifecycleOwner = this@JoinActivity
@@ -69,7 +73,6 @@ class JoinActivity : DataBindingActivity() {
 
         binding.cancelSocialBtn.setOnClickListener {
             toggleBottomSheet(false)
-            viewModel.disconnect()
         }
     }
 
@@ -114,6 +117,12 @@ class JoinActivity : DataBindingActivity() {
 
     private fun onPongReceived(time: Long){
 
+    }
+
+    private fun onError(message: String){
+        val ald = AlertDialog.Builder(this).create()
+        ald.setMessage(message)
+        ald.show()
     }
 
     private fun logOutput(str: String){

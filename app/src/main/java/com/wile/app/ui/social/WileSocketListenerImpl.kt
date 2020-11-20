@@ -8,17 +8,17 @@ import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
-import javax.inject.Inject
 
-class WileSocketListenerImpl(
+class WileSocketListenerImpl constructor(
     val onOpen: (response: Response) -> Unit,
     val onMessage: (type: EnvelopType, response: WileMessage) -> Unit,
     val onClosed: (code: Int, reason: String) -> Unit,
     val onFailure : (t: Throwable, response: Response?) -> Unit
 ) : WileSocketListener, WebSocketListener() {
 
-    @Inject
-    lateinit var gson: Gson
+    // FixMe: Unable to inject
+    private var gson = Gson()
+
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
        onOpen(response)
@@ -32,6 +32,12 @@ class WileSocketListenerImpl(
                 onMessage(env.type, env.message)
             }
             EnvelopType.Ping -> {
+                onMessage(env.type, env.message)
+            }
+            EnvelopType.Pong -> {
+                onMessage(env.type, env.message)
+            }
+            EnvelopType.Error -> {
                 onMessage(env.type, env.message)
             }
         }

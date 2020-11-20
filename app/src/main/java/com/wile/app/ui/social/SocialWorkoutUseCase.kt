@@ -2,6 +2,7 @@ package com.wile.app.ui.social
 
 import com.wile.app.model.JoinRoomModels
 import okhttp3.WebSocketListener
+import timber.log.Timber
 import javax.inject.Inject
 
 class SocialWorkoutUseCase @Inject constructor(
@@ -22,6 +23,7 @@ class SocialWorkoutUseCase @Inject constructor(
             userId = userId,
             name = roomName
         )
-        workoutController.join(message)
+        val ret = workoutController.join(message)
+        Timber.d("join %b", ret)
     }
 }
