@@ -3,16 +3,17 @@ package com.wile.app.ui.social
 import android.widget.Chronometer
 import com.wile.app.model.JoinRoomModels
 import com.wile.app.ui.handler.WorkoutInterface
+import okhttp3.WebSocketListener
 import javax.inject.Inject
 
-class SocialWorkoutController : WorkoutInterface {
+class SocialWorkoutController @Inject constructor(
+    val server: WileServer
+) : WorkoutInterface {
 
-    @Inject
-    lateinit var server: WileServer
     override var chronometerIsRunning: Boolean = false
 
-    fun connect(){
-        server.connect()
+    fun connect(listener: WebSocketListener){
+        server.connect(listener)
     }
 
     fun disconnect(){

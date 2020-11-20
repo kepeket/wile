@@ -8,6 +8,10 @@ import androidx.lifecycle.SavedStateHandle
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.database.model.Training
 import com.wile.training.TrainingRepository
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
+import okio.ByteString
 import org.hashids.Hashids
 import java.time.Instant
 import javax.inject.Inject
@@ -17,7 +21,6 @@ class JoinViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {
 
-    @Inject
     lateinit var useCase: SocialWorkoutUseCase
     val trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
     val trainingDurationLiveData: MutableLiveData<Int> = MutableLiveData(0)
@@ -29,6 +32,10 @@ class JoinViewModel @ViewModelInject constructor(
         userName.value = getRotatedUserName()
         val hashids = Hashids(userName.value)
         roomNameCreate = hashids.encode(Instant.now().toEpochMilli()/1000)
+    }
+
+    fun setWebSocketListener(listener: WebSocketListener) {
+        useCase = SocialWorkoutUseCase(listener)
     }
 
     fun connect(){

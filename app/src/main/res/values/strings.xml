@@ -58,4 +58,5 @@
     <string name="add_training">Add training</string>
     <string name="empty_userid">Il manque votre pseudo</string>
     <string name="empty_room_name">Il manque le code de la salle</string>
+    <string name="ws_connection_list">Connexion au serveur perdues [%s]</string>
 </resources>

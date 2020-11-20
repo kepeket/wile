@@ -3,11 +3,16 @@ package com.wile.app.di
 import android.content.Context
 import android.os.Vibrator
 import com.google.gson.Gson
+import com.wile.app.ui.social.SocialWorkoutController
+import com.wile.app.ui.social.WileServer
+import com.wile.app.ui.social.WileSocketListener
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.OkHttpClient
+import okhttp3.WebSocketListener
 import javax.inject.Singleton
 
 @Module
@@ -23,4 +28,21 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGson() = Gson()
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient() = OkHttpClient()
+
+    @Provides
+    @Singleton
+    fun provideWileServer(
+        okHttpClient: OkHttpClient,
+        gson: Gson
+    ) = WileServer(okHttpClient, gson)
+
+    @Provides
+    @Singleton
+    fun provideSocialWorkoutController(
+        server: WileServer
+    ) = SocialWorkoutController(server)
 }

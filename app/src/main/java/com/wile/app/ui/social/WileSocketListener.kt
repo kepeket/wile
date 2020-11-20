@@ -2,32 +2,18 @@ package com.wile.app.ui.social
 
 import okhttp3.Response
 import okhttp3.WebSocket
-import okhttp3.WebSocketListener
 import okio.ByteString
-import timber.log.Timber
 
-class WileSocketListener : WebSocketListener() {
-    override fun onOpen(webSocket: WebSocket, response: Response) {
-        Timber.d("Open WS: %s", response.body().toString())
-    }
+interface WileSocketListener {
+    fun onOpen(webSocket: WebSocket, response: Response) {}
 
-    override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-        Timber.d("Closed WS: %s", reason.toString())
-    }
+    fun onMessage(webSocket: WebSocket, text: String) {}
 
-    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        super.onClosing(webSocket, code, reason)
-    }
+    fun onMessage(webSocket: WebSocket, bytes: ByteString) {}
 
-    override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-        super.onMessage(webSocket, bytes)
-    }
+    fun onClosing(webSocket: WebSocket, code: Int, reason: String) {}
 
-    override fun onMessage(webSocket: WebSocket, text: String) {
-        Timber.d("Message WS: %s", text)
-    }
+    fun onClosed(webSocket: WebSocket, code: Int, reason: String) {}
 
-    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        Timber.d("Failure WS: %s", response?.body().toString())
-    }
+    fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {}
 }

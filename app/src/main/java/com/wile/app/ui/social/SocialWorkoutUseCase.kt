@@ -1,16 +1,16 @@
 package com.wile.app.ui.social
 
-import androidx.activity.viewModels
 import com.wile.app.model.JoinRoomModels
-import com.wile.training.TrainingRepository
+import okhttp3.WebSocketListener
 import javax.inject.Inject
 
-class SocialWorkoutUseCase {
+class SocialWorkoutUseCase(val listener: WebSocketListener) {
 
-    @Inject lateinit var workoutController: SocialWorkoutController
+    @Inject
+    lateinit var workoutController: SocialWorkoutController
 
     fun connect(){
-        workoutController.connect()
+        workoutController.connect(listener)
     }
 
     fun disconnect(){

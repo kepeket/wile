@@ -9,14 +9,25 @@ import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.Response
+import okhttp3.WebSocket
+import timber.log.Timber
 
 @AndroidEntryPoint
-class JoinActivity : DataBindingActivity() {
-    private val viewModel: JoinViewModel by viewModels()
+class JoinActivity : DataBindingActivity(), WileSocketListener {
     private val binding: ActivitySocialJoinBinding by binding(R.layout.activity_social_join)
+    private val listenerImpl = WileSocketListenerImpl(
+        onOpen = ::onOpen,
+        onClosed = ::onClosed,
+        onMessage = ::onMessage,
+        onFailure = ::onFailure,
+    )
+    private val viewModel: JoinViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.setWebSocketListener(listenerImpl)
 
         binding.apply {
             lifecycleOwner = this@JoinActivity
@@ -43,6 +54,23 @@ class JoinActivity : DataBindingActivity() {
                 }
             }
         }
+    }
+
+
+    fun onOpen(response: Response) {
+        Timber.d(response.message())
+    }
+
+    fun onMessage(text: String) {
+        Timber.d(text)
+    }
+
+    fun onClosed(code: Int, reason: String) {
+        Toast.makeText(this, getString(R.string.ws_connection_list, reason), Toast.LENGTH_SHORT).show()
+    }
+
+    fun onFailure(t: Throwable, response: Response?) {
+        Toast.makeText(this, t.message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onResume() {

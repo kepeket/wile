@@ -6,20 +6,17 @@ import com.wile.app.model.JoinRoomModels
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import javax.inject.Inject
 
-class WileServer{
-    @Inject
-    lateinit var okHttpClient: OkHttpClient
-    @Inject
-    lateinit var webSocketListener: WileSocketListener
-    @Inject
-    lateinit var gson: Gson
-
-    private val serverUrl = "ws://24bc9af2f750.ngrok.io"
+class WileServer @Inject constructor(
+    val okHttpClient: OkHttpClient,
+    val gson: Gson
+) {
+    private val serverUrl = "wss://24bc9af2f750.ngrok.io/chaussette"
     private var ws: WebSocket? = null
 
-    fun connect(){
+    fun connect(webSocketListener: WebSocketListener){
         val request: Request = Request.Builder().url(serverUrl).build()
         ws = okHttpClient.newWebSocket(request, webSocketListener)
     }
@@ -31,8 +28,7 @@ class WileServer{
     fun joinRoom(roomPayload: JoinRoomModels.JoinRoomRequest): Boolean {
         ws?.let {
             val envelop = EnvelopModel("room", roomPayload)
-            it.send(gson.toJson(envelop))
-            return true
+            return it.send(gson.toJson(envelop))
         }
         return false
     }
