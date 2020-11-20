@@ -20,8 +20,11 @@ class WorkoutListingAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         notifyDataSetChanged()
     }
 
-    fun getNextId(): Int {
-        return Collections.max(items) + 1
+    private fun getNextId(): Int {
+        if (itemCount > 0) {
+            return Collections.max(items) + 1
+        }
+        return 0
     }
 
     override fun getItemCount(): Int {

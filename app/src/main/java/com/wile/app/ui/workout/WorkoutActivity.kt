@@ -94,8 +94,8 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = 0
 
         currentTraining = -1
-        skipTraining()
         chronometerIsRunning = true
+        skipTraining()
         chronoBind.base = SystemClock.elapsedRealtime()
         chronoBind.start()
 
@@ -125,7 +125,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     }
 
     override fun skipTraining() {
-        if (currentTraining < 0){
+        if (currentTraining < 0 && !chronometerIsRunning){
             return
         }
         currentTraining++
