@@ -2,6 +2,7 @@ package com.wile.app.ui.social
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.wile.app.base.LiveCoroutinesViewModel
@@ -9,21 +10,50 @@ import com.wile.database.model.Training
 import com.wile.training.TrainingRepository
 import org.hashids.Hashids
 import java.time.Instant
+import javax.inject.Inject
 
 class JoinViewModel @ViewModelInject constructor(
-        private val trainingRepository: TrainingRepository,
-        @Assisted private val savedStateHandle: SavedStateHandle
+    private val trainingRepository: TrainingRepository,
+    @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {
 
+    @Inject
+    lateinit var useCase: SocialWorkoutUseCase
     val trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
     val trainingDurationLiveData: MutableLiveData<Int> = MutableLiveData(0)
-    val roomName: MutableLiveData<String> = MutableLiveData("")
+    val roomNameCreate: String
+    val roomNameInput: MutableLiveData<String> = MutableLiveData("")
     val userName: MutableLiveData<String> = MutableLiveData("")
 
     init {
         userName.value = getRotatedUserName()
         val hashids = Hashids(userName.value)
-        roomName.value = hashids.encode(Instant.now().toEpochMilli()/1000)
+        roomNameCreate = hashids.encode(Instant.now().toEpochMilli()/1000)
+    }
+
+    fun connect(){
+        useCase.connect()
+    }
+
+    fun disconnect(){
+        useCase.disconnect()
+    }
+
+    fun create(): Boolean{
+        userName.value?.let {
+            useCase.join(roomNameCreate, it)
+            return true
+        }
+        return false
+    }
+
+    fun join(): Boolean {
+        if (userName.value.isNullOrEmpty() ||
+                roomNameInput.value.isNullOrEmpty()){
+            return false
+        }
+        useCase.join(roomNameInput.value!!, userName.value!!)
+        return true
     }
 
     private fun getRotatedUserName(): String {

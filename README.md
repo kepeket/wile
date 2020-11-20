@@ -28,5 +28,6 @@ I just tried to apply Clean Arch on an android app, with the help of talended @S
 
 ## Roadmap
 
+* Workout reminders
 * Video chat during a real-tim routine
 * Performance tracking

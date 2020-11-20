@@ -56,4 +56,6 @@
     <string name="no_excercice">Il n\'y a aucun exercice dans cet entrainement</string>
     <string name="workout_press_play_ready">Appuies sur Play quand t\'es prêt-e à te lancer</string>
     <string name="add_training">Add training</string>
+    <string name="empty_userid">Il manque votre pseudo</string>
+    <string name="empty_room_name">Il manque le code de la salle</string>
 </resources>

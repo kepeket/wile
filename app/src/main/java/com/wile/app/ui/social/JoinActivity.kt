@@ -3,15 +3,12 @@ package com.wile.app.ui.social
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.Menu
-import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class JoinActivity : DataBindingActivity() {
@@ -28,14 +25,34 @@ class JoinActivity : DataBindingActivity() {
 
         setSupportActionBar(binding.mainToolbar.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.create.setOnClickListener {
+            if (!viewModel.create()) {
+                Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.join.setOnClickListener {
+            if (!viewModel.join()) {
+                if (viewModel.userName.value.isNullOrEmpty()) {
+                    Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT)
+                        .show()
+                } else if (viewModel.roomNameInput.value.isNullOrEmpty()) {
+                    Toast.makeText(this, getString(R.string.empty_room_name), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
-            super.onOptionsItemSelected(item)
-        }
+    override fun onResume() {
+        super.onResume()
+        viewModel.connect()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.disconnect()
     }
 
     companion object {

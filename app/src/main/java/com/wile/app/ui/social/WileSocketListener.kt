@@ -4,14 +4,15 @@ import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import timber.log.Timber
 
-class WileWebsocketListener : WebSocketListener() {
+class WileSocketListener : WebSocketListener() {
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        super.onOpen(webSocket, response)
+        Timber.d("Open WS: %s", response.body().toString())
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-        super.onClosed(webSocket, code, reason)
+        Timber.d("Closed WS: %s", reason.toString())
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -23,10 +24,10 @@ class WileWebsocketListener : WebSocketListener() {
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        super.onMessage(webSocket, text)
+        Timber.d("Message WS: %s", text)
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        super.onFailure(webSocket, t, response)
+        Timber.d("Failure WS: %s", response?.body().toString())
     }
 }
