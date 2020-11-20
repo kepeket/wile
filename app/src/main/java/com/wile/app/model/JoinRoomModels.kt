@@ -21,4 +21,5 @@ class JoinRoomModels {
 sealed class RoomMessageAction {
     object Created: RoomMessageAction()
     object Joined: RoomMessageAction()
+    object Left: RoomMessageAction()
 }
