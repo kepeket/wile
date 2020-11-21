@@ -3,6 +3,7 @@ package com.wile.app.di
 import android.content.Context
 import android.os.Vibrator
 import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import com.wile.app.ui.social.SocialWorkoutController
 import com.wile.app.ui.social.SocialWorkoutUseCase
 import com.wile.app.ui.social.WileServer
@@ -30,6 +31,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGson() = Gson()
+
+    @Provides
+    @Singleton
+    fun provideMoshi() = Moshi.Builder().build()
 
     @Provides
     @Singleton

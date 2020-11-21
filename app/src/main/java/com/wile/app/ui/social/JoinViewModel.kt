@@ -30,7 +30,7 @@ class JoinViewModel @ViewModelInject constructor(
         onOpen = ::onOpen,
         onClosed = ::onClosed,
         onMessage = ::onMessage,
-        onFailure = ::onFailure,
+        onFailure = ::onFailure
     )
     private var useCase = SocialWorkoutUseCase(listenerImpl, workoutController)
     val trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
@@ -40,6 +40,7 @@ class JoinViewModel @ViewModelInject constructor(
     val userName: MutableLiveData<String> = MutableLiveData("")
     val roomMembers: MutableLiveData<HashMap<String, Boolean>> = MutableLiveData()
     private lateinit var callbackListener: WileSocketListenerCallback
+    private var connected = false
 
 
     init {
@@ -55,6 +56,7 @@ class JoinViewModel @ViewModelInject constructor(
 
     private fun onOpen(response: Response) {
         Timber.d(response.message())
+        connected = true
         callbackListener.connectionOpen()
     }
 
@@ -96,21 +98,28 @@ class JoinViewModel @ViewModelInject constructor(
 
     private fun onClosed(code: Int, reason: String) {
         callbackListener.connectionClosed(code, reason)
+        connected = false
     }
 
     private fun onFailure(t: Throwable, response: Response?) {
         callbackListener.onConnectionFailure(t, response)
+        connected = false
     }
 
     fun connect(){
-        useCase.connect()
+        if (!connected) {
+            useCase.connect()
+        }
     }
 
     fun disconnect(){
-        useCase.disconnect()
+        if (connected) {
+            useCase.disconnect()
+        }
     }
 
     fun create(): Boolean{
+        connect()
         userName.value?.let {
             useCase.join(roomNameCreate, it)
             return true
@@ -119,6 +128,7 @@ class JoinViewModel @ViewModelInject constructor(
     }
 
     fun join(): Boolean {
+        connect()
         if (userName.value.isNullOrEmpty() ||
                 roomNameInput.value.isNullOrEmpty()){
             return false
