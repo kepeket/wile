@@ -14,6 +14,7 @@ import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
 import com.wile.app.model.*
+import com.wile.app.ui.adapter.RoomMemberAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_social_join.view.*
 import okhttp3.Response
@@ -24,7 +25,8 @@ class JoinActivity : DataBindingActivity() {
     private val binding: ActivitySocialJoinBinding by binding(R.layout.activity_social_join)
 
     private val viewModel: JoinViewModel by viewModels()
-    private var  bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
+    private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
+    private val adapter by lazy { RoomMemberAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,7 @@ class JoinActivity : DataBindingActivity() {
         binding.apply {
             lifecycleOwner = this@JoinActivity
             viewModel = this@JoinActivity.viewModel
+            memberAdapter = adapter
         }
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.connectionBottomSheet)
@@ -98,7 +101,10 @@ class JoinActivity : DataBindingActivity() {
 
     private fun onConnectionClosed(code: Int, reason: String) {
         toggleBottomSheet(false)
-        Toast.makeText(this, getString(R.string.ws_connection_list, reason), Toast.LENGTH_SHORT).show()
+        runOnUiThread {
+            Toast.makeText(this, getString(R.string.ws_connection_list, reason), Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     private fun onConnectionFailure(t: Throwable, response: Response?) {
@@ -112,11 +118,11 @@ class JoinActivity : DataBindingActivity() {
 
     // UI based on room activity
     private fun onUserJoined(userId: String, room: String){
-        logOutput(getString(R.string.room_someone_has_joined, userId, room))
+        logOutput(getString(R.string.room_someone_has_joined, userId))
     }
 
     private fun onUserLeft(userId: String, room: String){
-        logOutput(getString(R.string.room_someone_has_left, userId, room))
+        logOutput(getString(R.string.room_someone_has_left, userId))
     }
 
     private fun onRoomCreated(room: String){
@@ -135,6 +141,7 @@ class JoinActivity : DataBindingActivity() {
 
     private fun logOutput(str: String){
         runOnUiThread {
+            Toast.makeText(this, str, Toast.LENGTH_SHORT).show()
             val textView = TextView(this)
             textView.text = str
             binding.connectionLog.addView(textView)

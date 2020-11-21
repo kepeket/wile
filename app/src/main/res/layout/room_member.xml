@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="tint"
+            type="int" />
+        <variable
+            name="name"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/text_padding"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/connection_status"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/circle"
+            app:layout_constraintBottom_toBottomOf="@+id/member_id"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="1dp"
+            app:tintColor="@{tint}"
+            app:layout_constraintTop_toTopOf="@+id/member_id" />
+
+        <TextView
+            android:id="@+id/member_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginStart="@dimen/text_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/connection_status"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{name}"
+            tools:text="Jean Mich" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

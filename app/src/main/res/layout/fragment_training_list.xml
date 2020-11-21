@@ -43,7 +43,7 @@
                 style="@style/Theme.Main.Workout.Duration"
                 android:text="@{viewModel.workoutName}"
 
-                />
+                tools:ignore="RtlSymmetry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <View
             android:layout_width="3dp"

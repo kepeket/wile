@@ -3,6 +3,7 @@ package com.wile.app.binding
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.wile.app.ui.adapter.RoomMemberAdapter
 import com.wile.training.model.Preset
 import com.wile.database.model.Training
 import com.wile.app.ui.adapter.TrainingAdapter
@@ -23,6 +24,16 @@ object RecyclerViewBinding {
         trainingList?.let {
             if (it.isNotEmpty()) {
                 (view.adapter as? TrainingAdapter)?.addTrainingList(it)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("adapterMemberList")
+    fun bindAdapterMemberList(view: RecyclerView, memberList: HashMap<String, Boolean>?) {
+        memberList?.let {
+            if (it.isNotEmpty()) {
+                (view.adapter as? RoomMemberAdapter)?.addMemberList(it)
             }
         }
     }

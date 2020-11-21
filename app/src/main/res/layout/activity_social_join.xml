@@ -6,6 +6,9 @@
         <variable
             name="viewModel"
             type="com.wile.app.ui.social.JoinViewModel" />
+        <variable
+            name="memberAdapter"
+            type="com.wile.app.ui.adapter.RoomMemberAdapter" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -95,7 +98,7 @@
             android:ems="10"
             tools:text="Name"
             android:inputType="textCapCharacters"
-            android:text="@={viewModel.roomNameInput}"
+            android:text="@{viewModel.roomNameInput}"
             android:layout_marginTop="@dimen/form_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -155,6 +158,7 @@
             android:layout_height="wrap_content"
             android:background="@color/timed_preset"
             android:padding="@dimen/form_padding"
+            app:behavior_hideable="false"
             app:behavior_peekHeight="0dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -169,7 +173,52 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/create_room_name"
+                style="@style/Theme.Main.Social.RoomID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_padding"
+                android:text="@{viewModel.roomNameCreate}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/connection_label"
+                tools:text="AD42DZ" />
+
+            <TextView
+                android:id="@+id/waiting_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:paddingHorizontal="@dimen/big_padding"
+                android:text="@string/waiting_for_pals"
+                app:layout_constraintTop_toBottomOf="@+id/create_room_name"
+                 />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/room_members"
+                app:adapter="@{memberAdapter}"
+                app:adapterMemberList="@{viewModel.roomMembers}"
+                tools:listitem="@layout/room_member"
+                android:layout_width="250dp"
+                android:layout_marginVertical="@dimen/big_padding"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="3"
+                app:spanCount="2"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/go_social_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/waiting_label">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
             <ScrollView
+                android:visibility="gone"
                 android:id="@+id/connection_log_scrollview"
                 android:layout_width="300dp"
                 android:layout_height="70dp"
@@ -184,7 +233,7 @@
                 <LinearLayout
                     android:id="@+id/connection_log"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
                 </LinearLayout>
             </ScrollView>

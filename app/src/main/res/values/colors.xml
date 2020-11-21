@@ -16,4 +16,7 @@
     <color name="black_opacity_5">#80000000</color>
     <color name="go_fab_backgroung">#FFFFFF</color>
     <color name="bottom_bar_background">#333333</color>
+    <color name="connection_green">#558B2F</color>
+    <color name="connection_red">#A22121</color>
+    <color name="connection_orange">#F9A825</color>
 </resources>

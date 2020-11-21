@@ -4,6 +4,8 @@ import com.wile.app.model.EnvelopType
 import com.wile.app.model.RoomMessageAction
 import com.wile.app.model.RoomModels
 import com.wile.app.model.WileMessage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.Response
 import okhttp3.WebSocketListener
 import timber.log.Timber
@@ -52,6 +54,7 @@ class SocialWorkoutUseCase @Inject constructor(
             name = roomName,
             action = RoomMessageAction.Join
         )
+
         val ret = workoutController.join(message)
         Timber.d("join %b", ret)
     }
