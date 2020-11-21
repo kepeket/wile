@@ -33,6 +33,13 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
        >
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="4dp"
+            android:background="@color/black_opacity_5"
+            app:gone="@{!viewModel.isInRoom}"/>
+
         <TextView
             android:id="@+id/information"
             android:layout_width="250dp"
@@ -62,7 +69,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             tools:text="Name"
-            android:text="@={viewModel.userName}"
+            android:text="@{viewModel.userName}"
             android:layout_marginTop="@dimen/form_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -158,9 +165,22 @@
             android:layout_height="wrap_content"
             android:background="@color/timed_preset"
             android:padding="@dimen/form_padding"
+            android:elevation="6dp"
             app:behavior_hideable="false"
+            app:behavior_draggable="false"
             app:behavior_peekHeight="0dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+            <ImageButton
+                android:id="@+id/cancel_social_btn"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:scaleType="fitCenter"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_baseline_cancel_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/connection_label"
@@ -238,19 +258,6 @@
                 </LinearLayout>
             </ScrollView>
 
-            <ImageButton
-                android:id="@+id/cancel_social_btn"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:scaleType="fitCenter"
-                android:background="@drawable/circle"
-                android:backgroundTint="@color/white"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/training_go_red"
-                android:src="@drawable/ic_baseline_cancel_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/go_social_btn"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/go_social_btn"
@@ -259,9 +266,10 @@
                 android:text="@string/go_social_btn_label"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="center"
+                app:gone="@{!viewModel.hosting}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cancel_social_btn" />
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

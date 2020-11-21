@@ -3,6 +3,7 @@ package com.wile.app.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.R
@@ -11,14 +12,19 @@ import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
 import com.wile.app.ui.social.JoinActivity
+import com.wile.app.ui.social.SocialWorkoutUseCase
 import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class TrainingListingActivity : DataBindingActivity() {
+class TrainingListingActivity @Inject constructor(): DataBindingActivity() {
+
+    @Inject
+    lateinit var socialUseCase: SocialWorkoutUseCase
 
     private val viewModel: WorkoutListingViewModel by viewModels()
     private val binding: ActivityTrainingListingBinding by binding(R.layout.activity_training_listing)
@@ -54,6 +60,10 @@ class TrainingListingActivity : DataBindingActivity() {
         setSupportActionBar(binding.mainToolbar.toolbar)
         fab.setOnClickListener {
             startActivity(WorkoutActivity.startWorkout(this, currentWorkout))
+        }
+
+        if (socialUseCase.inRoom){
+            Toast.makeText(this, "in room", Toast.LENGTH_LONG).show()
         }
     }
 

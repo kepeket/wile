@@ -48,7 +48,7 @@
     <string name="social_join_room">Rejoindre une salle</string>
     <string name="social_join_btn">Rejoindre</string>
     <string name="social_create_btn">Créer</string>
-    <string name="social_how_to_join">Saisissez un pseudo et le code d\'une salle d\entrainement à rejoindre.</string>
+    <string name="social_how_to_join">Saisissez un pseudo et le code d\'une salle d\'entrainement à rejoindre.</string>
     <string name="social_how_to_create">Créer une salle d\'entrainement</string>
     <string name="activity_workout_label">Au travail !</string>
     <string name="delete_workout">Supprimer l\'entrainement</string>

@@ -1,6 +1,6 @@
 package com.wile.app.ui.social
 
-import androidx.annotation.WorkerThread
+import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -8,8 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.app.model.*
-import com.wile.database.model.Training
-import com.wile.training.TrainingRepository
 import okhttp3.Response
 import org.hashids.Hashids
 import timber.log.Timber
@@ -22,14 +20,16 @@ class JoinViewModel @ViewModelInject constructor(
 
     val roomNameCreate: String
     val roomNameInput: MutableLiveData<String> = MutableLiveData("")
-    val userName: LiveData<String>
+    val userName: MutableLiveData<String> = MutableLiveData("")
     val roomMembers: MutableLiveData<HashMap<String, Boolean>> = MutableLiveData(hashMapOf())
+    val hosting: ObservableBoolean = ObservableBoolean(false)
+    val isInRoom: MutableLiveData<Boolean> = MutableLiveData(false)
     private lateinit var callbackListener: WileSocketListenerCallback
     private var connected = false
 
 
     init {
-        userName = MutableLiveData(getRotatedUserName())
+        userName.value = getRotatedUserName()
         val hashids = Hashids(userName.value)
         roomNameCreate = hashids.encode(Instant.now().toEpochMilli()/1000).toUpperCase().take(6)
         useCase.setCallbacks(
@@ -45,7 +45,6 @@ class JoinViewModel @ViewModelInject constructor(
     }
 
     private fun onOpen(response: Response) {
-        Timber.d(response.message())
         connected = true
         callbackListener.connectionOpen()
     }
@@ -56,12 +55,16 @@ class JoinViewModel @ViewModelInject constructor(
                 with(response as RoomModels.RoomMessage) {
                     when (response.action) {
                         RoomMessageAction.Joined -> {
+                            if (response.userId == userName.value){
+                                setInRoom(true)
+                            }
                             roomMembers.value?.let { orig ->
                                 roomMembers.postValue(orig.also{ it[response.userId] = true})
                             }
                             callbackListener.onUserJoined(response.userId, response.name)
                         }
                         RoomMessageAction.Created -> {
+                            setInRoom(true)
                             callbackListener.onRoomCreated(response.name)
                         }
                         RoomMessageAction.Left -> {
@@ -98,11 +101,13 @@ class JoinViewModel @ViewModelInject constructor(
     private fun onClosed(code: Int, reason: String) {
         callbackListener.connectionClosed(code, reason)
         connected = false
+        setInRoom(false)
     }
 
     private fun onFailure(t: Throwable, response: Response?) {
         callbackListener.onConnectionFailure(t, response)
         connected = false
+        setInRoom(false)
     }
 
     fun connect(){
@@ -114,28 +119,33 @@ class JoinViewModel @ViewModelInject constructor(
     fun disconnect(){
         if (connected) {
             useCase.disconnect()
+            connected = false
+            setInRoom(false)
         }
     }
 
-    fun create(): Boolean{
-        userName.value?.let {
-            useCase.create(roomNameCreate, it)
-            return true
-        }
+    fun create(user: String) {
+        userName.value = user
+        hosting.set(true)
         connect()
-        return false
+        useCase.join(roomNameCreate, user)
+        setInRoom(true)
     }
 
-    fun join(): Boolean {
-        if (userName.value.isNullOrEmpty() ||
-                roomNameInput.value.isNullOrEmpty()){
-            return false
-        }
+    fun join(user: String, roomName: String) {
+        userName.value = user
+        hosting.set(false)
+        roomNameInput.value = roomName.toUpperCase()
         connect()
-        useCase.join(roomNameInput.value!!.toUpperCase(), userName.value!!)
-        return true
+        useCase.join(roomName.toUpperCase(), user)
+        setInRoom(true)
     }
 
+    private fun setInRoom(bool: Boolean){
+        useCase.inRoom = bool
+        isInRoom.postValue(bool)
+    }
+    
     private fun getRotatedUserName(): String {
         val fakeUserNames = listOf<String>(
                 "RapidPanda",

@@ -52,19 +52,28 @@
             android:background="@color/bottom_bar_background"
             android:layout_height="@dimen/bottom_bar">
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/settings_btn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/ic_baseline_settings_24"
                 android:layout_marginHorizontal="@dimen/bottom_bar_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="?selectableItemBackgroundBorderless"
                 app:layout_constraintBottom_toBottomOf="parent"/>
-
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_baseline_add_alarm_24"
+                android:layout_marginHorizontal="@dimen/bottom_bar_margin"
+                app:layout_constraintStart_toEndOf="@+id/settings_btn"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="?selectableItemBackgroundBorderless"
+                app:layout_constraintBottom_toBottomOf="parent"/>
             <ImageButton
                 android:id="@+id/go_social"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/ic_baseline_people_24"
                 android:layout_marginHorizontal="@dimen/bottom_bar_margin"
                 app:layout_constraintEnd_toStartOf="@+id/new_training"
@@ -73,8 +82,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
             <ImageButton
                 android:id="@+id/new_training"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/ic_baseline_playlist_add_24"
                 android:layout_marginHorizontal="@dimen/bottom_bar_margin"
                 app:layout_constraintEnd_toEndOf="parent"

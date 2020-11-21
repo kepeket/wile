@@ -16,6 +16,11 @@ class SocialWorkoutUseCase @Inject constructor(
     val workoutController: SocialWorkoutController
     ) {
 
+    var inRoom = false
+    var isHost = false
+    private var roomName = ""
+    private var userId = ""
+
     fun setCallbacks(
         onOpen: (response: Response) -> Unit,
         onMessage: (type: EnvelopType, response: WileMessage) -> Unit,
@@ -39,6 +44,9 @@ class SocialWorkoutUseCase @Inject constructor(
     }
 
     fun create(roomName: String, userId: String){
+        this.userId = userId
+        this.roomName = roomName
+        isHost = true
         val message = RoomModels.RoomMessage(
             userId = userId,
             name = roomName,
@@ -49,6 +57,9 @@ class SocialWorkoutUseCase @Inject constructor(
     }
 
     fun join(roomName: String, userId: String){
+        this.userId = userId
+        this.roomName = roomName
+        isHost = false
         val message = RoomModels.RoomMessage(
             userId = userId,
             name = roomName,

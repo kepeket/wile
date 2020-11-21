@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -19,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_social_join.view.*
 import okhttp3.Response
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class JoinActivity : DataBindingActivity() {
@@ -44,8 +47,6 @@ class JoinActivity : DataBindingActivity() {
             )
         )
 
-        viewModel.connect()
-
         binding.apply {
             lifecycleOwner = this@JoinActivity
             viewModel = this@JoinActivity.viewModel
@@ -58,40 +59,46 @@ class JoinActivity : DataBindingActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.create.setOnClickListener {
-            cleanLogOutput()
-            toggleBottomSheet(true)
-            if (!viewModel.create()) {
+            if (binding.username.text.isNullOrEmpty()) {
                 Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+            viewModel.create(binding.username.text.toString())
         }
 
         binding.join.setOnClickListener {
-            cleanLogOutput()
-            toggleBottomSheet(true)
-            if (!viewModel.join()) {
-                if (viewModel.userName.value.isNullOrEmpty()) {
-                    Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT)
-                        .show()
-                } else if (viewModel.roomNameInput.value.isNullOrEmpty()) {
-                    Toast.makeText(this, getString(R.string.empty_room_name), Toast.LENGTH_SHORT)
-                        .show()
-                }
+            if (binding.username.text.isNullOrEmpty()) {
+                Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            } else if (binding.room.text.isNullOrEmpty()) {
+                Toast.makeText(this, getString(R.string.empty_room_name), Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
             }
+            viewModel.join(binding.username.text.toString(),
+                binding.room.text.toString())
         }
 
         binding.cancelSocialBtn.setOnClickListener {
-            toggleBottomSheet(false)
             viewModel.disconnect()
         }
+
+        viewModel.isInRoom.observe(this, {
+            toggleBottomSheet(it)
+        })
+
     }
 
     private fun toggleBottomSheet(toggle: Boolean){
         bottomSheetBehavior?.let {
-            if (it.state == BottomSheetBehavior.STATE_EXPANDED && !toggle){
-                it.state = BottomSheetBehavior.STATE_COLLAPSED
-            } else if (it.state == BottomSheetBehavior.STATE_COLLAPSED && toggle){
-                it.state = BottomSheetBehavior.STATE_EXPANDED
-            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (it.state == BottomSheetBehavior.STATE_EXPANDED && !toggle){
+                    it.state = BottomSheetBehavior.STATE_COLLAPSED
+                } else if (it.state == BottomSheetBehavior.STATE_COLLAPSED && toggle){
+                    it.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+            }, 500)
         }
     }
 
@@ -100,7 +107,6 @@ class JoinActivity : DataBindingActivity() {
     }
 
     private fun onConnectionClosed(code: Int, reason: String) {
-        toggleBottomSheet(false)
         runOnUiThread {
             Toast.makeText(this, getString(R.string.ws_connection_list, reason), Toast.LENGTH_SHORT)
                 .show()
@@ -108,7 +114,6 @@ class JoinActivity : DataBindingActivity() {
     }
 
     private fun onConnectionFailure(t: Throwable, response: Response?) {
-        toggleBottomSheet(false)
         t.message?.let {
             runOnUiThread {
                 Toast.makeText(this, t.message, Toast.LENGTH_SHORT).show()
@@ -151,11 +156,6 @@ class JoinActivity : DataBindingActivity() {
 
     private fun cleanLogOutput(){
         binding.connectionLog.removeAllViews()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.disconnect()
     }
 
     companion object {

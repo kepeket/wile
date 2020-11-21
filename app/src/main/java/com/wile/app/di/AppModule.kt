@@ -2,6 +2,8 @@ package com.wile.app.di
 
 import android.content.Context
 import android.os.Vibrator
+import androidx.hilt.Assisted
+import androidx.lifecycle.SavedStateHandle
 import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -55,6 +57,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideOkHttpClient() = OkHttpClient()
+
 
     @Provides
     @Singleton
