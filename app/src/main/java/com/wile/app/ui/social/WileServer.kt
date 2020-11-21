@@ -23,7 +23,7 @@ class WileServer @Inject constructor(
     }
 
     fun disconnect(){
-        okHttpClient.dispatcher().executorService().shutdown()
+        ws?.close(1000, "bye")
     }
 
     fun joinRoom(roomPayload: RoomModels.RoomMessage): Boolean {

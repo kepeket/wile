@@ -4,8 +4,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.MainThread
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.app.R
@@ -13,6 +15,7 @@ import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
 import com.wile.app.model.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_social_join.view.*
 import okhttp3.Response
 import timber.log.Timber
 
@@ -75,11 +78,8 @@ class JoinActivity : DataBindingActivity() {
 
         binding.cancelSocialBtn.setOnClickListener {
             toggleBottomSheet(false)
+            viewModel.disconnect()
         }
-    }
-
-    private fun cleanLogOutput(){
-        binding.connectionLog.setText("")
     }
 
     private fun toggleBottomSheet(toggle: Boolean){
@@ -134,9 +134,16 @@ class JoinActivity : DataBindingActivity() {
     }
 
     private fun logOutput(str: String){
-        binding.connectionLog.setText(
-            String.format("%s\n%s", binding.connectionLog.text.toString(), str)
-        )
+        runOnUiThread {
+            val textView = TextView(this)
+            textView.text = str
+            binding.connectionLog.addView(textView)
+            textView.requestFocus()
+        }
+    }
+
+    private fun cleanLogOutput(){
+        binding.connectionLog.removeAllViews()
     }
 
     override fun onPause() {

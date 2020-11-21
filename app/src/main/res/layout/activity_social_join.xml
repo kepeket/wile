@@ -59,7 +59,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             tools:text="Name"
-            android:text="@{viewModel.userName}"
+            android:text="@={viewModel.userName}"
             android:layout_marginTop="@dimen/form_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,6 +94,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             tools:text="Name"
+            android:inputType="textCapCharacters"
+            android:text="@={viewModel.roomNameInput}"
             android:layout_marginTop="@dimen/form_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -167,22 +169,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/connection_log"
+            <ScrollView
+                android:id="@+id/connection_log_scrollview"
                 android:layout_width="300dp"
                 android:layout_height="70dp"
                 android:layout_marginVertical="@dimen/big_padding"
-                android:ems="10"
-                android:gravity="start|top"
-                android:inputType="textMultiLine"
-                android:textColor="@color/dark_grey_variant"
+                android:textColor="@color/white"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toTopOf="@+id/go_social_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/connection_label"
-                tools:ignore="SmallSp"
-                tools:text="Machin s'est co" />
+                tools:ignore="SmallSp">
+                <LinearLayout
+                    android:id="@+id/connection_log"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </ScrollView>
 
             <ImageButton
                 android:id="@+id/cancel_social_btn"

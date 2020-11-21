@@ -32,7 +32,7 @@ class JoinViewModel @ViewModelInject constructor(
     init {
         userName.value = getRotatedUserName()
         val hashids = Hashids(userName.value)
-        roomNameCreate = hashids.encode(Instant.now().toEpochMilli()/1000)
+        roomNameCreate = hashids.encode(Instant.now().toEpochMilli()/1000).toUpperCase()
         roomMembers.value = hashMapOf()
         useCase.setCallbacks(
             onOpen = ::onOpen,
@@ -125,7 +125,7 @@ class JoinViewModel @ViewModelInject constructor(
                 roomNameInput.value.isNullOrEmpty()){
             return false
         }
-        useCase.join(roomNameInput.value!!, userName.value!!)
+        useCase.join(roomNameInput.value!!.toUpperCase(), userName.value!!)
         return true
     }
 

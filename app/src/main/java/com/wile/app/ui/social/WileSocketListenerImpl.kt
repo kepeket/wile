@@ -6,6 +6,7 @@ import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import timber.log.Timber
 import javax.inject.Inject
 
 class WileSocketListenerImpl @Inject constructor(
@@ -59,7 +60,7 @@ class WileSocketListenerImpl @Inject constructor(
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        TODO("Not yet implemented")
+        Timber.d("Closing the room")
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
