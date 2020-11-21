@@ -1,38 +1,24 @@
 package com.wile.app.ui.social
 
-import android.widget.Toast
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.wile.app.R
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.app.model.*
 import com.wile.database.model.Training
 import com.wile.training.TrainingRepository
 import okhttp3.Response
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
-import okio.ByteString
 import org.hashids.Hashids
 import timber.log.Timber
 import java.time.Instant
-import javax.inject.Inject
 
 class JoinViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle,
-    val workoutController: SocialWorkoutController
+    val useCase: SocialWorkoutUseCase
 ) : LiveCoroutinesViewModel(), WileSocketListener {
 
-    private val listenerImpl = WileSocketListenerImpl(
-        onOpen = ::onOpen,
-        onClosed = ::onClosed,
-        onMessage = ::onMessage,
-        onFailure = ::onFailure
-    )
-    private var useCase = SocialWorkoutUseCase(listenerImpl, workoutController)
     val trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
     val trainingDurationLiveData: MutableLiveData<Int> = MutableLiveData(0)
     val roomNameCreate: String
@@ -48,6 +34,12 @@ class JoinViewModel @ViewModelInject constructor(
         val hashids = Hashids(userName.value)
         roomNameCreate = hashids.encode(Instant.now().toEpochMilli()/1000)
         roomMembers.value = hashMapOf()
+        useCase.setCallbacks(
+            onOpen = ::onOpen,
+            onClosed = ::onClosed,
+            onMessage = ::onMessage,
+            onFailure = ::onFailure
+        )
     }
 
     fun setSocialWorkoutCallbackListener(listenerCallback: WileSocketListenerCallback){
@@ -63,7 +55,7 @@ class JoinViewModel @ViewModelInject constructor(
     private fun onMessage(type: EnvelopType, response: WileMessage) {
         when(type){
             EnvelopType.Room -> {
-                with(response as JoinRoomModels.JoinRoomMessage) {
+                with(response as RoomModels.RoomMessage) {
                     when (response.action) {
                         RoomMessageAction.Joined -> {
                             roomMembers.value?.set(response.userId, true)
@@ -121,7 +113,7 @@ class JoinViewModel @ViewModelInject constructor(
     fun create(): Boolean{
         connect()
         userName.value?.let {
-            useCase.join(roomNameCreate, it)
+            useCase.create(roomNameCreate, it)
             return true
         }
         return false

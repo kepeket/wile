@@ -1,9 +1,9 @@
 package com.wile.app.ui.social
 
-import com.google.gson.Gson
-import com.wile.app.model.EnvelopModel
-import com.wile.app.model.EnvelopType
-import com.wile.app.model.JoinRoomModels
+import com.squareup.moshi.Moshi
+import com.wile.app.model.Envelop
+import com.wile.app.model.EnvelopRoom
+import com.wile.app.model.RoomModels
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class WileServer @Inject constructor(
     val okHttpClient: OkHttpClient,
-    val gson: Gson
+    val moshi: Moshi
 ) {
     private val serverUrl = "wss://24bc9af2f750.ngrok.io/chaussette"
     private var ws: WebSocket? = null
@@ -26,10 +26,10 @@ class WileServer @Inject constructor(
         okHttpClient.dispatcher().executorService().shutdown()
     }
 
-    fun joinRoom(roomPayload: JoinRoomModels.JoinRoomRequest): Boolean {
+    fun joinRoom(roomPayload: RoomModels.RoomMessage): Boolean {
         ws?.let {
-            val envelop = EnvelopModel(EnvelopType.Room, roomPayload)
-            return it.send(gson.toJson(envelop))
+            val envelop = EnvelopRoom(roomPayload)
+            return it.send(moshi.adapter(Envelop::class.java).toJson(envelop))
         }
         return false
     }

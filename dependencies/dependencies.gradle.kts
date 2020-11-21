@@ -30,6 +30,7 @@ dependencies {
         api("${Dependencies.materialDesign}:${DependenciesVersions.materialDesign}")
         api("${Dependencies.moshi}:${DependenciesVersions.moshi}")
         api("${Dependencies.moshiCompiler}:${DependenciesVersions.moshi}")
+        api("${Dependencies.moshiAadpters}:${DependenciesVersions.moshi}")
         api("${Dependencies.room}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.roomAnnotationProcessor}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.timber}:${DependenciesVersions.timber}")

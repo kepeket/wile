@@ -21,7 +21,7 @@ class JoinActivity : DataBindingActivity() {
     private val binding: ActivitySocialJoinBinding by binding(R.layout.activity_social_join)
 
     private val viewModel: JoinViewModel by viewModels()
-    private lateinit var  bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private var  bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +52,7 @@ class JoinActivity : DataBindingActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.create.setOnClickListener {
+            cleanLogOutput()
             toggleBottomSheet(true)
             if (!viewModel.create()) {
                 Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT).show()
@@ -59,6 +60,7 @@ class JoinActivity : DataBindingActivity() {
         }
 
         binding.join.setOnClickListener {
+            cleanLogOutput()
             toggleBottomSheet(true)
             if (!viewModel.join()) {
                 if (viewModel.userName.value.isNullOrEmpty()) {
@@ -76,11 +78,17 @@ class JoinActivity : DataBindingActivity() {
         }
     }
 
+    private fun cleanLogOutput(){
+        binding.connectionLog.setText("")
+    }
+
     private fun toggleBottomSheet(toggle: Boolean){
-        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED && !toggle){
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        } else if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED && toggle){
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetBehavior?.let {
+            if (it.state == BottomSheetBehavior.STATE_EXPANDED && !toggle){
+                it.state = BottomSheetBehavior.STATE_COLLAPSED
+            } else if (it.state == BottomSheetBehavior.STATE_COLLAPSED && toggle){
+                it.state = BottomSheetBehavior.STATE_EXPANDED
+            }
         }
     }
 
