@@ -13,13 +13,12 @@ import org.hashids.Hashids
 import timber.log.Timber
 import java.time.Instant
 
-class JoinViewModel @ViewModelInject constructor(
+class SocialWorkoutViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     val useCase: SocialWorkoutUseCase
 ) : LiveCoroutinesViewModel(), WileSocketListener {
 
-    val roomNameCreate: String
-    val roomNameInput: MutableLiveData<String> = MutableLiveData("")
+    val roomNameCreate: MutableLiveData<String> = MutableLiveData("")
     val userName: MutableLiveData<String> = MutableLiveData("")
     val roomMembers: MutableLiveData<HashMap<String, Boolean>> = MutableLiveData(hashMapOf())
     val hosting: ObservableBoolean = ObservableBoolean(false)
@@ -29,15 +28,30 @@ class JoinViewModel @ViewModelInject constructor(
 
 
     init {
-        userName.value = getRotatedUserName()
-        val hashids = Hashids(userName.value)
-        roomNameCreate = hashids.encode(Instant.now().toEpochMilli()/1000).toUpperCase().take(6)
+        refreshConnectionStatus()
         useCase.setCallbacks(
             onOpen = ::onOpen,
             onClosed = ::onClosed,
             onMessage = ::onMessage,
             onFailure = ::onFailure
         )
+    }
+
+     fun refreshConnectionStatus(){
+        userName.value = if (useCase.userId.isNotEmpty()){
+            useCase.userId
+        } else {
+            getRotatedUserName()
+        }
+
+        roomNameCreate.value = if (useCase.inRoom && useCase.roomName.isNotEmpty()) {
+            useCase.roomName
+        } else {
+            Hashids(userName.value).encode(Instant.now().toEpochMilli() / 1000).toUpperCase().take(6)
+        }
+         isInRoom.value = useCase.inRoom
+         hosting.set(useCase.isHost)
+         connected = useCase.isConnected()
     }
 
     fun setSocialWorkoutCallbackListener(listenerCallback: WileSocketListenerCallback){
@@ -128,14 +142,13 @@ class JoinViewModel @ViewModelInject constructor(
         userName.value = user
         hosting.set(true)
         connect()
-        useCase.join(roomNameCreate, user)
+        useCase.create(roomNameCreate.value!!, user)
         setInRoom(true)
     }
 
     fun join(user: String, roomName: String) {
         userName.value = user
         hosting.set(false)
-        roomNameInput.value = roomName.toUpperCase()
         connect()
         useCase.join(roomName.toUpperCase(), user)
         setInRoom(true)

@@ -3,7 +3,6 @@ package com.wile.app.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.R
@@ -12,21 +11,18 @@ import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
 import com.wile.app.ui.social.JoinActivity
-import com.wile.app.ui.social.SocialWorkoutUseCase
+import com.wile.app.ui.social.SocialWorkoutViewModel
 import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class TrainingListingActivity @Inject constructor(): DataBindingActivity() {
-
-    @Inject
-    lateinit var socialUseCase: SocialWorkoutUseCase
+class TrainingListingActivity : DataBindingActivity() {
 
     private val viewModel: WorkoutListingViewModel by viewModels()
+    private val socialViewModel: SocialWorkoutViewModel by viewModels()
     private val binding: ActivityTrainingListingBinding by binding(R.layout.activity_training_listing)
     private val adapter by lazy { WorkoutListingAdapter(this) }
     private var currentWorkout = 0
@@ -40,6 +36,7 @@ class TrainingListingActivity @Inject constructor(): DataBindingActivity() {
             lifecycleOwner = this@TrainingListingActivity
             adapter = this@TrainingListingActivity.adapter
             viewModel = this@TrainingListingActivity.viewModel
+            socialViewModel = socialViewModel
         }
 
         binding.pager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
@@ -61,11 +58,14 @@ class TrainingListingActivity @Inject constructor(): DataBindingActivity() {
         fab.setOnClickListener {
             startActivity(WorkoutActivity.startWorkout(this, currentWorkout))
         }
-
-        if (socialUseCase.inRoom){
-            Toast.makeText(this, "in room", Toast.LENGTH_LONG).show()
-        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        socialViewModel.refreshConnectionStatus()
+    }
+
+    // @TODO implement workout callback
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.training_main_menu, menu)

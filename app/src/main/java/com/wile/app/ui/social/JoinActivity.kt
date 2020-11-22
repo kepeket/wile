@@ -9,25 +9,20 @@ import android.os.Looper
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.MainThread
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
-import com.wile.app.model.*
 import com.wile.app.ui.adapter.RoomMemberAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_social_join.view.*
 import okhttp3.Response
-import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class JoinActivity : DataBindingActivity() {
     private val binding: ActivitySocialJoinBinding by binding(R.layout.activity_social_join)
 
-    private val viewModel: JoinViewModel by viewModels()
+    private val viewModel: SocialWorkoutViewModel by viewModels()
     private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
     private val adapter by lazy { RoomMemberAdapter() }
 
@@ -83,6 +78,12 @@ class JoinActivity : DataBindingActivity() {
         binding.cancelSocialBtn.setOnClickListener {
             viewModel.disconnect()
         }
+
+        binding.goSocialBtn.setOnClickListener {
+            finish()
+        }
+
+        viewModel.refreshConnectionStatus()
 
         viewModel.isInRoom.observe(this, {
             toggleBottomSheet(it)

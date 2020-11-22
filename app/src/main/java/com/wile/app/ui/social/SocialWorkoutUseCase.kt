@@ -18,8 +18,8 @@ class SocialWorkoutUseCase @Inject constructor(
 
     var inRoom = false
     var isHost = false
-    private var roomName = ""
-    private var userId = ""
+    var roomName = ""
+    var userId = ""
 
     fun setCallbacks(
         onOpen: (response: Response) -> Unit,
@@ -41,6 +41,10 @@ class SocialWorkoutUseCase @Inject constructor(
 
     fun disconnect(){
         workoutController.disconnect()
+    }
+
+    fun isConnected(): Boolean{
+        return workoutController.isConnected()
     }
 
     fun create(roomName: String, userId: String){

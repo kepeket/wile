@@ -12,6 +12,9 @@
         <variable
             name="adapter"
             type="com.wile.app.ui.adapter.WorkoutListingAdapter" />
+        <variable
+            name="socialViewModel"
+            type="com.wile.app.ui.social.SocialWorkoutViewModel" />
     </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
@@ -80,6 +83,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="?selectableItemBackgroundBorderless"
                 app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageView
+                app:gone="@{!socialViewModel.isInRoom}"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/circle"
+                app:tint="@color/connection_green"
+                app:layout_constraintTop_toTopOf="@+id/go_social"
+                app:layout_constraintEnd_toEndOf="@+id/go_social"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="18dp"
+                />
             <ImageButton
                 android:id="@+id/new_training"
                 android:layout_width="60dp"

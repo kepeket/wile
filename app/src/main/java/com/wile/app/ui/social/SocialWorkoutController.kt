@@ -20,6 +20,10 @@ class SocialWorkoutController @Inject constructor(
         server.disconnect()
     }
 
+    fun isConnected(): Boolean {
+        return server.isConnected()
+    }
+
     fun join(roomRequest: RoomModels.RoomMessage): Boolean{
         return server.joinRoom(roomRequest)
     }
