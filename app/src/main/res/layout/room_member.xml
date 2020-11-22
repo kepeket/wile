@@ -37,6 +37,6 @@
             app:layout_constraintStart_toEndOf="@+id/connection_status"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@{name}"
-            tools:text="Jean Mich" />
+            tools:text="RunningFrog" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

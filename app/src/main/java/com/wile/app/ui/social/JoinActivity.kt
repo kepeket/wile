@@ -88,7 +88,11 @@ class JoinActivity : DataBindingActivity() {
         viewModel.isInRoom.observe(this, {
             toggleBottomSheet(it)
         })
+    }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveState()
     }
 
     private fun toggleBottomSheet(toggle: Boolean){

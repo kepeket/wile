@@ -144,7 +144,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-
         <Button
             android:id="@+id/create"
             android:layout_width="wrap_content"
@@ -168,6 +167,7 @@
             app:behavior_hideable="false"
             app:behavior_draggable="false"
             app:behavior_peekHeight="0dp"
+            tools:behavior_peekHeight="1000dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
@@ -221,11 +221,11 @@
                 app:adapter="@{memberAdapter}"
                 app:adapterMemberList="@{viewModel.roomMembers}"
                 tools:listitem="@layout/room_member"
-                android:layout_width="250dp"
+                android:layout_width="350dp"
                 android:layout_marginVertical="@dimen/big_padding"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                tools:itemCount="3"
+                tools:itemCount="1"
                 app:spanCount="2"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toTopOf="@+id/go_social_btn"
@@ -257,6 +257,17 @@
                 </LinearLayout>
             </ScrollView>
 
+            <TextView
+                app:gone="@{viewModel.hosting}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait_social_btn_label"
+                android:textColor="@color/training_go_red"
+                android:layout_marginBottom="@dimen/big_padding"
+                app:layout_constraintTop_toBottomOf="@+id/room_members"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <Button
                 android:id="@+id/go_social_btn"
@@ -266,6 +277,7 @@
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="center"
                 app:gone="@{!viewModel.hosting}"
+                app:layout_constraintTop_toBottomOf="@+id/room_members"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

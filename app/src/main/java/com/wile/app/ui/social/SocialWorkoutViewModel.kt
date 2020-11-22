@@ -37,6 +37,12 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
         )
     }
 
+    fun saveState(){
+        roomMembers.value?.let{
+            useCase.members = it
+        }
+    }
+
      fun refreshConnectionStatus(){
         userName.value = if (useCase.userId.isNotEmpty()){
             useCase.userId
@@ -49,6 +55,11 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
         } else {
             Hashids(userName.value).encode(Instant.now().toEpochMilli() / 1000).toUpperCase().take(6)
         }
+
+         if (roomMembers.value?.count() == 0 && useCase.members.count()>0){
+             roomMembers.value = useCase.members
+         }
+
          isInRoom.value = useCase.inRoom
          hosting.set(useCase.isHost)
          connected = useCase.isConnected()
@@ -148,6 +159,7 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
 
     fun join(user: String, roomName: String) {
         userName.value = user
+        roomNameCreate.value = roomName
         hosting.set(false)
         connect()
         useCase.join(roomName.toUpperCase(), user)

@@ -36,7 +36,7 @@ class TrainingListingActivity : DataBindingActivity() {
             lifecycleOwner = this@TrainingListingActivity
             adapter = this@TrainingListingActivity.adapter
             viewModel = this@TrainingListingActivity.viewModel
-            socialViewModel = socialViewModel
+            socialViewModel = this@TrainingListingActivity.socialViewModel
         }
 
         binding.pager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
