@@ -2,6 +2,8 @@ package com.wile.app.di
 
 import android.content.Context
 import android.os.Vibrator
+import android.view.inputmethod.InputMethod
+import android.view.inputmethod.InputMethodManager
 import androidx.hilt.Assisted
 import androidx.lifecycle.SavedStateHandle
 import com.google.gson.Gson
@@ -29,6 +31,12 @@ object AppModule {
     fun provideVibrator(
         @ApplicationContext context: Context
     ) = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
+
+    @Provides
+    @Singleton
+    fun provideInputMethodManager(
+        @ApplicationContext context: Context
+    ) = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
     @Provides
     @Singleton

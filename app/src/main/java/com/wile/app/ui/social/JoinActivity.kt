@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -17,11 +18,14 @@ import com.wile.app.databinding.ActivitySocialJoinBinding
 import com.wile.app.ui.adapter.RoomMemberAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.Response
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class JoinActivity : DataBindingActivity() {
+class JoinActivity @Inject constructor() : DataBindingActivity() {
     private val binding: ActivitySocialJoinBinding by binding(R.layout.activity_social_join)
 
+    var inputMethodManager: InputMethodManager? = null
+        @Inject set
     private val viewModel: SocialWorkoutViewModel by viewModels()
     private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
     private val adapter by lazy { RoomMemberAdapter() }
@@ -58,6 +62,7 @@ class JoinActivity : DataBindingActivity() {
                 Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            inputMethodManager?.hideSoftInputFromWindow(binding.root.windowToken, 0);
             viewModel.create(binding.username.text.toString())
         }
 
@@ -71,6 +76,7 @@ class JoinActivity : DataBindingActivity() {
                     .show()
                 return@setOnClickListener
             }
+            inputMethodManager?.hideSoftInputFromWindow(binding.root.windowToken, 0);
             viewModel.join(binding.username.text.toString(),
                 binding.room.text.toString())
         }
