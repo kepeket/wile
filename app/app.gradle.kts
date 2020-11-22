@@ -59,6 +59,7 @@ dependencies {
         Dependencies.kotlinStdlibJdk7,
         Dependencies.materialDesign,
         Dependencies.moshi,
+        Dependencies.moshiAadpters,
         Dependencies.room,
         Dependencies.timber,
         Dependencies.viewpager2,

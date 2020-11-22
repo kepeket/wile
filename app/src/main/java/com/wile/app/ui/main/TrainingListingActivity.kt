@@ -11,6 +11,7 @@ import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
 import com.wile.app.ui.social.JoinActivity
+import com.wile.app.ui.social.SocialWorkoutViewModel
 import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
@@ -21,6 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class TrainingListingActivity : DataBindingActivity() {
 
     private val viewModel: WorkoutListingViewModel by viewModels()
+    private val socialViewModel: SocialWorkoutViewModel by viewModels()
     private val binding: ActivityTrainingListingBinding by binding(R.layout.activity_training_listing)
     private val adapter by lazy { WorkoutListingAdapter(this) }
     private var currentWorkout = 0
@@ -34,6 +36,7 @@ class TrainingListingActivity : DataBindingActivity() {
             lifecycleOwner = this@TrainingListingActivity
             adapter = this@TrainingListingActivity.adapter
             viewModel = this@TrainingListingActivity.viewModel
+            socialViewModel = this@TrainingListingActivity.socialViewModel
         }
 
         binding.pager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
@@ -56,6 +59,13 @@ class TrainingListingActivity : DataBindingActivity() {
             startActivity(WorkoutActivity.startWorkout(this, currentWorkout))
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        socialViewModel.refreshConnectionStatus()
+    }
+
+    // @TODO implement workout callback
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.training_main_menu, menu)

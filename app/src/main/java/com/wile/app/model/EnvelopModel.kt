@@ -1,6 +1,31 @@
 package com.wile.app.model
 
-data class EnvelopModel(
-    val type: String,
-    val message: WileMessage
-)
+import com.squareup.moshi.Json
+
+data class EnvelopRoom(
+    val message: RoomModels.RoomMessage
+): Envelop(EnvelopType.Room)
+data class EnvelopPing(
+    val message: PingModels.PingRequest
+): Envelop(EnvelopType.Ping)
+data class EnvelopPong(
+    val message: PingModels.PingRequest
+): Envelop(EnvelopType.Pong)
+data class EnvelopError(
+    val message: ErrorModels.Error
+): Envelop(EnvelopType.Error)
+
+
+sealed class Envelop(@Json(name = "type") val typeName: EnvelopType)
+
+sealed class EnvelopType {
+    object Room: EnvelopType()
+    object Ping: EnvelopType()
+    object Pong: EnvelopType()
+    object Error: EnvelopType()
+}
+
+const val ENVELOP_TYPE_ROOM = "room"
+const val ENVELOP_TYPE_PING = "ping"
+const val ENVELOP_TYPE_PONG = "pong"
+const val ENVELOP_TYPE_ERROR = "error"

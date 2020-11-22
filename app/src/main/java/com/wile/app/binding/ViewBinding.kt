@@ -1,6 +1,7 @@
 package com.wile.app.binding
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedDispatcherOwner
@@ -86,6 +87,12 @@ object ViewBinding {
                 Toast.makeText(view.context, it, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("tintColor")
+    fun bindTintColor(view: ImageView, tint: Int) {
+        view.imageTintList = ColorStateList.valueOf(tint)
     }
 
     @JvmStatic

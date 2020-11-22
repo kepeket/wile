@@ -30,6 +30,7 @@ dependencies {
         api("${Dependencies.materialDesign}:${DependenciesVersions.materialDesign}")
         api("${Dependencies.moshi}:${DependenciesVersions.moshi}")
         api("${Dependencies.moshiCompiler}:${DependenciesVersions.moshi}")
+        api("${Dependencies.moshiAadpters}:${DependenciesVersions.moshi}")
         api("${Dependencies.room}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.roomAnnotationProcessor}:${DependenciesVersions.androidXRoom}")
         api("${Dependencies.timber}:${DependenciesVersions.timber}")
@@ -62,5 +63,5 @@ object DependenciesVersions {
     const val moshi                            = "1.11.0"
     const val timber                           = "4.7.1"
     const val viewpager2                       = "1.0.0"
-    const val hashids                           = "1.0.3"
+    const val hashids                          = "1.0.3"
 }

@@ -1,7 +1,7 @@
 package com.wile.app.ui.social
 
 import android.widget.Chronometer
-import com.wile.app.model.JoinRoomModels
+import com.wile.app.model.RoomModels
 import com.wile.app.ui.handler.WorkoutInterface
 import okhttp3.WebSocketListener
 import javax.inject.Inject
@@ -20,8 +20,12 @@ class SocialWorkoutController @Inject constructor(
         server.disconnect()
     }
 
-    fun join(roomRequest: JoinRoomModels.JoinRoomRequest){
-        server.joinRoom(roomRequest)
+    fun isConnected(): Boolean {
+        return server.isConnected()
+    }
+
+    fun join(roomRequest: RoomModels.RoomMessage): Boolean{
+        return server.joinRoom(roomRequest)
     }
 
     override fun startStopWorkout() {

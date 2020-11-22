@@ -67,6 +67,7 @@ object Dependencies {
 
     const val moshi = "com.squareup.moshi:moshi-kotlin"
     const val moshiCompiler = "com.squareup.moshi:moshi-kotlin-codegen"
+    const val moshiAadpters = "com.squareup.moshi:moshi-adapters"
 
     // Guide : https://developer.android.com/topic/libraries/architecture/room
     // Artifact : https://mvnrepository.com/artifact/androidx.room/room-ktx
