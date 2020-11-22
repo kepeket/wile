@@ -21,7 +21,7 @@ import okhttp3.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class JoinActivity @Inject constructor() : DataBindingActivity() {
+class JoinActivity: DataBindingActivity() {
     private val binding: ActivitySocialJoinBinding by binding(R.layout.activity_social_join)
 
     var inputMethodManager: InputMethodManager? = null
