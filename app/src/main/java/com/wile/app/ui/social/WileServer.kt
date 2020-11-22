@@ -9,10 +9,12 @@ import okhttp3.Request
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class WileServer @Inject constructor(
-    val okHttpClient: OkHttpClient,
-    val moshi: Moshi
+    private val okHttpClient: OkHttpClient,
+    private val moshi: Moshi
 ) {
     private val serverUrl = "wss://24bc9af2f750.ngrok.io/chaussette"
     private var ws: WebSocket? = null

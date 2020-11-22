@@ -5,7 +5,9 @@ import com.wile.app.model.RoomModels
 import com.wile.app.ui.handler.WorkoutInterface
 import okhttp3.WebSocketListener
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SocialWorkoutController @Inject constructor(
     val server: WileServer
 ) : WorkoutInterface {

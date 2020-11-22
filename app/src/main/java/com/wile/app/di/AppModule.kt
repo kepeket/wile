@@ -2,10 +2,7 @@ package com.wile.app.di
 
 import android.content.Context
 import android.os.Vibrator
-import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
-import androidx.hilt.Assisted
-import androidx.lifecycle.SavedStateHandle
 import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -18,8 +15,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
-import okhttp3.WebSocketListener
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
@@ -38,6 +33,7 @@ object AppModule {
         @ApplicationContext context: Context
     ) = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
+    // FixMe : Gson or Moshi, choose you side. You are using 2 different parsing solutions.
     @Provides
     @Singleton
     fun provideGson() = Gson()
@@ -66,31 +62,9 @@ object AppModule {
     @Singleton
     fun provideOkHttpClient() = OkHttpClient()
 
-
-    @Provides
-    @Singleton
-    fun provideWileServer(
-        okHttpClient: OkHttpClient,
-        moshi: Moshi
-    ) = WileServer(okHttpClient, moshi)
-
-    @Provides
-    @Singleton
-    fun provideSocialWorkoutController(
-        server: WileServer
-    ) = SocialWorkoutController(server)
-
     @Provides
     @Singleton
     fun provideWileSocketListener(
         moshi: Moshi
     ) = WileSocketListenerImpl(moshi) as WileSocketListener
-
-    @Provides
-    @Singleton
-    fun provideSocialWorkoutUseCase(
-        listener: WileSocketListener,
-        workoutController: SocialWorkoutController
-    ) = SocialWorkoutUseCase(listener, workoutController)
-
 }

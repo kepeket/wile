@@ -8,7 +8,10 @@ import okhttp3.Response
 import okhttp3.WebSocketListener
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
+// Todo : bad smell : a usecase should ideally be stateless and so not being a singleton.
+@Singleton
 class SocialWorkoutUseCase @Inject constructor(
     val listener: WileSocketListener,
     val workoutController: SocialWorkoutController
