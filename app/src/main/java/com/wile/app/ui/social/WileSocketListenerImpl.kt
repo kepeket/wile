@@ -1,6 +1,6 @@
 package com.wile.app.ui.social
 
-import com.squareup.moshi.Moshi
+import com.squareup.moshi.JsonAdapter
 import com.wile.app.model.*
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -10,7 +10,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class WileSocketListenerImpl @Inject constructor(
-    val moshi: Moshi
+    private val envelopAdapter: JsonAdapter<Envelop>
 ) : WileSocketListener, WebSocketListener() {
 
     private lateinit var onOpenCallback: (response: Response) -> Unit?
@@ -36,7 +36,7 @@ class WileSocketListenerImpl @Inject constructor(
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        val env = moshi.adapter(Envelop::class.java).fromJson(text)
+        val env = envelopAdapter.fromJson(text)
 
         when(env?.typeName){
             EnvelopType.Room -> {

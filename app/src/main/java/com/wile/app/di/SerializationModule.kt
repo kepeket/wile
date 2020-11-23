@@ -1,12 +1,14 @@
 package com.wile.app.di
 
 import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.wile.app.model.*
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import javax.inject.Singleton
@@ -38,4 +40,9 @@ object SerializationModule {
         )
         .add(KotlinJsonAdapterFactory())
         .build()
+
+    @Provides
+    @Reusable
+    fun provideEnvelopAdapter(moshi: Moshi): JsonAdapter<Envelop>
+            = moshi.adapter(Envelop::class.java)
 }
