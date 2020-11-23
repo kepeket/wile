@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -34,6 +33,8 @@ class JoinActivity: DataBindingActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // FixMe : crash risks and bad architecture choices here ; this is typically the place
+        //  you need LiveData. Let's talk about that
         viewModel.setSocialWorkoutCallbackListener(
             WileSocketListenerCallback(
                 onConnectionFailure = ::onConnectionFailure,
@@ -168,7 +169,7 @@ class JoinActivity: DataBindingActivity() {
     }
 
     companion object {
-        const val WORKOUT_ID = "workout_id"
+        private const val WORKOUT_ID = "workout_id"
 
         fun newIntent(context: Context) = Intent(context, JoinActivity::class.java)
         fun startWorkout(context: Context, workoutId: Int) = newIntent(context).apply {

@@ -3,7 +3,6 @@ package com.wile.app.ui.social
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.wile.app.base.LiveCoroutinesViewModel
@@ -15,7 +14,7 @@ import java.time.Instant
 
 class SocialWorkoutViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    val useCase: SocialWorkoutUseCase
+    private val useCase: SocialWorkoutUseCase
 ) : LiveCoroutinesViewModel(), WileSocketListener {
 
     val roomNameCreate: MutableLiveData<String> = MutableLiveData("")
@@ -25,7 +24,6 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
     val isInRoom: MutableLiveData<Boolean> = MutableLiveData(false)
     private lateinit var callbackListener: WileSocketListenerCallback
     private var connected = false
-
 
     init {
         refreshConnectionStatus()

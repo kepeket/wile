@@ -13,9 +13,9 @@ import javax.inject.Singleton
 // Todo : bad smell : a usecase should ideally be stateless and so not being a singleton.
 @Singleton
 class SocialWorkoutUseCase @Inject constructor(
-    val listener: WileSocketListener,
-    val workoutController: SocialWorkoutController
-    ) {
+    private val listener: WileSocketListener,
+    private val workoutController: SocialWorkoutController
+) {
 
     var inRoom = false
     var isHost = false
@@ -29,6 +29,7 @@ class SocialWorkoutUseCase @Inject constructor(
         onClosed: (code: Int, reason: String) -> Unit,
         onFailure: (t: Throwable, response: Response?) -> Unit
     ) {
+        // FixMe : you give an abstraction, to finally hardcast it to an implementation -> problem
         (listener as WileSocketListenerImpl).setCallbacks(
             onOpen = onOpen,
             onClosed = onClosed,

@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SocialWorkoutController @Inject constructor(
-    val server: WileServer
+    private val server: WileServer
 ) : WorkoutInterface {
 
     override var chronometerIsRunning: Boolean = false
