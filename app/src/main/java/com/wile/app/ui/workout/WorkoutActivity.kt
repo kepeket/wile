@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityWorkoutBinding
+import com.wile.app.extensions.showToast
 import com.wile.app.sound.WorkoutSoundPlayer
 import com.wile.app.ui.handler.WorkoutInterface
 import com.wile.database.model.Training
@@ -79,9 +80,8 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
             } else {
                 pauseWorkout()
             }
-        }
-        else {
-            Toast.makeText(this, getString(R.string.no_excercice), Toast.LENGTH_SHORT).show()
+        } else {
+            showToast(R.string.no_excercice)
         }
     }
 

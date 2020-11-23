@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.wile.app.R
+import com.wile.app.extensions.showToast
 import com.wile.app.ui.handler.WorkoutInterface
 import timber.log.Timber
 import java.lang.Integer.parseInt
@@ -76,7 +77,7 @@ object ViewBinding {
     @JvmStatic
     @BindingAdapter("toast")
     fun bindToast(view: View, text: Int) {
-        Toast.makeText(view.context, view.context.getString(text), Toast.LENGTH_SHORT).show()
+        view.context.showToast(text)
     }
 
     @JvmStatic
@@ -84,7 +85,7 @@ object ViewBinding {
     fun bindToast(view: View, text: String?) {
         text?.let {
             if (it.isNotEmpty()) {
-                Toast.makeText(view.context, it, Toast.LENGTH_SHORT).show()
+                view.context.showToast(it)
             }
         }
     }

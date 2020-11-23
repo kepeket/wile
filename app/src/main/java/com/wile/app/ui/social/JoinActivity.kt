@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
+import com.wile.app.extensions.showToast
 import com.wile.app.ui.adapter.RoomMemberAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.Response
@@ -59,7 +60,7 @@ class JoinActivity: DataBindingActivity() {
 
         binding.create.setOnClickListener {
             if (binding.username.text.isNullOrEmpty()) {
-                Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT).show()
+                showToast(R.string.empty_userid)
                 return@setOnClickListener
             }
             inputMethodManager?.hideSoftInputFromWindow(binding.root.windowToken, 0);
@@ -68,12 +69,10 @@ class JoinActivity: DataBindingActivity() {
 
         binding.join.setOnClickListener {
             if (binding.username.text.isNullOrEmpty()) {
-                Toast.makeText(this, getString(R.string.empty_userid), Toast.LENGTH_SHORT)
-                    .show()
+                showToast(R.string.empty_userid)
                 return@setOnClickListener
             } else if (binding.room.text.isNullOrEmpty()) {
-                Toast.makeText(this, getString(R.string.empty_room_name), Toast.LENGTH_SHORT)
-                    .show()
+                showToast(R.string.empty_room_name)
                 return@setOnClickListener
             }
             inputMethodManager?.hideSoftInputFromWindow(binding.root.windowToken, 0);
@@ -119,15 +118,14 @@ class JoinActivity: DataBindingActivity() {
 
     private fun onConnectionClosed(code: Int, reason: String) {
         runOnUiThread {
-            Toast.makeText(this, getString(R.string.ws_connection_list, reason), Toast.LENGTH_SHORT)
-                .show()
+            showToast(getString(R.string.ws_connection_list, reason))
         }
     }
 
     private fun onConnectionFailure(t: Throwable, response: Response?) {
         t.message?.let {
             runOnUiThread {
-                Toast.makeText(this, t.message, Toast.LENGTH_SHORT).show()
+                showToast(it)
             }
         }
     }
@@ -157,7 +155,7 @@ class JoinActivity: DataBindingActivity() {
 
     private fun logOutput(str: String){
         runOnUiThread {
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show()
+            showToast(str)
             val textView = TextView(this)
             textView.text = str
             binding.connectionLog.addView(textView)
