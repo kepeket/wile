@@ -3,9 +3,7 @@ package com.wile.app.ui.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.ui.main.TrainingListingFragment
-import com.wile.database.model.Training
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
@@ -27,14 +25,10 @@ class WorkoutListingAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         return 0
     }
 
-    override fun getItemCount(): Int {
-        return items.count()
-    }
+    override fun getItemCount(): Int = items.size
 
-    override fun createFragment(position: Int): Fragment {
-        val workoutId = items[position]
-        return TrainingListingFragment.newFragment(workoutId)
-    }
+    override fun createFragment(position: Int): Fragment
+            = TrainingListingFragment.newFragment(items[position])
 
     fun addWorkout(): Int{
         items.add(getNextId())
