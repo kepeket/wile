@@ -1,7 +1,6 @@
 package com.wile.app.ui.social
 
 import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import com.wile.app.model.Envelop
 import com.wile.app.model.EnvelopRoom
 import com.wile.app.model.RoomModels
@@ -17,6 +16,7 @@ class WileServer @Inject constructor(
     private val okHttpClient: OkHttpClient,
     private val envelopAdapter: JsonAdapter<Envelop>
 ) {
+    private val serverUrl = "wss://24bc9af2f750.ngrok.io/chaussette"
     private var ws: WebSocket? = null
     private var connected = false
 
