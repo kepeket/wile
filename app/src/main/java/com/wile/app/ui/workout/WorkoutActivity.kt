@@ -129,7 +129,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
             return
         }
         currentTraining++
-        if (currentTraining > 0) {
+        if (currentTraining > 0 && currentTraining <= expendedTrainings.count() -1) {
             notifyNewTraining()
         }
         if (currentTraining <= expendedTrainings.count() -1) {
