@@ -1,6 +1,7 @@
 package com.wile.app.di
 
-import com.squareup.moshi.Moshi
+import com.squareup.moshi.JsonAdapter
+import com.wile.app.model.Envelop
 import com.wile.app.ui.social.*
 import dagger.Module
 import dagger.Provides
@@ -19,6 +20,6 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideWileSocketListener(
-        moshi: Moshi
-    ) = WileSocketListenerImpl(moshi) as WileSocketListener
+        envelopAdapter: JsonAdapter<Envelop>
+    ) = WileSocketListenerImpl(envelopAdapter) as WileSocketListener
 }
