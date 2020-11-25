@@ -18,21 +18,14 @@ class WileServer @Inject constructor(
     private val listener: WebSocketListener
 ) {
     private var ws: WebSocket? = null
-    private var connected = false
 
     fun connect(){
         val request: Request = Request.Builder().url(SERVER_URL).build()
         ws = okHttpClient.newWebSocket(request, listener)
-        connected = true
     }
 
     fun disconnect() {
         ws?.close(1000, "bye")
-        connected = false
-    }
-
-    fun isConnected(): Boolean {
-        return (ws != null && connected)
     }
 
     fun joinRoom(roomPayload: RoomModels.RoomMessage): Boolean {
@@ -44,7 +37,6 @@ class WileServer @Inject constructor(
     }
 
     private companion object {
-
         const val SERVER_URL = "wss://24bc9af2f750.ngrok.io/chaussette"
     }
 }

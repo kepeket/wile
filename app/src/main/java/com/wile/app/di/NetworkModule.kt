@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
-import okhttp3.WebSocketListener
 import javax.inject.Singleton
 
 @Module
@@ -21,6 +20,12 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideWileSocketListener(
+            wileSocketListener: WileSocketListener
+    ) = wileSocketListener
+
+    @Provides
+    @Singleton
+    fun provideWileSocketListener(
         envelopAdapter: JsonAdapter<Envelop>
-    ) = WileSocketListenerImpl(envelopAdapter) as WebSocketListener
+    ): WileSocketListener = WileSocketListenerImpl(envelopAdapter)
 }
