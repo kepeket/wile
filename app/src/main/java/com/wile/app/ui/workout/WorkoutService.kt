@@ -3,11 +3,12 @@ package com.wile.app.ui.workout
 import android.app.Service
 import android.content.Intent
 import android.os.*
-import com.wile.app.ui.handler.WorkoutInterface
+import androidx.lifecycle.MutableLiveData
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.workout_controller.view.*
+import timber.log.Timber
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.roundToInt
@@ -22,10 +23,16 @@ class WorkoutService: Service() {
     private var trainingCountdown = 0
     private var lastTrainingChange = 0L
     private var timeWhenPaused = 0L
+    private var timeWhenStarted = 0L
     private var chronometerIsRunning = false
     private lateinit var timer: Timer
 
-    private var workoutListener: WorkoutInterface? = null
+    val countdownLiveData: MutableLiveData<Int> = MutableLiveData(-1)
+    val elapsedTimeLiveData: MutableLiveData<Int> = MutableLiveData(0)
+    val workoutProgressLiveData: MutableLiveData<Int> = MutableLiveData(currentTraining)
+    val currentTrainingLiveData: MutableLiveData<Training> = MutableLiveData()
+    val chronometerIsRunningLiveData: MutableLiveData<Boolean> = MutableLiveData(chronometerIsRunning)
+    val workoutIsDoneLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
 
     override fun onBind(p0: Intent?): IBinder? {
         return binder
@@ -50,9 +57,11 @@ class WorkoutService: Service() {
 
     private fun startWorkout() {
         currentTraining = -1
+        workoutProgressLiveData.postValue(currentTraining)
         chronometerIsRunning = true
         skipTraining()
-        workoutListener?.workoutStarted()
+        chronometerIsRunningLiveData.postValue(chronometerIsRunning)
+        timeWhenStarted = SystemClock.elapsedRealtime()
         timer = fixedRateTimer("timer", false, 0L, 1000) {
             chronometerTicking()
         }
@@ -63,9 +72,11 @@ class WorkoutService: Service() {
         if (chronometerIsRunning) {
             timer.cancel()
             chronometerIsRunning = false
+            chronometerIsRunningLiveData.postValue(chronometerIsRunning)
             currentTraining = -1
+            workoutProgressLiveData.postValue(currentTraining)
         }
-        workoutListener?.workoutStopped()
+        workoutIsDoneLiveData.postValue(true)
     }
 
     private fun pauseWorkout() {
@@ -75,7 +86,7 @@ class WorkoutService: Service() {
             lastTrainingChange = SystemClock.elapsedRealtime() - (timeWhenPaused - lastTrainingChange)
         }
         chronometerIsRunning = !chronometerIsRunning
-        workoutListener?.workoutPaused(chronometerIsRunning)
+        chronometerIsRunningLiveData.postValue(chronometerIsRunning)
     }
 
     private fun chronometerTicking() {
@@ -85,12 +96,11 @@ class WorkoutService: Service() {
             ((timeWhenPaused - lastTrainingChange) / 1000.0).roundToInt()
         }
         val endOfTraining = trainingCountdown - elapsedTime
-        workoutListener?.chronometerTicked(
-                elapsedTime,
-                endOfTraining,
-                expendedTrainings[currentTraining].duration,
-                expendedTrainings[currentTraining].trainingType
-        )
+        if (endOfTraining <0 ){
+            Timber.d("OKAY")
+        }
+        elapsedTimeLiveData.postValue(((SystemClock.elapsedRealtime() - timeWhenStarted)/1000.0).roundToInt())
+        countdownLiveData.postValue(endOfTraining)
         if (endOfTraining <= 0) {
             if (expendedTrainings[currentTraining].trainingType != TrainingTypes.Repeated) {
                 skipTraining()
@@ -99,19 +109,14 @@ class WorkoutService: Service() {
     }
 
     fun skipTraining() {
-        var notify = false
         if (currentTraining < 0 && !chronometerIsRunning) {
             return
         }
         currentTraining++
-        if (currentTraining > 0 && currentTraining <= expendedTrainings.count() - 1) {
-            notify = true
-        }
+        workoutProgressLiveData.postValue(currentTraining)
+        currentTrainingLiveData.postValue(expendedTrainings[currentTraining])
+        countdownLiveData.postValue(expendedTrainings[currentTraining].duration)
         if (currentTraining <= expendedTrainings.count() - 1) {
-            workoutListener?.trainingSkipped(notify,
-                    expendedTrainings[currentTraining].duration,
-                    currentTraining,
-                    expendedTrainings[currentTraining])
             trainingCountdown = expendedTrainings[currentTraining].duration
             lastTrainingChange = SystemClock.elapsedRealtime()
         } else {
@@ -121,9 +126,5 @@ class WorkoutService: Service() {
 
     fun setTrainingList(trainings: List<Training>) {
         expendedTrainings = trainings
-    }
-
-    fun setListener(listener: WorkoutInterface) {
-        workoutListener = listener
     }
 }

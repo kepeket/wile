@@ -29,7 +29,8 @@ class WileServer @Inject constructor(
     }
 
     private companion object {
-        const val SERVER_URL = "wss://24bc9af2f750.ngrok.io/chaussette"
+//        const val SERVER_URL = "wss://24bc9af2f750.ngrok.io/chaussette"
+        const val SERVER_URL = "wss://wile-workout.cleverapps.io/chaussette"
         const val DISCONNECT_REASON = "bye"
         const val DISCONNECT_CODE = 1000
     }
