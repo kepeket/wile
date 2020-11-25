@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class SocialWorkoutUseCase @Inject constructor(
     private val listener: WileSocketListener,
-    private val workoutController: SocialWorkoutController
+    private val server: WileServer
 ) {
 
     var inRoom = false
@@ -39,15 +39,15 @@ class SocialWorkoutUseCase @Inject constructor(
     }
 
     fun connect(){
-        workoutController.connect(listener as WebSocketListener)
+        server.connect(listener as WebSocketListener)
     }
 
     fun disconnect(){
-        workoutController.disconnect()
+        server.disconnect()
     }
 
     fun isConnected(): Boolean{
-        return workoutController.isConnected()
+        return server.isConnected()
     }
 
     fun create(roomName: String, userId: String){
@@ -59,7 +59,7 @@ class SocialWorkoutUseCase @Inject constructor(
             name = roomName,
             action = RoomMessageAction.Create
         )
-        val ret = workoutController.join(message)
+        val ret = server.joinRoom(message)
         Timber.d("create %b", ret)
     }
 
@@ -73,7 +73,7 @@ class SocialWorkoutUseCase @Inject constructor(
             action = RoomMessageAction.Join
         )
 
-        val ret = workoutController.join(message)
+        val ret = server.joinRoom(message)
         Timber.d("join %b", ret)
     }
 }
