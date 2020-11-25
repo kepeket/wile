@@ -14,14 +14,15 @@ import javax.inject.Singleton
 @Singleton
 class WileServer @Inject constructor(
     private val okHttpClient: OkHttpClient,
-    private val envelopAdapter: JsonAdapter<Envelop>
+    private val envelopAdapter: JsonAdapter<Envelop>,
+    private val listener: WebSocketListener
 ) {
     private var ws: WebSocket? = null
     private var connected = false
 
-    fun connect(webSocketListener: WebSocketListener){
+    fun connect(){
         val request: Request = Request.Builder().url(SERVER_URL).build()
-        ws = okHttpClient.newWebSocket(request, webSocketListener)
+        ws = okHttpClient.newWebSocket(request, listener)
         connected = true
     }
 

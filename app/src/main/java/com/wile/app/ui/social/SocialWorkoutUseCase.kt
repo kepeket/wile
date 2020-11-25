@@ -13,8 +13,8 @@ import javax.inject.Singleton
 // Todo : bad smell : a usecase should ideally be stateless and so not being a singleton.
 @Singleton
 class SocialWorkoutUseCase @Inject constructor(
-    private val listener: WileSocketListener,
-    private val server: WileServer
+    private val server: WileServer,
+    private val listener: WebSocketListener
 ) {
 
     var inRoom = false
@@ -39,7 +39,7 @@ class SocialWorkoutUseCase @Inject constructor(
     }
 
     fun connect(){
-        server.connect(listener as WebSocketListener)
+        server.connect()
     }
 
     fun disconnect(){

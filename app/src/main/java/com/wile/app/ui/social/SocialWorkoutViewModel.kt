@@ -15,7 +15,7 @@ import java.time.Instant
 class SocialWorkoutViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val useCase: SocialWorkoutUseCase
-) : LiveCoroutinesViewModel(), WileSocketListener {
+) : LiveCoroutinesViewModel() {
 
     val roomNameCreate: MutableLiveData<String> = MutableLiveData("")
     val userName: MutableLiveData<String> = MutableLiveData("")

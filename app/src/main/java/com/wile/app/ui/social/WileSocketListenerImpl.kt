@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class WileSocketListenerImpl @Inject constructor(
     private val envelopAdapter: JsonAdapter<Envelop>
-) : WileSocketListener, WebSocketListener() {
+) : WebSocketListener() {
 
     private lateinit var onOpenCallback: (response: Response) -> Unit?
     private lateinit var onMessageCallback: (type: EnvelopType, response: WileMessage) -> Unit
