@@ -4,13 +4,14 @@ import com.squareup.moshi.JsonAdapter
 import com.wile.app.model.*
 import okhttp3.Response
 import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import okio.ByteString
 import timber.log.Timber
 import javax.inject.Inject
 
 class WileSocketListenerImpl @Inject constructor(
     private val envelopAdapter: JsonAdapter<Envelop>
-) : WileSocketListener() {
+) : WebSocketListener() {
 
     private lateinit var onOpenCallback: (response: Response) -> Unit?
     private lateinit var onMessageCallback: (type: EnvelopType, response: WileMessage) -> Unit
@@ -73,6 +74,4 @@ class WileSocketListenerImpl @Inject constructor(
         connected = false
         onFailureCallback(t, response)
     }
-
-    override fun isConnected() = connected
 }

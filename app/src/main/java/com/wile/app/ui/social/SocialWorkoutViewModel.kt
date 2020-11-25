@@ -128,7 +128,7 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
         setInRoom(false)
     }
 
-    fun onCancelSocialButtonClicked(){
+    fun onCancelSocialButtonClicked() {
         useCase.leaveRoom()
         setInRoom(false)
     }

@@ -5,6 +5,7 @@ import com.wile.app.model.RoomMessageAction
 import com.wile.app.model.RoomModels
 import com.wile.app.model.WileMessage
 import okhttp3.Response
+import okhttp3.WebSocketListener
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class SocialWorkoutUseCase @Inject constructor(
     private val roomRepo: RoomRepo,
-    private val listener: WileSocketListener
+    private val listener: WebSocketListener
 ) {
 
     var inRoom = false
