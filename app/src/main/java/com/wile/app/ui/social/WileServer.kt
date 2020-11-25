@@ -1,9 +1,5 @@
 package com.wile.app.ui.social
 
-import com.squareup.moshi.JsonAdapter
-import com.wile.app.model.Envelop
-import com.wile.app.model.EnvelopRoom
-import com.wile.app.model.RoomModels
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -14,29 +10,27 @@ import javax.inject.Singleton
 @Singleton
 class WileServer @Inject constructor(
     private val okHttpClient: OkHttpClient,
-    private val envelopAdapter: JsonAdapter<Envelop>,
     private val listener: WebSocketListener
 ) {
-    private var ws: WebSocket? = null
+    var webSocket: WebSocket? = null
 
-    fun connect(){
-        val request: Request = Request.Builder().url(SERVER_URL).build()
-        ws = okHttpClient.newWebSocket(request, listener)
+    fun connect() {
+        webSocket = okHttpClient.newWebSocket(
+                Request.Builder()
+                        .url(SERVER_URL)
+                        .build(),
+                listener
+        )
     }
 
     fun disconnect() {
-        ws?.close(1000, "bye")
-    }
-
-    fun joinRoom(roomPayload: RoomModels.RoomMessage): Boolean {
-        ws?.let {
-            val envelop = EnvelopRoom(roomPayload)
-            return it.send(envelopAdapter.toJson(envelop))
-        }
-        return false
+        webSocket?.close(DISCONNECT_CODE, DISCONNECT_REASON)
+        webSocket = null
     }
 
     private companion object {
         const val SERVER_URL = "wss://24bc9af2f750.ngrok.io/chaussette"
+        const val DISCONNECT_REASON = "bye"
+        const val DISCONNECT_CODE = 1000
     }
 }

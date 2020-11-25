@@ -82,7 +82,7 @@ class JoinActivity: DataBindingActivity() {
         }
 
         binding.cancelSocialBtn.setOnClickListener {
-            viewModel.disconnect()
+            viewModel.onCancelSocialButtonClicked()
         }
 
         binding.goSocialBtn.setOnClickListener {
