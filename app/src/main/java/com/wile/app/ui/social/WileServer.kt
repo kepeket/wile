@@ -16,7 +16,6 @@ class WileServer @Inject constructor(
     private val okHttpClient: OkHttpClient,
     private val envelopAdapter: JsonAdapter<Envelop>
 ) {
-    private val serverUrl = "wss://24bc9af2f750.ngrok.io/chaussette"
     private var ws: WebSocket? = null
     private var connected = false
 
@@ -44,6 +43,7 @@ class WileServer @Inject constructor(
     }
 
     private companion object {
+
         const val SERVER_URL = "wss://24bc9af2f750.ngrok.io/chaussette"
     }
 }

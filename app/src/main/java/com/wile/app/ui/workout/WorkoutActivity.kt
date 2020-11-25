@@ -1,15 +1,15 @@
 package com.wile.app.ui.workout
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.SystemClock
-import android.os.VibrationEffect
-import android.os.Vibrator
+import android.content.ServiceConnection
+import android.os.*
 import android.view.View
 import android.widget.Chronometer
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.google.android.gms.common.util.Strings
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityWorkoutBinding
@@ -29,13 +29,11 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     private val viewModel: WorkoutViewModel by viewModels()
     private val binding: ActivityWorkoutBinding by binding(R.layout.activity_workout)
 
-    private lateinit var chronoBind: Chronometer
-    private lateinit var expendedTrainings: List<Training>
-    private var currentTraining = -1
-    private var trainingCountdown = 0
-    private var lastTrainingChange = 0L
-    private var timeWhenPaused = 0L
-    override var chronometerIsRunning = false
+    // Service binding
+    private var workoutService: WorkoutService? = null
+    private var serviceBound: Boolean = false
+
+    private var cachedTrainings: List<Training> = listOf()
 
     var vibrator: Vibrator? = null
         @Inject set
@@ -46,6 +44,11 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         super.onCreate(savedInstanceState)
 
 
+        // bind the workout service
+        Intent(this, WorkoutService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
         binding.apply {
             lifecycleOwner = this@WorkoutActivity
             viewModel = this@WorkoutActivity.viewModel
@@ -55,97 +58,92 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
             workoutController = this@WorkoutActivity
         }
 
-        chronoBind = binding.workoutGo.trainingGoBottomSheet.chronometer
-        chronoBind.format = getString(R.string.chronometer_format)
-
-
         viewModel.fetchTrainings(intent.getIntExtra(WORKOUT_ID, 0))
         viewModel.trainingListLiveData.observe(this, {
-            expendedTrainings = viewModel.getExpendedTrainingList()
+            cachedTrainings = viewModel.getExpendedTrainingList()
+            workoutService?.setTrainingList(cachedTrainings)
         })
     }
-    
-    /* Handle a workout
-   Features:
-    - 1 chronometer for timed training
-    - 1 chronometer for estimated time until end of workout
-    - when rep training, show a modal to finish the period
-    - expend tabata training automatically
-    - stop, pause, skip
-*/
-    override fun startStopWorkout(){
-        if (expendedTrainings.count() > 1){
-            if (currentTraining < 0){
-                startWorkout()
-            } else {
-                pauseWorkout()
+
+    // Service binding callback
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            val binder = service as WorkoutService.WorkoutBinder
+            workoutService = binder.getService()
+            serviceBound = true
+            workoutService?.setListener(this@WorkoutActivity)
+            if (cachedTrainings.count() > 1){
+                workoutService?.setTrainingList(cachedTrainings)
             }
-        } else {
-            showToast(R.string.no_excercice)
+
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            serviceBound = false
         }
     }
 
-    override fun startWorkout(){
-        expendedTrainings = viewModel.getExpendedTrainingList()
+    override fun askStartPauseWorkout(){
+         workoutService?.let {
+             if (!it.startStopWorkout()) {
+                 showToast(R.string.no_excercice)
+             }
+         } ?: run {
+             showToast(R.string.no_workout_service)
+         }
+    }
 
+    override fun askStopWorkout(){
+        workoutService?.let {
+            it.stopWorkout()
+        } ?: run {
+            workoutStopped()
+        }
+    }
+
+    override fun askSkipTraining(){
+        workoutService?.let {
+            it.skipTraining()
+        }
+    }
+
+    override fun workoutStarted(){
         binding.workoutGo.trainingGoBottomSheet.prepareText.visibility = View.GONE
         binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_pause_24)
-        binding.workoutGo.trainingGoBottomSheet.workout_progress.max = expendedTrainings.count()
+        binding.workoutGo.trainingGoBottomSheet.workout_progress.max = cachedTrainings.count()
         binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = 0
-
-        currentTraining = -1
-        chronometerIsRunning = true
-        skipTraining()
-        chronoBind.base = SystemClock.elapsedRealtime()
-        chronoBind.start()
-
     }
 
-    override fun stopWorkout() {
-        if (chronometerIsRunning) {
-            chronoBind.stop()
-            chronometerIsRunning = false
-            currentTraining = -1
-        }
-
+    override fun workoutStopped() {
         workoutSoundPlayer.playBell()
         finish()
     }
 
-    override fun pauseWorkout() {
-        if (chronometerIsRunning) {
-            timeWhenPaused = SystemClock.elapsedRealtime()
+    override fun workoutPaused(isPaused: Boolean) {
+        if (!isPaused) {
             binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_play_arrow_24)
         } else {
-            lastTrainingChange = SystemClock.elapsedRealtime() - (timeWhenPaused - lastTrainingChange)
             binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_pause_24)
         }
-
-        chronometerIsRunning = !chronometerIsRunning
     }
 
-    override fun skipTraining() {
-        if (currentTraining < 0 && !chronometerIsRunning){
-            return
-        }
-        currentTraining++
-        if (currentTraining > 0 && currentTraining <= expendedTrainings.count() -1) {
+    override fun trainingSkipped(needNotify: Boolean,
+                                 trainingDuration: Int,
+                                 progress: Int,
+                                 newTraining: Training) {
+        if (needNotify) {
             notifyNewTraining()
         }
-        if (currentTraining <= expendedTrainings.count() -1) {
-            displayTrainingInfo()
-            binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = expendedTrainings[currentTraining].duration.toString()
-            binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = currentTraining
-            binding.workoutGo.trainingGoBottomSheet.frame_cardview.visibility = View.GONE
-            trainingCountdown = expendedTrainings[currentTraining].duration
-            lastTrainingChange = SystemClock.elapsedRealtime()
-        } else {
-            stopWorkout()
-        }
+        displayTrainingInfo(newTraining, progress==0)
+        binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = trainingDuration.toString()
+        binding.workoutGo.trainingGoBottomSheet.workout_progress.progress = progress
+        binding.workoutGo.trainingGoBottomSheet.frame_cardview.visibility = View.GONE
     }
 
-    private fun displayTrainingInfo(){
-        val bgColor = when(expendedTrainings[currentTraining].trainingType){
+    private fun displayTrainingInfo(training: Training, warmup: Boolean){
+        val bgColor = when(training.trainingType){
             TrainingTypes.Timed -> getColor(R.color.training_go_blue)
             TrainingTypes.Repeated -> getColor(R.color.repeated_preset)
             TrainingTypes.Tabata -> getColor(R.color.tabata_preset)
@@ -154,24 +152,24 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         binding.workoutGo.trainingGoBottomSheet.setBackgroundColor(bgColor)
 
         binding.workoutGo.trainingGoBottomSheet.currentWorkoutInfo.text =
-            expendedTrainings[currentTraining].name
-        if (currentTraining > 0){
+                training.name
+        if (!warmup){
             binding.workoutGo.trainingGoBottomSheet.currenTrainDescription.text =
-                when (expendedTrainings[currentTraining].trainingType) {
+                when (training.trainingType) {
                     TrainingTypes.Timed -> {
                         getString(R.string.training_timed_description)
                     }
                     TrainingTypes.Repeated -> {
                         getString(
                             R.string.training_repeated_description,
-                            expendedTrainings[currentTraining].reps
+                                training.reps
                         )
                     }
                     TrainingTypes.Custom -> {
-                        if (expendedTrainings[currentTraining].reps != 0) {
+                        if (training.reps != 0) {
                             getString(
                                 R.string.training_repeated_description,
-                                expendedTrainings[currentTraining].reps
+                                    training.reps
                             )
                         } else {
                             getString(R.string.training_timed_description)
@@ -184,30 +182,29 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         }
     }
 
-    override fun chronometerTicking(chronometer: Chronometer) {
-        val elapsedTime = if (chronometerIsRunning) {
-            ((SystemClock.elapsedRealtime() - lastTrainingChange) / 1000.0).roundToInt()
-        } else {
-            ((timeWhenPaused - lastTrainingChange) / 1000.0).roundToInt()
-        }
-        val endOfTraining = trainingCountdown - elapsedTime
-        if (expendedTrainings[currentTraining].trainingType is TrainingTypes.Repeated) {
-            if (endOfTraining < 5) {
+    override fun chronometerTicked(elapsedTime: Int, countdown: Int, trainingDuration: Int, trainingType: TrainingTypes) {
+        if (trainingType is TrainingTypes.Repeated) {
+            if (countdown < 5) {
                 binding.workoutGo.trainingGoBottomSheet.frame_cardview.visibility = View.VISIBLE
             }
         }
-        binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = endOfTraining.toString()
-        if (endOfTraining in 1..4 && chronometerIsRunning) {
+        binding.workoutGo.trainingGoBottomSheet.chronometer.text = getString(R.string.chronometer_format,
+                durationToStr(elapsedTime)
+        )
+        binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = countdown.toString()
+        if (countdown in 1..4) {
             workoutSoundPlayer.playBeep()
         }
-        if (endOfTraining <= 0) {
-            if (expendedTrainings[currentTraining].trainingType != TrainingTypes.Repeated) {
-                skipTraining()
-            } else {
-                binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text =
-                    getString(R.string.workout_go_till_the_end)
-            }
+        if (countdown <= 0 && trainingType == TrainingTypes.Repeated) {
+            binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text =
+                getString(R.string.workout_go_till_the_end)
         }
+    }
+
+    private fun durationToStr(duration: Int): String {
+        val min = duration / 60
+        val sec = duration % 60
+        return String.format("%d:%d", min, sec)
     }
 
     private fun notifyNewTraining() {

@@ -121,10 +121,9 @@ object ViewBinding {
     @JvmStatic
     @BindingAdapter("workoutController")
     fun bindWorkoutController(view: View, controller: WorkoutInterface) {
-        view.findViewById<View>(R.id.stop).setOnClickListener { controller.stopWorkout() }
-        view.findViewById<View>(R.id.pause).setOnClickListener { controller.startStopWorkout() }
-        view.findViewById<View>(R.id.next).setOnClickListener { controller.skipTraining() }
-        view.findViewById<Chronometer>(R.id.chronometer).setOnChronometerTickListener { controller.chronometerTicking(it as Chronometer) }
-        view.findViewById<CardView>(R.id.muscle_up_card).setOnClickListener { controller.skipTraining() }
+        view.findViewById<View>(R.id.stop).setOnClickListener { controller.askStopWorkout() }
+        view.findViewById<View>(R.id.pause).setOnClickListener { controller.askStartPauseWorkout() }
+        view.findViewById<View>(R.id.next).setOnClickListener { controller.askSkipTraining() }
+        view.findViewById<CardView>(R.id.muscle_up_card).setOnClickListener { controller.askSkipTraining() }
     }
 }

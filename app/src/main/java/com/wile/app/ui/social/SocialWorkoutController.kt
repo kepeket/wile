@@ -10,9 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class SocialWorkoutController @Inject constructor(
     private val server: WileServer
-) : WorkoutInterface {
-
-    override var chronometerIsRunning: Boolean = false
+) {
 
     fun connect(listener: WebSocketListener){
         server.connect(listener)
@@ -29,29 +27,4 @@ class SocialWorkoutController @Inject constructor(
     fun join(roomRequest: RoomModels.RoomMessage): Boolean{
         return server.joinRoom(roomRequest)
     }
-
-    override fun startStopWorkout() {
-        TODO("Not yet implemented")
-    }
-
-    override fun startWorkout() {
-        TODO("Not yet implemented")
-    }
-
-    override fun stopWorkout() {
-        TODO("Not yet implemented")
-    }
-
-    override fun pauseWorkout() {
-        TODO("Not yet implemented")
-    }
-
-    override fun skipTraining() {
-        TODO("Not yet implemented")
-    }
-
-    override fun chronometerTicking(chronometer: Chronometer) {
-        TODO("Not yet implemented")
-    }
-
 }
