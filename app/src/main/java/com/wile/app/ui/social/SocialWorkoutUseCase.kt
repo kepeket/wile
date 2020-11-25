@@ -13,8 +13,8 @@ import javax.inject.Singleton
 // Todo : bad smell : a usecase should ideally be stateless and so not being a singleton.
 @Singleton
 class SocialWorkoutUseCase @Inject constructor(
-    private val listener: WileSocketListener,
-    private val workoutController: SocialWorkoutController
+    private val roomRepo: RoomRepo,
+    private val listener: WebSocketListener
 ) {
 
     var inRoom = false
@@ -38,16 +38,8 @@ class SocialWorkoutUseCase @Inject constructor(
         )
     }
 
-    fun connect(){
-        workoutController.connect(listener as WebSocketListener)
-    }
-
-    fun disconnect(){
-        workoutController.disconnect()
-    }
-
-    fun isConnected(): Boolean{
-        return workoutController.isConnected()
+    fun leaveRoom() {
+        roomRepo.leaveRoom()
     }
 
     fun create(roomName: String, userId: String){
@@ -59,7 +51,7 @@ class SocialWorkoutUseCase @Inject constructor(
             name = roomName,
             action = RoomMessageAction.Create
         )
-        val ret = workoutController.join(message)
+        val ret = roomRepo.joinRoom(message)
         Timber.d("create %b", ret)
     }
 
@@ -73,7 +65,7 @@ class SocialWorkoutUseCase @Inject constructor(
             action = RoomMessageAction.Join
         )
 
-        val ret = workoutController.join(message)
+        val ret = roomRepo.joinRoom(message)
         Timber.d("join %b", ret)
     }
 }

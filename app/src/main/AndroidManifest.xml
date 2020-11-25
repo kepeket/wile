@@ -56,6 +56,13 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Main.NoActionBar"/>
+        <service
+            android:enabled="true"
+            android:name="com.wile.app.ui.workout.WorkoutService">
+            <intent-filter>
+                <action android:name="com.wile.app.ui.workout.WorkoutService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

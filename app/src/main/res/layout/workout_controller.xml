@@ -27,13 +27,14 @@
         android:layout_height="wrap_content" />
 
 
-    <Chronometer
+    <TextView
         android:id="@+id/chronometer"
         style="@style/Theme.Main.BottomSheet.Chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/form_padding"
         android:layout_marginBottom="@dimen/form_padding"
+        tools:text="Durée totale de l'entrainement 2:02"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workout_progress" />

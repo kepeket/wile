@@ -68,4 +68,5 @@
     <string name="ws_unknown_message">Message inconnu</string>
     <string name="room_someone_has_left">%s a quitté la salle</string>
     <string name="waiting_for_pals">En attente de copains… Lancez l\'entrainement quand vous êtes tous là</string>
+    <string name="no_workout_service">Erreur avec le service</string>
 </resources>

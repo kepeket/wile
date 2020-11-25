@@ -15,7 +15,7 @@ import java.time.Instant
 class SocialWorkoutViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val useCase: SocialWorkoutUseCase
-) : LiveCoroutinesViewModel(), WileSocketListener {
+) : LiveCoroutinesViewModel() {
 
     val roomNameCreate: MutableLiveData<String> = MutableLiveData("")
     val userName: MutableLiveData<String> = MutableLiveData("")
@@ -23,7 +23,6 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
     val hosting: ObservableBoolean = ObservableBoolean(false)
     val isInRoom: MutableLiveData<Boolean> = MutableLiveData(false)
     private lateinit var callbackListener: WileSocketListenerCallback
-    private var connected = false
 
     init {
         refreshConnectionStatus()
@@ -60,7 +59,6 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
 
          isInRoom.value = useCase.inRoom
          hosting.set(useCase.isHost)
-         connected = useCase.isConnected()
     }
 
     fun setSocialWorkoutCallbackListener(listenerCallback: WileSocketListenerCallback){
@@ -68,7 +66,6 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
     }
 
     private fun onOpen(response: Response) {
-        connected = true
         callbackListener.connectionOpen()
     }
 
@@ -123,34 +120,22 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
 
     private fun onClosed(code: Int, reason: String) {
         callbackListener.connectionClosed(code, reason)
-        connected = false
         setInRoom(false)
     }
 
     private fun onFailure(t: Throwable, response: Response?) {
         callbackListener.onConnectionFailure(t, response)
-        connected = false
         setInRoom(false)
     }
 
-    fun connect(){
-        if (!connected) {
-            useCase.connect()
-        }
-    }
-
-    fun disconnect(){
-        if (connected) {
-            useCase.disconnect()
-            connected = false
-            setInRoom(false)
-        }
+    fun onCancelSocialButtonClicked() {
+        useCase.leaveRoom()
+        setInRoom(false)
     }
 
     fun create(user: String) {
         userName.value = user
         hosting.set(true)
-        connect()
         useCase.create(roomNameCreate.value!!, user)
         setInRoom(true)
     }
@@ -159,7 +144,6 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
         userName.value = user
         roomNameCreate.value = roomName
         hosting.set(false)
-        connect()
         useCase.join(roomName.toUpperCase(), user)
         setInRoom(true)
     }
