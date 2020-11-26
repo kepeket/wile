@@ -69,4 +69,5 @@
     <string name="room_someone_has_left">%s a quitté la salle</string>
     <string name="waiting_for_pals">En attente de copains… Lancez l\'entrainement quand vous êtes tous là</string>
     <string name="no_workout_service">Erreur avec le service</string>
+    <string name="social_ready_to_begin">L\'hote va bientôt lancer l\'entrainement, préparez vous !</string>
 </resources>

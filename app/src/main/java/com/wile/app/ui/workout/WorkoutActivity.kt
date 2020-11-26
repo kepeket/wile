@@ -24,6 +24,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
 
     private val viewModel: WorkoutViewModel by viewModels()
     private val binding: ActivityWorkoutBinding by binding(R.layout.activity_workout)
+    private var socialMode = false
 
     // Service binding
     private var workoutService: WorkoutService? = null
@@ -48,12 +49,22 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
             workoutController = this@WorkoutActivity
         }
 
-        viewModel.fetchTrainings(intent.getIntExtra(WORKOUT_ID, 0))
-        viewModel.trainingListLiveData.observe(this, {
-            cachedTrainings = viewModel.getExpendedTrainingList()
-            workoutService?.setTrainingList(cachedTrainings)
-            binding.workoutGo.trainingGoBottomSheet.workout_progress.max = cachedTrainings.count()
-        })
+        socialMode = intent.getBooleanExtra(SOCIAL_MODE, false)
+        if (!socialMode) {
+            viewModel.fetchTrainings(intent.getIntExtra(WORKOUT_ID, 0))
+            viewModel.trainingListLiveData.observe(this, {
+                cachedTrainings = viewModel.getExpendedTrainingList()
+                workoutService?.setTrainingList(cachedTrainings)
+                binding.workoutGo.trainingGoBottomSheet.workout_progress.max =
+                    cachedTrainings.count()
+            })
+        } /*else {
+            if (intent.getBooleanExtra(SOCIAL_HOST, true)) {
+                binding.workoutGo.trainingGoBottomSheet.visibility = View.GONE
+                binding.workoutGo.trainingGoBottomSheet.prepareText.text =
+                    getString(R.string.social_ready_to_begin)
+            }
+        }*/
 
         // bind the workout service
         Intent(this, WorkoutService::class.java).also { intent ->
@@ -206,10 +217,16 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     companion object {
         const val VIBRATION_TIME = 500L
         const val WORKOUT_ID = "workout_id"
+        const val SOCIAL_MODE = "social_mode"
+        const val SOCIAL_HOST = "social_host"
 
         fun newIntent(context: Context) = Intent(context, WorkoutActivity::class.java)
         fun startWorkout(context: Context, workoutId: Int) = newIntent(context).apply {
             putExtra(WORKOUT_ID, workoutId)
+        }
+        fun startSocialWorkout(context: Context, host: Boolean) = newIntent(context).apply {
+            putExtra(SOCIAL_MODE, true)
+            putExtra(SOCIAL_HOST, host)
         }
     }
 }

@@ -11,10 +11,13 @@ interface WileServer {
     fun messageRoom(join: EnvelopRoom)
     @Send
     fun pingServer(ping: EnvelopPing)
-
+    @Send
+    fun messageWorkout(ping: EnvelopWorkout)
 
     @Receive
     fun roomMessage(): Flowable<EnvelopRoom>
+    @Receive
+    fun workoutMessage(): Flowable<EnvelopWorkout>
     @Receive
     fun pingRequest(): Flowable<EnvelopPing>
     @Receive

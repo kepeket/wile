@@ -8,9 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tinder.scarlet.Lifecycle
 import com.tinder.scarlet.ShutdownReason
 import com.tinder.scarlet.lifecycle.LifecycleRegistry
-import com.wile.app.model.EnvelopRoom
-import com.wile.app.model.RoomMessageAction
-import com.wile.app.model.RoomModels
+import com.wile.app.model.*
 import com.wile.app.ui.social.WileServer
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
@@ -19,6 +17,7 @@ import kotlinx.android.synthetic.main.workout_controller.view.*
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.roundToInt
 import kotlin.reflect.KParameter
@@ -54,6 +53,8 @@ class WorkoutService: Service() {
     val roomName: MutableLiveData<String> = MutableLiveData("")
     val userName: MutableLiveData<String> = MutableLiveData("")
     val roomMembers: MutableLiveData<HashMap<String, Boolean>> = MutableLiveData(hashMapOf())
+    val readyMembers: MutableLiveData<MutableList<String>> = MutableLiveData(mutableListOf())
+    val canStart: MutableLiveData<Boolean> = MutableLiveData(false)
     val isHost: MutableLiveData<Boolean> = MutableLiveData(false)
     val isInRoom: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -71,6 +72,9 @@ class WorkoutService: Service() {
         scarletLifecycleRegistry.onNext(Lifecycle.State.Started)
         server.roomMessage().subscribe { it ->
             roomMessageReceived(it.message)
+        }
+        server.workoutMessage().subscribe { it ->
+            workoutMessageReceived(it.message)
         }
         return binder
     }
@@ -118,6 +122,43 @@ class WorkoutService: Service() {
         server.messageRoom(env)
     }
 
+    private fun workoutMessageReceived(response: WorkoutModels.WorkoutMessage) {
+        when (response.action){
+            WorkoutMessageAction.Started -> {
+                // We are only interrested if we are not the host
+                if (isHost.value?.equals(false) == true) {
+                    chronometerIsRunningLiveData.postValue(true)
+                }
+            }
+            WorkoutMessageAction.Stopped -> TODO()
+            WorkoutMessageAction.Lobby -> {
+                // Asking to put yourself in lobby, so we'll launch the workout activity in social mode
+                startActivity(WorkoutActivity.startSocialWorkout(applicationContext, isHost.value!!))
+            }
+            WorkoutMessageAction.Ready -> {
+                // People sending you ready only matters if you are a host
+                if (isHost.value?.equals(true) == true){
+                    readyMembers.value?.let{ members ->
+                        if (!members.contains(response.userId)){
+                            members.add(response.userId)
+                        }
+                        if (members.count() == roomMembers.value?.count()){
+                            canStart.postValue(true)
+                        }
+                    }
+                }
+            }
+            WorkoutMessageAction.TrainingStart -> {
+                // Reset all livedata on the new joined training
+                currentTrainingLiveData.postValue(response.training)
+                countdownLiveData.postValue(response.countdown)
+            }
+            else -> {
+                Timber.i("Should not received this message %v", response)
+            }
+        }
+    }
+
     private fun roomMessageReceived(response: RoomModels.RoomMessage) {
         when (response.action) {
             RoomMessageAction.Joined -> {
@@ -161,6 +202,7 @@ class WorkoutService: Service() {
     private fun startWorkout() {
         currentTraining = -1
         workoutProgressLiveData.postValue(currentTraining)
+        workoutIsDoneLiveData.postValue(false)
         chronometerIsRunning = true
         skipTraining()
         chronometerIsRunningLiveData.postValue(chronometerIsRunning)

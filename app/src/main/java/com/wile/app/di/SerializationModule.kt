@@ -26,6 +26,7 @@ object SerializationModule {
     fun provideMoshi() = Moshi.Builder()
         .add(RoomActionAdapter())
         .add(EnvelopTypeAdapter())
+        .add(WorkoutActionAdapter())
         .add(
             PolymorphicJsonAdapterFactory.of(Envelop::class.java, "type")
                 .withSubtype(EnvelopRoom::class.java, ENVELOP_TYPE_ROOM)
