@@ -60,11 +60,6 @@ class TrainingListingActivity : DataBindingActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        socialViewModel.refreshConnectionStatus()
-    }
-
     // @TODO implement workout callback
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
