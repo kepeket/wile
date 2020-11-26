@@ -57,6 +57,15 @@ class WorkoutService: Service() {
     val isHost: MutableLiveData<Boolean> = MutableLiveData(false)
     val isInRoom: MutableLiveData<Boolean> = MutableLiveData(false)
 
+
+    /**
+     * @TODO
+     *
+     * Empty list of member when disconnected
+     * Display actual room in bottomsheet (not the one we create)
+     * CreatedRoomID refreshes when disconnecting
+     */
+
     @SuppressLint("CheckResult")
     override fun onBind(p0: Intent?): IBinder? {
         scarletLifecycleRegistry.onNext(Lifecycle.State.Started)
@@ -84,11 +93,16 @@ class WorkoutService: Service() {
     }
 
     fun leaveRoom() {
-        isInRoom.postValue(false)
-        isHost.postValue(false)
-        roomName.postValue("")
-        roomNameCreation.postValue("")
-        scarletLifecycleRegistry.onNext(Lifecycle.State.Stopped.WithReason(ShutdownReason.GRACEFUL))
+        isInRoom.value?.let { inRoom ->
+            if (inRoom) {
+                isInRoom.postValue(false)
+                isHost.postValue(false)
+                roomName.postValue("")
+                roomNameCreation.postValue("")
+                roomSubscription(userName.value!!, roomName.value!!, RoomMessageAction.Leave)
+                //scarletLifecycleRegistry.onNext(Lifecycle.State.Stopped.WithReason(ShutdownReason.GRACEFUL))
+            }
+        }
     }
 
     private fun roomSubscription(user: String, room: String, action: RoomMessageAction) {

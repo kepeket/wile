@@ -2,24 +2,35 @@ package com.wile.app.model
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import com.squareup.moshi.ToJson
 
+@JsonClass(generateAdapter = true)
 data class EnvelopRoom(
-    val type: EnvelopType = EnvelopType.Room,
+    @Json(name = "type") val type: EnvelopType = EnvelopType.Room,
     val message: RoomModels.RoomMessage
-): Envelop(EnvelopType.Room)
+): Envelop()
+
+@JsonClass(generateAdapter = true)
 data class EnvelopPing(
+    val type: EnvelopType = EnvelopType.Ping,
     val message: PingModels.PingRequest
-): Envelop(EnvelopType.Ping)
+): Envelop()
+
+@JsonClass(generateAdapter = true)
 data class EnvelopPong(
+    val type: EnvelopType = EnvelopType.Pong,
     val message: PingModels.PingRequest
-): Envelop(EnvelopType.Pong)
+): Envelop()
+
+@JsonClass(generateAdapter = true)
 data class EnvelopError(
+    val type: EnvelopType = EnvelopType.Error,
     val message: ErrorModels.Error
-): Envelop(EnvelopType.Error)
+): Envelop()
 
 
-sealed class Envelop(@Json(name = "type") val typeName: EnvelopType)
+sealed class Envelop
 
 sealed class EnvelopType {
     object Room: EnvelopType()

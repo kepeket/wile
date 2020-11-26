@@ -36,6 +36,11 @@ dependencies {
         api("${Dependencies.timber}:${DependenciesVersions.timber}")
         api("${Dependencies.viewpager2}:${DependenciesVersions.viewpager2}")
         api("${Dependencies.hashids}:${DependenciesVersions.hashids}")
+        api("${Dependencies.scarlet}:${DependenciesVersions.scarlet}")
+        api("${Dependencies.scarletOkHttp}:${DependenciesVersions.scarlet}")
+        api("${Dependencies.scarletMoshi}:${DependenciesVersions.scarlet}")
+        api("${Dependencies.scarletCoroutine}:${DependenciesVersions.scarlet}")
+        api("${Dependencies.scarletLifecyle}:${DependenciesVersions.scarlet}")
         // endregion
     }
 }
@@ -64,4 +69,5 @@ object DependenciesVersions {
     const val timber                           = "4.7.1"
     const val viewpager2                       = "1.0.0"
     const val hashids                          = "1.0.3"
+    const val scarlet                          = "0.1.11"
 }
