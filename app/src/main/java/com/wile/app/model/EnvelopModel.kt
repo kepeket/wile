@@ -17,7 +17,6 @@ data class EnvelopWorkout(
     val message: WorkoutModels.WorkoutMessage
 ): Envelop()
 
-
 @JsonClass(generateAdapter = true)
 data class EnvelopPing(
     val type: EnvelopType = EnvelopType.Ping,

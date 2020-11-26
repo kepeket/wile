@@ -3,6 +3,7 @@ package com.wile.app.ui.workout
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.ServiceConnection
 import android.os.*
 import android.view.View
@@ -24,6 +25,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
 
     private val viewModel: WorkoutViewModel by viewModels()
     private val binding: ActivityWorkoutBinding by binding(R.layout.activity_workout)
+    private var currentTrainingCache = -1
     private var socialMode = false
 
     // Service binding
@@ -58,13 +60,13 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                 binding.workoutGo.trainingGoBottomSheet.workout_progress.max =
                     cachedTrainings.count()
             })
-        } /*else {
-            if (intent.getBooleanExtra(SOCIAL_HOST, true)) {
-                binding.workoutGo.trainingGoBottomSheet.visibility = View.GONE
+        } else {
+            if (!intent.getBooleanExtra(SOCIAL_HOST, true)) {
+                binding.workoutGo.trainingGoBottomSheet.next.visibility = View.GONE
                 binding.workoutGo.trainingGoBottomSheet.prepareText.text =
                     getString(R.string.social_ready_to_begin)
             }
-        }*/
+        }
 
         // bind the workout service
         Intent(this, WorkoutService::class.java).also { intent ->
@@ -109,6 +111,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                     )
                 })
                 svc.workoutProgressLiveData.observe(this@WorkoutActivity, { position ->
+                    currentTrainingCache = position
                     if (position >= 0) {
                         binding.workoutGo.trainingGoBottomSheet.prepareText.visibility = View.GONE
                         binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_pause_24)
@@ -120,7 +123,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                     }
                 })
                 svc.workoutIsDoneLiveData.observe(this@WorkoutActivity, { done ->
-                    if (done) {
+                    if (done && currentTrainingCache > 0) {
                         workoutStopped()
                     }
                 })
@@ -166,6 +169,9 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                     if (!running) {
                         binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                     } else {
+                        if (binding.workoutGo.prepareText.visibility != View.GONE){
+                            binding.workoutGo.prepareText.visibility = View.GONE
+                        }
                         binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_pause_24)
                     }
                 })
@@ -227,6 +233,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         fun startSocialWorkout(context: Context, host: Boolean) = newIntent(context).apply {
             putExtra(SOCIAL_MODE, true)
             putExtra(SOCIAL_HOST, host)
+            addFlags(FLAG_ACTIVITY_NEW_TASK)
         }
     }
 }

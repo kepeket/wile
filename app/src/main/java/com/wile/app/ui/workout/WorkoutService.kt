@@ -3,6 +3,7 @@ package com.wile.app.ui.workout
 import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.*
 import androidx.lifecycle.MutableLiveData
 import com.tinder.scarlet.Lifecycle
@@ -23,10 +24,11 @@ import kotlin.math.roundToInt
 import kotlin.reflect.KParameter
 
 @AndroidEntryPoint
-class WorkoutService: Service() {
+class WorkoutService : Service() {
 
     @Inject
     lateinit var server: WileServer
+
     @Inject
     lateinit var scarletLifecycleRegistry: LifecycleRegistry
 
@@ -45,8 +47,10 @@ class WorkoutService: Service() {
     val elapsedTimeLiveData: MutableLiveData<Int> = MutableLiveData(0)
     val workoutProgressLiveData: MutableLiveData<Int> = MutableLiveData(currentTraining)
     val currentTrainingLiveData: MutableLiveData<Training> = MutableLiveData()
-    val chronometerIsRunningLiveData: MutableLiveData<Boolean> = MutableLiveData(chronometerIsRunning)
+    val chronometerIsRunningLiveData: MutableLiveData<Boolean> =
+        MutableLiveData(chronometerIsRunning)
     val workoutIsDoneLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+    val workoutProgressMaxLiveData: MutableLiveData<Int> = MutableLiveData(0)
 
     // social LiveData
     val roomNameCreation: MutableLiveData<String> = MutableLiveData("")
@@ -65,17 +69,21 @@ class WorkoutService: Service() {
      * Empty list of member when disconnected
      * Display actual room in bottomsheet (not the one we create)
      * CreatedRoomID refreshes when disconnecting
+     * Avoid to start a workout when you are in a room and not host
+     * When you join you should receive the member list
+     * Easy share room ID
      */
 
     @SuppressLint("CheckResult")
     override fun onBind(p0: Intent?): IBinder? {
         scarletLifecycleRegistry.onNext(Lifecycle.State.Started)
-        server.roomMessage().subscribe { it ->
+        server.roomMessage().subscribe {
             roomMessageReceived(it.message)
         }
-        server.workoutMessage().subscribe { it ->
+        server.workoutMessage().subscribe {
             workoutMessageReceived(it.message)
         }
+        // subscribe to ping
         return binder
     }
 
@@ -92,7 +100,7 @@ class WorkoutService: Service() {
     }
 
 
-    fun joinRoom(userId: String, room: String){
+    fun joinRoom(userId: String, room: String) {
         roomSubscription(userId, room, RoomMessageAction.Join)
     }
 
@@ -123,35 +131,58 @@ class WorkoutService: Service() {
     }
 
     private fun workoutMessageReceived(response: WorkoutModels.WorkoutMessage) {
-        when (response.action){
-            WorkoutMessageAction.Started -> {
-                // We are only interrested if we are not the host
-                if (isHost.value?.equals(false) == true) {
-                    chronometerIsRunningLiveData.postValue(true)
-                }
+        when (response.action) {
+            WorkoutMessageAction.Paused -> {
+                chronometerIsRunningLiveData.postValue(false)
             }
-            WorkoutMessageAction.Stopped -> TODO()
+            WorkoutMessageAction.Stopped -> {
+                stopWorkout()
+            }
             WorkoutMessageAction.Lobby -> {
+                workoutIsDoneLiveData.postValue(false)
                 // Asking to put yourself in lobby, so we'll launch the workout activity in social mode
-                startActivity(WorkoutActivity.startSocialWorkout(applicationContext, isHost.value!!))
+                startActivity(
+                    WorkoutActivity.startSocialWorkout(
+                        applicationContext,
+                        isHost.value!!
+                    )
+                )
             }
             WorkoutMessageAction.Ready -> {
                 // People sending you ready only matters if you are a host
-                if (isHost.value?.equals(true) == true){
-                    readyMembers.value?.let{ members ->
-                        if (!members.contains(response.userId)){
+                if (isHost.value?.equals(true) == true) {
+                    readyMembers.value?.let { members ->
+                        if (!members.contains(response.userId)) {
                             members.add(response.userId)
                         }
-                        if (members.count() == roomMembers.value?.count()){
+                        if (members.count() == roomMembers.value?.count()) {
                             canStart.postValue(true)
                         }
                     }
                 }
             }
+            WorkoutMessageAction.Started,
             WorkoutMessageAction.TrainingStart -> {
-                // Reset all livedata on the new joined training
-                currentTrainingLiveData.postValue(response.training)
-                countdownLiveData.postValue(response.countdown)
+                if (isHost.value?.equals(false) == true) {
+                    workoutIsDoneLiveData.postValue(false)
+                    chronometerIsRunningLiveData.postValue(true)
+                    // Reset all livedata on the new joined training
+                    val training = Training(
+                        name = response.training.name,
+                        reps = response.training.reps,
+                        repRate = response.training.repRate,
+                        trainingType = response.training.trainingType
+                    )
+                    currentTrainingLiveData.postValue(training)
+                    countdownLiveData.postValue(response.countdown)
+                    workoutProgressLiveData.postValue(response.trainingPos)
+                    workoutProgressMaxLiveData.postValue(response.trainingCount)
+                }
+            }
+            WorkoutMessageAction.Tick -> {
+                if (isHost.value?.equals(false) == true) {
+                    countdownLiveData.postValue(response.countdown)
+                }
             }
             else -> {
                 Timber.i("Should not received this message %v", response)
@@ -214,6 +245,7 @@ class WorkoutService: Service() {
     }
 
     fun stopWorkout() {
+        workoutIsDoneLiveData.postValue(true)
         if (chronometerIsRunning) {
             timer.cancel()
             chronometerIsRunning = false
@@ -221,14 +253,14 @@ class WorkoutService: Service() {
             currentTraining = -1
             workoutProgressLiveData.postValue(currentTraining)
         }
-        workoutIsDoneLiveData.postValue(true)
     }
 
     private fun pauseWorkout() {
         if (chronometerIsRunning) {
             timeWhenPaused = SystemClock.elapsedRealtime()
         } else {
-            lastTrainingChange = SystemClock.elapsedRealtime() - (timeWhenPaused - lastTrainingChange)
+            lastTrainingChange =
+                SystemClock.elapsedRealtime() - (timeWhenPaused - lastTrainingChange)
         }
         chronometerIsRunning = !chronometerIsRunning
         chronometerIsRunningLiveData.postValue(chronometerIsRunning)
@@ -241,7 +273,7 @@ class WorkoutService: Service() {
             ((timeWhenPaused - lastTrainingChange) / 1000.0).roundToInt()
         }
         val endOfTraining = trainingCountdown - elapsedTime
-        elapsedTimeLiveData.postValue(((SystemClock.elapsedRealtime() - timeWhenStarted)/1000.0).roundToInt())
+        elapsedTimeLiveData.postValue(((SystemClock.elapsedRealtime() - timeWhenStarted) / 1000.0).roundToInt())
         countdownLiveData.postValue(endOfTraining)
         if (endOfTraining <= 0) {
             if (expendedTrainings[currentTraining].trainingType != TrainingTypes.Repeated) {
