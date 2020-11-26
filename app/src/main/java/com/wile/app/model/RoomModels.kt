@@ -19,12 +19,14 @@ sealed class RoomMessageAction {
     object Join: RoomMessageAction()
     object Joined: RoomMessageAction()
     object Left: RoomMessageAction()
+    object Leave: RoomMessageAction()
 }
 
 const val ROOM_ACTION_CREATED = "created"
 const val ROOM_ACTION_CREATE = "create"
 const val ROOM_ACTION_JOINED = "joined"
 const val ROOM_ACTION_JOIN = "join"
+const val ROOM_ACTION_LEAVE = "leave"
 const val ROOM_ACTION_LEFT = "left"
 
 
@@ -36,6 +38,7 @@ class RoomActionAdapter {
         ROOM_ACTION_CREATE -> RoomMessageAction.Create
         ROOM_ACTION_JOIN -> RoomMessageAction.Join
         ROOM_ACTION_LEFT -> RoomMessageAction.Left
+        ROOM_ACTION_LEAVE -> RoomMessageAction.Leave
         else -> throw RuntimeException("Not support data type")
     }
 
@@ -46,5 +49,6 @@ class RoomActionAdapter {
         RoomMessageAction.Left -> ROOM_ACTION_LEFT
         RoomMessageAction.Create -> ROOM_ACTION_CREATE
         RoomMessageAction.Join -> ROOM_ACTION_JOIN
+        RoomMessageAction.Leave -> ROOM_ACTION_LEAVE
     }
 }

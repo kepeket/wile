@@ -63,7 +63,12 @@ dependencies {
         Dependencies.room,
         Dependencies.timber,
         Dependencies.viewpager2,
-        Dependencies.hashids
+        Dependencies.hashids,
+        Dependencies.scarlet,
+        Dependencies.scarletOkHttp,
+        Dependencies.scarletLifecyle,
+        Dependencies.scarletMoshi,
+        Dependencies.scarletCoroutine
     )
 
     testImplementations(

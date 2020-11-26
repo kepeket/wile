@@ -1,40 +1,104 @@
 package com.wile.app.ui.social
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.switchMap
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.app.model.*
-import okhttp3.Response
+import com.wile.app.ui.workout.WorkoutService
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.android.synthetic.main.workout_controller.view.*
 import org.hashids.Hashids
-import timber.log.Timber
 import java.time.Instant
 
 class SocialWorkoutViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val useCase: SocialWorkoutUseCase
+    @ApplicationContext private val context: Context
 ) : LiveCoroutinesViewModel() {
 
-    val roomNameCreate: MutableLiveData<String> = MutableLiveData("")
-    val userName: MutableLiveData<String> = MutableLiveData("")
-    val roomMembers: MutableLiveData<HashMap<String, Boolean>> = MutableLiveData(hashMapOf())
-    val hosting: ObservableBoolean = ObservableBoolean(false)
-    val isInRoom: MutableLiveData<Boolean> = MutableLiveData(false)
-    private lateinit var callbackListener: WileSocketListenerCallback
+    private var workoutService: WorkoutService? = null
 
-    init {
-        refreshConnectionStatus()
-        useCase.setCallbacks(
-            onOpen = ::onOpen,
-            onClosed = ::onClosed,
-            onMessage = ::onMessage,
-            onFailure = ::onFailure
-        )
+
+    // Mediatords
+    val roomNameCreate: MediatorLiveData<String> = MediatorLiveData()
+    var roomName: MediatorLiveData<String> = MediatorLiveData()
+    val userName: MediatorLiveData<String> = MediatorLiveData()
+    val roomMembers: MediatorLiveData<HashMap<String, Boolean>> = MediatorLiveData()
+    val isHost: MediatorLiveData<Boolean> = MediatorLiveData()
+    val isInRoom: MediatorLiveData<Boolean> = MediatorLiveData()
+
+    // Service binding callback
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as WorkoutService.WorkoutBinder
+            workoutService = binder.getService()
+            workoutService?.let { svc ->
+                userName.addSource(svc.userName) {
+                    if (it.isEmpty()){
+                        userName.postValue(getRotatedUserName())
+                    } else {
+                        userName.postValue(it)
+                    }
+                }
+                roomMembers.addSource(svc.roomMembers) {
+                    roomMembers.postValue(it)
+                }
+                isHost.addSource(svc.isHost) {
+                    isHost.postValue(it)
+                }
+                isInRoom.addSource(svc.isInRoom) {
+                    isInRoom.postValue(it)
+                }
+                roomName.addSource(svc.roomName){
+                    roomName.postValue(it)
+                }
+                roomNameCreate.addSource(svc.roomNameCreation){
+                    if (it.isEmpty()){
+                        roomNameCreate.postValue(
+                            Hashids(userName.value).encode(Instant.now().toEpochMilli() / 1000).toUpperCase().take(6)
+                        )
+                    } else {
+                        roomNameCreate.postValue(it)
+                    }
+                }
+            }
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+        }
     }
 
-    fun saveState(){
+
+    init {
+        Intent(context, WorkoutService::class.java).also {  intent ->
+            context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+
+    fun create(user: String) {
+        workoutService?.createRoom(user, roomNameCreate.value!!)
+    }
+
+    fun join(user: String, roomName: String) {
+        workoutService?.joinRoom(user, roomName.toUpperCase())
+    }
+
+    fun leaveRoom() {
+        workoutService?.leaveRoom()
+    }
+
+    /*fun saveState(){
         roomMembers.value?.let{
             useCase.members = it
         }
@@ -151,7 +215,7 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
     private fun setInRoom(bool: Boolean){
         useCase.inRoom = bool
         isInRoom.postValue(bool)
-    }
+    }*/
     
     private fun getRotatedUserName(): String {
         val fakeUserNames = listOf<String>(

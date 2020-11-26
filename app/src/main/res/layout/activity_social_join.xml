@@ -258,7 +258,7 @@
             </ScrollView>
 
             <TextView
-                app:gone="@{viewModel.hosting}"
+                app:gone="@{viewModel.isHost}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/wait_social_btn_label"
@@ -276,7 +276,7 @@
                 android:text="@string/go_social_btn_label"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="center"
-                app:gone="@{!viewModel.hosting}"
+                app:gone="@{!viewModel.isHost}"
                 app:layout_constraintTop_toBottomOf="@+id/room_members"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

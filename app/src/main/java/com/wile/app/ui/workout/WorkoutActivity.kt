@@ -27,23 +27,17 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
 
     // Service binding
     private var workoutService: WorkoutService? = null
-    private var serviceBound: Boolean = false
 
     private var cachedTrainings: List<Training> = listOf()
 
     var vibrator: Vibrator? = null
         @Inject set
+
     @Inject
     lateinit var workoutSoundPlayer: WorkoutSoundPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        // bind the workout service
-        Intent(this, WorkoutService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
 
         binding.apply {
             lifecycleOwner = this@WorkoutActivity
@@ -60,6 +54,11 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
             workoutService?.setTrainingList(cachedTrainings)
             binding.workoutGo.trainingGoBottomSheet.workout_progress.max = cachedTrainings.count()
         })
+
+        // bind the workout service
+        Intent(this, WorkoutService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     // Service binding callback
@@ -69,9 +68,8 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
             val binder = service as WorkoutService.WorkoutBinder
             workoutService = binder.getService()
-            serviceBound = true
             workoutService?.let { svc ->
-                if (cachedTrainings.count() > 1){
+                if (cachedTrainings.count() > 1) {
                     svc.setTrainingList(cachedTrainings)
                 }
                 // The main ticking event
@@ -81,11 +79,15 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                             binding.workoutGo.trainingGoBottomSheet.frame_cardview.visibility = View.VISIBLE
                             if (countdown <= 0) {
                                 binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text =
-                                getString(R.string.workout_go_till_the_end)
+                                        getString(R.string.workout_go_till_the_end)
                             }
                         }
                     }
-                    binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = if (countdown < 0) { "" } else { countdown.toString() }
+                    binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = if (countdown < 0) {
+                        ""
+                    } else {
+                        countdown.toString()
+                    }
                     if (countdown in 1..4) {
                         workoutSoundPlayer.playBeep()
                     }
@@ -112,7 +114,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                     }
                 })
                 svc.currentTrainingLiveData.observe(this@WorkoutActivity, { training ->
-                    val bgColor = when(training.trainingType){
+                    val bgColor = when (training.trainingType) {
                         TrainingTypes.Timed -> getColor(R.color.training_go_blue)
                         TrainingTypes.Repeated -> getColor(R.color.repeated_preset)
                         TrainingTypes.Tabata -> getColor(R.color.tabata_preset)
@@ -121,7 +123,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                     binding.workoutGo.trainingGoBottomSheet.setBackgroundColor(bgColor)
                     binding.workoutGo.trainingGoBottomSheet.currentWorkoutInfo.text =
                             training.name
-                    if (svc.workoutProgressLiveData.value!! > 0){
+                    if (svc.workoutProgressLiveData.value!! > 0) {
                         binding.workoutGo.trainingGoBottomSheet.currenTrainDescription.text =
                                 when (training.trainingType) {
                                     TrainingTypes.Timed -> {
@@ -161,27 +163,26 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
-            serviceBound = false
         }
     }
 
-    override fun askStartPauseWorkout(){
-         workoutService?.let {
-             if (!it.startStopWorkout()) {
-                 showToast(R.string.no_excercice)
-             }
-         } ?: run {
-             showToast(R.string.no_workout_service)
-         }
+    override fun askStartPauseWorkout() {
+        workoutService?.let {
+            if (!it.startStopWorkout()) {
+                showToast(R.string.no_excercice)
+            }
+        } ?: run {
+            showToast(R.string.no_workout_service)
+        }
     }
 
-    override fun askStopWorkout(){
+    override fun askStopWorkout() {
         workoutService?.stopWorkout() ?: run {
             workoutStopped()
         }
     }
 
-    override fun askSkipTraining(){
+    override fun askSkipTraining() {
         workoutService?.skipTraining()
     }
 

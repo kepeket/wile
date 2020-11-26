@@ -1,10 +1,13 @@
 package com.wile.app.ui.social
 
 import android.app.AlertDialog
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -16,6 +19,7 @@ import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
 import com.wile.app.extensions.showToast
 import com.wile.app.ui.adapter.RoomMemberAdapter
+import com.wile.app.ui.workout.WorkoutService
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.Response
 import javax.inject.Inject
@@ -30,23 +34,9 @@ class JoinActivity: DataBindingActivity() {
     private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
     private val adapter by lazy { RoomMemberAdapter() }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // FixMe : crash risks and bad architecture choices here ; this is typically the place
-        //  you need LiveData. Let's talk about that
-        viewModel.setSocialWorkoutCallbackListener(
-            WileSocketListenerCallback(
-                onConnectionFailure = ::onConnectionFailure,
-                onRoomCreated = ::onRoomCreated,
-                onUserJoined = ::onUserJoined,
-                onUserLeft = ::onUserLeft,
-                connectionClosed = ::onConnectionClosed,
-                connectionOpen = ::onConnectionOpen,
-                onPong = ::onPongReceived,
-                onError = ::onError
-            )
-        )
 
         binding.apply {
             lifecycleOwner = this@JoinActivity
@@ -82,23 +72,16 @@ class JoinActivity: DataBindingActivity() {
         }
 
         binding.cancelSocialBtn.setOnClickListener {
-            viewModel.onCancelSocialButtonClicked()
+            viewModel.leaveRoom()
         }
 
         binding.goSocialBtn.setOnClickListener {
             finish()
         }
 
-        viewModel.refreshConnectionStatus()
-
         viewModel.isInRoom.observe(this, {
             toggleBottomSheet(it)
         })
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.saveState()
     }
 
     private fun toggleBottomSheet(toggle: Boolean){

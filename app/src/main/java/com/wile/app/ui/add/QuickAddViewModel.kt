@@ -20,14 +20,10 @@ class QuickAddViewModel @ViewModelInject constructor(
     private val _toastLiveData: MutableLiveData<Any> = MutableLiveData()
     val isLoading: ObservableBoolean = ObservableBoolean(false)
     val toastLiveData: LiveData<Any> get() = _toastLiveData
-    val presets: MutableLiveData<List<Preset>> = MutableLiveData()
-
-    init {
-        presets.value = getPresets()
-    }
+    val presets: MutableLiveData<List<Preset>> = MutableLiveData(getDefaultPresets())
 
     // FixMe : this is typicaly something that comes from a UC and not from a VM (Business related)
-    private fun getPresets(): List<Preset> {
+    private fun getDefaultPresets(): List<Preset> {
         return listOf(
             // Rest
             Preset(name = "Repos", trainingType = TrainingTypes.Timed, duration = 20),

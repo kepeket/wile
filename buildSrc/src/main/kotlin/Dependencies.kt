@@ -82,5 +82,11 @@ object Dependencies {
     const val viewpager2 = "androidx.viewpager2:viewpager2"
 
     const val hashids = "org.hashids:hashids"
+
+    const val scarlet = "com.tinder.scarlet:scarlet"
+    const val scarletOkHttp = "com.tinder.scarlet:websocket-okhttp"
+    const val scarletLifecyle = "com.tinder.scarlet:lifecycle-android"
+    const val scarletCoroutine = "com.tinder.scarlet:stream-adapter-rxjava2"
+    const val scarletMoshi = "com.tinder.scarlet:message-adapter-moshi"
     // endregion
 }
