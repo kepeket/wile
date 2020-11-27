@@ -73,7 +73,8 @@
             android:layout_marginTop="@dimen/form_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username_label" />
+            app:layout_constraintTop_toBottomOf="@+id/username_label"
+            android:autofillHints=".AUTOFILL_HINT_NEW_USERNAME" />
 
         <View
             android:id="@+id/divider"
@@ -131,7 +132,8 @@
             app:layout_constraintTop_toBottomOf="@+id/join"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/create_label"/>
+            app:layout_constraintBottom_toTopOf="@+id/create_label"
+            android:contentDescription="@string/visual_element" />
 
         <TextView
             android:id="@+id/create_label"
@@ -148,6 +150,8 @@
             android:id="@+id/create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusedByDefault="true"
             android:text="@string/social_create_btn"
             android:layout_marginTop="@dimen/form_padding"
             app:layout_constraintTop_toBottomOf="@+id/create_label"
@@ -162,24 +166,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/timed_preset"
-            android:padding="@dimen/form_padding"
             android:elevation="6dp"
-            app:behavior_hideable="false"
+            android:padding="@dimen/form_padding"
             app:behavior_draggable="false"
+            app:behavior_hideable="false"
             app:behavior_peekHeight="0dp"
-            tools:behavior_peekHeight="1000dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            tools:behavior_peekHeight="1000dp">
 
 
             <ImageButton
                 android:id="@+id/cancel_social_btn"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:scaleType="fitCenter"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_baseline_cancel_24"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:contentDescription="@string/room_leave_button_label" />
 
             <TextView
                 android:id="@+id/connection_label"
@@ -199,88 +204,80 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_padding"
                 android:text="@{viewModel.roomName}"
+                android:textIsSelectable="true"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/connection_label"
                 tools:text="AD42DZ" />
+
+            <ImageButton
+                android:id="@+id/room_share_btn"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="@dimen/text_padding"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_baseline_share_24"
+                app:layout_constraintTop_toTopOf="@+id/create_room_name"
+                app:layout_constraintBottom_toBottomOf="@+id/create_room_name"
+                app:layout_constraintStart_toEndOf="@+id/create_room_name"
+                android:contentDescription="@string/room_name_share" />
 
             <TextView
                 android:id="@+id/waiting_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_padding"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 android:paddingHorizontal="@dimen/big_padding"
                 android:text="@string/waiting_for_pals"
-                app:layout_constraintTop_toBottomOf="@+id/create_room_name"
-                 />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/create_room_name" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/room_members"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/big_padding"
+                android:nestedScrollingEnabled="false"
                 app:adapter="@{memberAdapter}"
                 app:adapterMemberList="@{viewModel.roomMembers}"
-                tools:listitem="@layout/room_member"
-                android:layout_width="350dp"
-                android:layout_marginVertical="@dimen/big_padding"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:itemCount="1"
-                app:spanCount="2"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toTopOf="@+id/go_social_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/waiting_label">
+                app:layout_constraintTop_toBottomOf="@+id/waiting_label"
+                app:spanCount="2"
+                tools:itemCount="1"
+                tools:listitem="@layout/room_member">
 
             </androidx.recyclerview.widget.RecyclerView>
 
-
-            <ScrollView
-                android:visibility="gone"
-                android:id="@+id/connection_log_scrollview"
-                android:layout_width="300dp"
-                android:layout_height="70dp"
-                android:layout_marginVertical="@dimen/big_padding"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toTopOf="@+id/go_social_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/connection_label"
-                tools:ignore="SmallSp">
-                <LinearLayout
-                    android:id="@+id/connection_log"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                </LinearLayout>
-            </ScrollView>
-
             <TextView
-                app:gone="@{viewModel.isHost}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/big_padding"
                 android:text="@string/wait_social_btn_label"
                 android:textColor="@color/training_go_red"
-                android:layout_marginBottom="@dimen/big_padding"
-                app:layout_constraintTop_toBottomOf="@+id/room_members"
+                app:gone="@{viewModel.isHost}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/room_members" />
 
             <Button
                 android:id="@+id/go_social_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:text="@string/go_social_btn_label"
+                android:layout_height="48dp"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="center"
+                android:text="@string/go_social_btn_label"
                 app:gone="@{!viewModel.isHost}"
-                app:layout_constraintTop_toBottomOf="@+id/room_members"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/room_members" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

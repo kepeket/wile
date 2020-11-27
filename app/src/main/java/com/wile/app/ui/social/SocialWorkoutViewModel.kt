@@ -14,6 +14,9 @@ import com.wile.app.ui.workout.WorkoutService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.hashids.Hashids
 import java.time.Instant
+import java.util.*
+import kotlin.collections.HashMap
+import kotlin.random.Random
 
 class SocialWorkoutViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
@@ -111,7 +114,7 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
 */
 
     private fun getRotatedUserName(): String {
-        val fakeUserNames = listOf<String>(
+        val fakeUserNames = listOf(
             "RapidPanda",
             "RunningFrog",
             "BuffyPuppy",
@@ -119,6 +122,6 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
             "JumpyFox",
             "StretchyCat"
         )
-        return fakeUserNames.random()
+        return String.format("%s-%s", fakeUserNames.random(), Random.nextLong(100, 999))
     }
 }

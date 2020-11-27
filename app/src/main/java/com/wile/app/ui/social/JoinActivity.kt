@@ -1,16 +1,11 @@
 package com.wile.app.ui.social
 
-import android.app.AlertDialog
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -19,9 +14,7 @@ import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySocialJoinBinding
 import com.wile.app.extensions.showToast
 import com.wile.app.ui.adapter.RoomMemberAdapter
-import com.wile.app.ui.workout.WorkoutService
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -67,8 +60,10 @@ class JoinActivity: DataBindingActivity() {
                 return@setOnClickListener
             }
             inputMethodManager?.hideSoftInputFromWindow(binding.root.windowToken, 0);
-            viewModel.join(binding.username.text.toString(),
-                binding.room.text.toString())
+            viewModel.join(
+                binding.username.text.toString(),
+                binding.room.text.toString()
+            )
         }
 
         binding.cancelSocialBtn.setOnClickListener {
@@ -79,6 +74,15 @@ class JoinActivity: DataBindingActivity() {
             finish()
         }
 
+        binding.roomShareBtn.setOnClickListener {
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_room_text, viewModel.roomName.value))
+                type = "text/plain"
+            }
+            startActivity(sendIntent)
+        }
+
         viewModel.isInRoom.observe(this, {
             toggleBottomSheet(it)
         })
@@ -87,9 +91,9 @@ class JoinActivity: DataBindingActivity() {
     private fun toggleBottomSheet(toggle: Boolean){
         bottomSheetBehavior?.let {
             Handler(Looper.getMainLooper()).postDelayed({
-                if (it.state == BottomSheetBehavior.STATE_EXPANDED && !toggle){
+                if (it.state == BottomSheetBehavior.STATE_EXPANDED && !toggle) {
                     it.state = BottomSheetBehavior.STATE_COLLAPSED
-                } else if (it.state == BottomSheetBehavior.STATE_COLLAPSED && toggle){
+                } else if (it.state == BottomSheetBehavior.STATE_COLLAPSED && toggle) {
                     it.state = BottomSheetBehavior.STATE_EXPANDED
                 }
             }, 500)

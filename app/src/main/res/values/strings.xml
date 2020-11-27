@@ -72,4 +72,8 @@
     <string name="social_ready_to_begin">L\'hote va bientôt lancer l\'entrainement, préparez vous !</string>
     <string name="social_skip_denied_not_host">Seul l\'hôte de la salle peut skip</string>
     <string name="social_start_pause_denied_not_host">Seul l\'hôte peut lancer ou mettre en pause l\'entrainement</string>
+    <string name="room_name_share">Partager le nom de la salle</string>
+    <string name="room_leave_button_label">Se déconnecter de la salle</string>
+    <string name="visual_element">Element visuel</string>
+    <string name="share_room_text">"Rejoins moi sur Wile pour un entrainement. Mon code salle est %s "</string>
 </resources>
