@@ -3,6 +3,7 @@ package com.wile.app.ui.workout
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.ServiceConnection
 import android.os.*
 import android.view.View
@@ -24,9 +25,15 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
 
     private val viewModel: WorkoutViewModel by viewModels()
     private val binding: ActivityWorkoutBinding by binding(R.layout.activity_workout)
+    private var currentTrainingCache = -1
+    private var socialMode = false
+    private var isHost = false
 
     // Service binding
     private var workoutService: WorkoutService? = null
+
+    // Social
+    private var askLobby = false
 
     private var cachedTrainings: List<Training> = listOf()
 
@@ -48,12 +55,24 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
             workoutController = this@WorkoutActivity
         }
 
-        viewModel.fetchTrainings(intent.getIntExtra(WORKOUT_ID, 0))
-        viewModel.trainingListLiveData.observe(this, {
-            cachedTrainings = viewModel.getExpendedTrainingList()
-            workoutService?.setTrainingList(cachedTrainings)
-            binding.workoutGo.trainingGoBottomSheet.workout_progress.max = cachedTrainings.count()
-        })
+        socialMode = intent.getBooleanExtra(SOCIAL_MODE, false)
+        isHost = intent.getBooleanExtra(SOCIAL_HOST, false)
+        if ((isHost && socialMode) || !socialMode) {
+            viewModel.fetchTrainings(intent.getIntExtra(WORKOUT_ID, 0))
+            viewModel.trainingListLiveData.observe(this, {
+                cachedTrainings = viewModel.getExpendedTrainingList()
+                workoutService?.setTrainingList(cachedTrainings)
+                binding.workoutGo.trainingGoBottomSheet.workout_progress.max =
+                    cachedTrainings.count()
+            })
+            askLobby = socialMode
+        } else {
+            if (socialMode && !isHost) {
+                binding.workoutGo.trainingGoBottomSheet.next.visibility = View.GONE
+                binding.workoutGo.trainingGoBottomSheet.prepareText.text =
+                    getString(R.string.social_ready_to_begin)
+            }
+        }
 
         // bind the workout service
         Intent(this, WorkoutService::class.java).also { intent ->
@@ -72,22 +91,28 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                 if (cachedTrainings.count() > 1) {
                     svc.setTrainingList(cachedTrainings)
                 }
+                if (askLobby){
+                    svc.askLobby()
+                } else {
+                    svc.tellReady()
+                }
                 // The main ticking event
                 svc.countdownLiveData.observe(this@WorkoutActivity, { countdown ->
-                    if (svc.currentTrainingLiveData.value?.equals(TrainingTypes.Repeated) == true) {
-                        if (countdown < 5) {
+                    if (svc.currentTrainingLiveData.value?.trainingType == TrainingTypes.Repeated) {
+                        if (countdown < 5 && svc.chronometerIsRunningLiveData.value == true) {
                             binding.workoutGo.trainingGoBottomSheet.frame_cardview.visibility = View.VISIBLE
-                            if (countdown <= 0) {
-                                binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text =
-                                        getString(R.string.workout_go_till_the_end)
-                            }
                         }
                     }
-                    binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text = if (countdown < 0) {
-                        ""
-                    } else {
-                        countdown.toString()
-                    }
+                    binding.workoutGo.trainingGoBottomSheet.trainingCountdown.text =
+                        if (countdown < 0) {
+                            if (svc.currentTrainingLiveData.value?.trainingType == TrainingTypes.Repeated) {
+                                    getString(R.string.workout_go_till_the_end)
+                            } else {
+                                ""
+                            }
+                        } else {
+                            countdown.toString()
+                        }
                     if (countdown in 1..4) {
                         workoutSoundPlayer.playBeep()
                     }
@@ -97,7 +122,11 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                             durationToStr(time)
                     )
                 })
+                svc.workoutProgressMaxLiveData.observe(this@WorkoutActivity, { max ->
+                    binding.workoutGo.trainingGoBottomSheet.workout_progress.max = max
+                })
                 svc.workoutProgressLiveData.observe(this@WorkoutActivity, { position ->
+                    currentTrainingCache = position
                     if (position >= 0) {
                         binding.workoutGo.trainingGoBottomSheet.prepareText.visibility = View.GONE
                         binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_pause_24)
@@ -109,37 +138,38 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                     }
                 })
                 svc.workoutIsDoneLiveData.observe(this@WorkoutActivity, { done ->
-                    if (done) {
+                    if (done && currentTrainingCache > 0) {
                         workoutStopped()
                     }
                 })
                 svc.currentTrainingLiveData.observe(this@WorkoutActivity, { training ->
-                    val bgColor = when (training.trainingType) {
-                        TrainingTypes.Timed -> getColor(R.color.training_go_blue)
-                        TrainingTypes.Repeated -> getColor(R.color.repeated_preset)
-                        TrainingTypes.Tabata -> getColor(R.color.tabata_preset)
-                        TrainingTypes.Custom -> getColor(R.color.dark_grey_variant)
-                    }
-                    binding.workoutGo.trainingGoBottomSheet.setBackgroundColor(bgColor)
-                    binding.workoutGo.trainingGoBottomSheet.currentWorkoutInfo.text =
+                    training?.let {
+                        val bgColor = when (training.trainingType) {
+                            TrainingTypes.Timed -> getColor(R.color.training_go_blue)
+                            TrainingTypes.Repeated -> getColor(R.color.repeated_preset)
+                            TrainingTypes.Tabata -> getColor(R.color.tabata_preset)
+                            TrainingTypes.Custom -> getColor(R.color.dark_grey_variant)
+                        }
+                        binding.workoutGo.trainingGoBottomSheet.setBackgroundColor(bgColor)
+                        binding.workoutGo.trainingGoBottomSheet.currentWorkoutInfo.text =
                             training.name
-                    if (svc.workoutProgressLiveData.value!! > 0) {
-                        binding.workoutGo.trainingGoBottomSheet.currenTrainDescription.text =
+                        if (svc.workoutProgressLiveData.value!! > 0) {
+                            binding.workoutGo.trainingGoBottomSheet.currenTrainDescription.text =
                                 when (training.trainingType) {
                                     TrainingTypes.Timed -> {
                                         getString(R.string.training_timed_description)
                                     }
                                     TrainingTypes.Repeated -> {
                                         getString(
-                                                R.string.training_repeated_description,
-                                                training.reps
+                                            R.string.training_repeated_description,
+                                            training.reps
                                         )
                                     }
                                     TrainingTypes.Custom -> {
                                         if (training.reps != 0) {
                                             getString(
-                                                    R.string.training_repeated_description,
-                                                    training.reps
+                                                R.string.training_repeated_description,
+                                                training.reps
                                             )
                                         } else {
                                             getString(R.string.training_timed_description)
@@ -149,12 +179,16 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                                         ""
                                     }
                                 }
+                        }
                     }
                 })
                 svc.chronometerIsRunningLiveData.observe(this@WorkoutActivity, { running ->
                     if (!running) {
                         binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                     } else {
+                        if (binding.workoutGo.prepareText.visibility != View.GONE){
+                            binding.workoutGo.prepareText.visibility = View.GONE
+                        }
                         binding.workoutGo.trainingGoBottomSheet.pause.setImageResource(R.drawable.ic_baseline_pause_24)
                     }
                 })
@@ -168,8 +202,14 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
 
     override fun askStartPauseWorkout() {
         workoutService?.let {
-            if (!it.startStopWorkout()) {
-                showToast(R.string.no_excercice)
+            when(it.startStopWorkout()) {
+                WorkoutService.WorkoutError.NotHost -> {
+                    showToast(R.string.social_start_pause_denied_not_host)
+                }
+                WorkoutService.WorkoutError.NoopError -> {}
+                WorkoutService.WorkoutError.NoTraining -> {
+                    showToast(R.string.no_excercice)
+                }
             }
         } ?: run {
             showToast(R.string.no_workout_service)
@@ -177,13 +217,21 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     }
 
     override fun askStopWorkout() {
-        workoutService?.stopWorkout() ?: run {
-            workoutStopped()
-        }
+        workoutStopped()
+        workoutService?.stopWorkout()
     }
 
     override fun askSkipTraining() {
-        workoutService?.skipTraining()
+        // catch return to toast
+        when (workoutService?.skipTraining()){
+            WorkoutService.WorkoutError.NotHost -> {
+                showToast(R.string.social_skip_denied_not_host)
+            }
+            else -> {
+                binding.workoutGo.trainingGoBottomSheet.frame_cardview.visibility = View.GONE
+            }
+        }
+
     }
 
     fun workoutStopped() {
@@ -206,10 +254,18 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     companion object {
         const val VIBRATION_TIME = 500L
         const val WORKOUT_ID = "workout_id"
+        const val SOCIAL_MODE = "social_mode"
+        const val SOCIAL_HOST = "social_host"
 
         fun newIntent(context: Context) = Intent(context, WorkoutActivity::class.java)
         fun startWorkout(context: Context, workoutId: Int) = newIntent(context).apply {
             putExtra(WORKOUT_ID, workoutId)
+        }
+        fun startSocialWorkout(context: Context, workoutId: Int, host: Boolean) = newIntent(context).apply {
+            putExtra(SOCIAL_MODE, true)
+            putExtra(WORKOUT_ID, workoutId)
+            putExtra(SOCIAL_HOST, host)
+            addFlags(FLAG_ACTIVITY_NEW_TASK)
         }
     }
 }
