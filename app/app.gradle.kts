@@ -68,7 +68,8 @@ dependencies {
         Dependencies.scarletOkHttp,
         Dependencies.scarletLifecyle,
         Dependencies.scarletMoshi,
-        Dependencies.scarletCoroutine
+        Dependencies.scarletCoroutine,
+        Dependencies.preferences
     )
 
     testImplementations(

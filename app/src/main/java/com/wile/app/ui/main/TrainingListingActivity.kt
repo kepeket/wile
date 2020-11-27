@@ -10,6 +10,7 @@ import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
+import com.wile.app.ui.settings.SettingsActivity
 import com.wile.app.ui.social.JoinActivity
 import com.wile.app.ui.social.SocialWorkoutViewModel
 import com.wile.app.ui.workout.WorkoutActivity
@@ -63,6 +64,11 @@ class TrainingListingActivity : DataBindingActivity() {
         binding.goSocial.setOnClickListener {
             startActivity(JoinActivity.startWorkout(this, currentWorkout))
         }
+
+        binding.settingsBtn.setOnClickListener {
+            startActivity(SettingsActivity.newIntent(this))
+        }
+
 
         setSupportActionBar(binding.mainToolbar.toolbar)
         fab.setOnClickListener {

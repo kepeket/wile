@@ -1,6 +1,8 @@
 package com.wile.app.di
 
+import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Vibrator
 import android.view.inputmethod.InputMethodManager
 import dagger.Module
@@ -25,4 +27,8 @@ object AppModule {
     fun provideInputMethodManager(
         @ApplicationContext context: Context
     ) = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+
+    @Provides
+    fun provideSharedPreference(activity: Activity): SharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
+
 }

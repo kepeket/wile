@@ -88,5 +88,7 @@ object Dependencies {
     const val scarletLifecyle = "com.tinder.scarlet:lifecycle-android"
     const val scarletCoroutine = "com.tinder.scarlet:stream-adapter-rxjava2"
     const val scarletMoshi = "com.tinder.scarlet:message-adapter-moshi"
+
+    const val preferences = "androidx.preference:preference"
     // endregion
 }

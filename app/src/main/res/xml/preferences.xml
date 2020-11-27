@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <PreferenceCategory android:title="@string/pref_workout_category">
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="custom_name"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_username_title"
+            android:summary="@string/pref_username_expl"/>
+        <SeekBarPreference
+            android:key="reprate_difficulty"
+            android:title="@string/pref_reprate_title"
+            android:summary="@string/pref_reprate_expl"
+            android:max="2"
+            android:defaultValue="1" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_app_category">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="switch_preference_1"
+            android:title="@string/pref_dark_theme_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_misc_category">
+        <Preference
+            android:title="@string/pref_info_developer"
+            android:key="pref_dev"
+            android:summary="@string/pref_info_developer_value" />
+        <Preference
+            android:title="@string/pref_info_design"
+            android:key="pref_design"
+            android:summary="@string/pref_info_design_value" />
+        <Preference
+            android:title="@string/pref_info_qa"
+            android:key="pref_qa"
+            android:summary="@string/pref_info_qa_value" />
+    </PreferenceCategory>
+</PreferenceScreen>

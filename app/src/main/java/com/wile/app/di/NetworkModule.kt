@@ -26,7 +26,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideLifecycleRegistry() = LifecycleRegistry(0L)
 
     @Provides

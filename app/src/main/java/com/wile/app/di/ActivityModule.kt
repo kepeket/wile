@@ -1,6 +1,8 @@
 package com.wile.app.di
 
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import dagger.Module
