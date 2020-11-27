@@ -43,7 +43,8 @@ class WorkoutService : Service() {
     private var timeWhenPaused = 0L
     private var timeWhenStarted = 0L
     private var chronometerIsRunning = false
-    private lateinit var timer: Timer
+    private var timer: Timer? = null
+    private var timerClient: Timer? = null
     private val roomNameCreation = Hashids().encode(Instant.now().toEpochMilli() / 1000)
         .toUpperCase(Locale.ROOT).take(6)
 
@@ -141,9 +142,15 @@ class WorkoutService : Service() {
                 }
             }
             WorkoutMessageAction.Stopped -> {
-                timer.cancel()
-                elapsedTimeLiveData.postValue(0)
-                stopWorkout()
+                if (isHost.value == false) {
+                    timerClient?.apply {
+                        cancel()
+                        purge()
+                    }
+                    timerClient = null
+                    elapsedTimeLiveData.postValue(0)
+                    stopWorkout()
+                }
             }
             WorkoutMessageAction.Lobby -> {
                 workoutIsDoneLiveData.postValue(false)
@@ -172,9 +179,14 @@ class WorkoutService : Service() {
                 }
             }
             WorkoutMessageAction.Started -> {
-                timeWhenStarted = SystemClock.elapsedRealtime()
-                timer = fixedRateTimer("timer", false, 0L, 1000) {
-                    elapsedTimeLiveData.postValue(((SystemClock.elapsedRealtime() - timeWhenStarted) / 1000.0).roundToInt())
+                if (isHost.value == false) {
+                    timeWhenStarted = SystemClock.elapsedRealtime()
+                    if (timerClient == null) {
+                        timerClient = fixedRateTimer("timerClient", false, 0L, 1000) {
+                            Timber.d("Chrono client")
+                            elapsedTimeLiveData.postValue(((SystemClock.elapsedRealtime() - timeWhenStarted) / 1000.0).roundToInt())
+                        }
+                    }
                 }
             }
             WorkoutMessageAction.Started,
@@ -304,29 +316,34 @@ class WorkoutService : Service() {
         currentTraining = -1
         workoutProgressLiveData.postValue(currentTraining)
         workoutIsDoneLiveData.postValue(false)
+        elapsedTimeLiveData.postValue(0)
         chronometerIsRunning = true
         skipTraining()
         chronometerIsRunningLiveData.postValue(chronometerIsRunning)
         timeWhenStarted = SystemClock.elapsedRealtime()
         sendWorkoutMessage(expendedTrainings[currentTraining].duration, WorkoutMessageAction.Start)
         timer = fixedRateTimer("timer", false, 0L, 1000) {
+            Timber.d("Chrono master")
             chronometerTicking()
         }
 
     }
 
     fun stopWorkout() {
-        if (isHost.value == false && isInRoom.value == true) {
-            workoutIsDoneLiveData.postValue(true)
+        workoutIsDoneLiveData.postValue(true)
+        timer?.apply {
+            cancel()
+            purge()
         }
-        if (chronometerIsRunning) {
-            timer.cancel()
-            chronometerIsRunning = false
-            chronometerIsRunningLiveData.postValue(chronometerIsRunning)
-            currentTraining = -1
-            countdownLiveData.postValue(-1)
-            workoutProgressLiveData.postValue(currentTraining)
-            currentTrainingLiveData.postValue(null)
+        timer = null
+        chronometerIsRunning = false
+        chronometerIsRunningLiveData.postValue(chronometerIsRunning)
+        elapsedTimeLiveData.postValue(0)
+        currentTraining = -1
+        countdownLiveData.postValue(-1)
+        workoutProgressLiveData.postValue(currentTraining)
+        currentTrainingLiveData.postValue(null)
+        if (isHost.value == true && isInRoom.value == true) {
             sendWorkoutMessage(0, WorkoutMessageAction.Stop)
         }
     }
@@ -357,8 +374,12 @@ class WorkoutService : Service() {
             sendWorkoutMessage(endOfTraining, WorkoutMessageAction.Tick)
         }
         if (endOfTraining <= 0) {
-            if (expendedTrainings[currentTraining].trainingType != TrainingTypes.Repeated) {
-                skipTraining()
+            if (currentTraining < expendedTrainings.count()) {
+                if (expendedTrainings[currentTraining].trainingType != TrainingTypes.Repeated) {
+                    skipTraining()
+                }
+            } else {
+                stopWorkout()
             }
         }
     }
@@ -370,8 +391,8 @@ class WorkoutService : Service() {
         if (currentTraining < 0 && !chronometerIsRunning) {
             return WorkoutError.NoopError
         }
-        currentTraining++
-        if (currentTraining <= expendedTrainings.count() - 1) {
+        if (currentTraining <= expendedTrainings.count() - 2) {
+            currentTraining++
             trainingCountdown = expendedTrainings[currentTraining].duration
             lastTrainingChange = SystemClock.elapsedRealtime()
             workoutProgressLiveData.postValue(currentTraining)

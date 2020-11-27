@@ -138,7 +138,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                     }
                 })
                 svc.workoutIsDoneLiveData.observe(this@WorkoutActivity, { done ->
-                    if (done && currentTrainingCache > 0) {
+                    if (done && currentTrainingCache >= 0) {
                         workoutStopped()
                     }
                 })

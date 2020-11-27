@@ -27,6 +27,6 @@ interface WileServer {
 
      companion object {
          //const val SERVER_URL = "wss://6fe4a7fb6de3.ngrok.io/chaussette"
-        const val SERVER_URL = "wss://wile-workout.cleverapps.io/chaussette"
+         const val SERVER_URL = "wss://wile-workout.cleverapps.io/chaussette"
     }
 }
