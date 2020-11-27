@@ -70,4 +70,6 @@
     <string name="waiting_for_pals">En attente de copains… Lancez l\'entrainement quand vous êtes tous là</string>
     <string name="no_workout_service">Erreur avec le service</string>
     <string name="social_ready_to_begin">L\'hote va bientôt lancer l\'entrainement, préparez vous !</string>
+    <string name="social_skip_denied_not_host">Seul l\'hôte de la salle peut skip</string>
+    <string name="social_start_pause_denied_not_host">Seul l\'hôte peut lancer ou mettre en pause l\'entrainement</string>
 </resources>

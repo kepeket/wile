@@ -141,6 +141,8 @@ class WorkoutService : Service() {
                 }
             }
             WorkoutMessageAction.Stopped -> {
+                timer.cancel()
+                elapsedTimeLiveData.postValue(0)
                 stopWorkout()
             }
             WorkoutMessageAction.Lobby -> {
@@ -167,6 +169,12 @@ class WorkoutService : Service() {
                             canStart.postValue(true)
                         }
                     }
+                }
+            }
+            WorkoutMessageAction.Started -> {
+                timeWhenStarted = SystemClock.elapsedRealtime()
+                timer = fixedRateTimer("timer", false, 0L, 1000) {
+                    elapsedTimeLiveData.postValue(((SystemClock.elapsedRealtime() - timeWhenStarted) / 1000.0).roundToInt())
                 }
             }
             WorkoutMessageAction.Started,
@@ -234,12 +242,15 @@ class WorkoutService : Service() {
     }
 
     private fun sendWorkoutMessage(countdown: Int, action: WorkoutMessageAction) {
-        if (isHost.value == false && action != WorkoutMessageAction.Ready) {
+        if ((isHost.value == false && action != WorkoutMessageAction.Ready) || isInRoom.value == false) {
             return
         }
         var trainingLight: TrainingLight = TrainingLight()
-        if (isHost.value == true) {
-            currentTrainingLiveData.value?.let {
+        if (isHost.value == true &&
+            action !in listOf(WorkoutMessageAction.Lobby)
+            && currentTraining in 0 until expendedTrainings.count()
+        ) {
+            expendedTrainings[currentTraining].let {
                 trainingLight = TrainingLight(
                     name = it.name,
                     reps = it.reps,
@@ -274,16 +285,19 @@ class WorkoutService : Service() {
     }
 
     // Private region
-    fun startStopWorkout(): Boolean {
+    fun startStopWorkout(): WorkoutError {
         if (expendedTrainings.count() > 1) {
+            if (isInRoom.value == true && isHost.value == false){
+                return WorkoutError.NotHost
+            }
             if (currentTraining < 0) {
                 startWorkout()
             } else {
                 pauseWorkout()
             }
-            return true
+            return WorkoutError.NoopError
         }
-        return false
+        return WorkoutError.NoTraining
     }
 
     private fun startWorkout() {
@@ -302,13 +316,17 @@ class WorkoutService : Service() {
     }
 
     fun stopWorkout() {
-        workoutIsDoneLiveData.postValue(true)
+        if (isHost.value == false && isInRoom.value == true) {
+            workoutIsDoneLiveData.postValue(true)
+        }
         if (chronometerIsRunning) {
             timer.cancel()
             chronometerIsRunning = false
             chronometerIsRunningLiveData.postValue(chronometerIsRunning)
             currentTraining = -1
+            countdownLiveData.postValue(-1)
             workoutProgressLiveData.postValue(currentTraining)
+            currentTrainingLiveData.postValue(null)
             sendWorkoutMessage(0, WorkoutMessageAction.Stop)
         }
     }
@@ -345,9 +363,12 @@ class WorkoutService : Service() {
         }
     }
 
-    fun skipTraining() {
+    fun skipTraining(): WorkoutError {
+        if (isInRoom.value == true && isHost.value == false){
+            return WorkoutError.NotHost
+        }
         if (currentTraining < 0 && !chronometerIsRunning) {
-            return
+            return WorkoutError.NoopError
         }
         currentTraining++
         if (currentTraining <= expendedTrainings.count() - 1) {
@@ -363,9 +384,16 @@ class WorkoutService : Service() {
         } else {
             stopWorkout()
         }
+        return WorkoutError.NoopError
     }
 
     fun setTrainingList(trainings: List<Training>) {
         expendedTrainings = trainings
+    }
+
+    sealed class WorkoutError {
+        object NotHost : WorkoutError()
+        object NoopError : WorkoutError()
+        object NoTraining : WorkoutError()
     }
 }
