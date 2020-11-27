@@ -27,9 +27,13 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
     private val binding: ActivityWorkoutBinding by binding(R.layout.activity_workout)
     private var currentTrainingCache = -1
     private var socialMode = false
+    private var isHost = false
 
     // Service binding
     private var workoutService: WorkoutService? = null
+
+    // Social
+    private var askLobby = false
 
     private var cachedTrainings: List<Training> = listOf()
 
@@ -52,7 +56,8 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         }
 
         socialMode = intent.getBooleanExtra(SOCIAL_MODE, false)
-        if (!socialMode) {
+        isHost = intent.getBooleanExtra(SOCIAL_HOST, false)
+        if ((isHost && socialMode) || !socialMode) {
             viewModel.fetchTrainings(intent.getIntExtra(WORKOUT_ID, 0))
             viewModel.trainingListLiveData.observe(this, {
                 cachedTrainings = viewModel.getExpendedTrainingList()
@@ -60,8 +65,9 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                 binding.workoutGo.trainingGoBottomSheet.workout_progress.max =
                     cachedTrainings.count()
             })
+            askLobby = socialMode
         } else {
-            if (!intent.getBooleanExtra(SOCIAL_HOST, true)) {
+            if (socialMode && !isHost) {
                 binding.workoutGo.trainingGoBottomSheet.next.visibility = View.GONE
                 binding.workoutGo.trainingGoBottomSheet.prepareText.text =
                     getString(R.string.social_ready_to_begin)
@@ -84,6 +90,9 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
             workoutService?.let { svc ->
                 if (cachedTrainings.count() > 1) {
                     svc.setTrainingList(cachedTrainings)
+                }
+                if (askLobby){
+                    svc.askLobby()
                 }
                 // The main ticking event
                 svc.countdownLiveData.observe(this@WorkoutActivity, { countdown ->
@@ -230,8 +239,9 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         fun startWorkout(context: Context, workoutId: Int) = newIntent(context).apply {
             putExtra(WORKOUT_ID, workoutId)
         }
-        fun startSocialWorkout(context: Context, host: Boolean) = newIntent(context).apply {
+        fun startSocialWorkout(context: Context, workoutId: Int, host: Boolean) = newIntent(context).apply {
             putExtra(SOCIAL_MODE, true)
+            putExtra(WORKOUT_ID, workoutId)
             putExtra(SOCIAL_HOST, host)
             addFlags(FLAG_ACTIVITY_NEW_TASK)
         }

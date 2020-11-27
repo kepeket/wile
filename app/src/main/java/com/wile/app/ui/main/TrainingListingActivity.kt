@@ -26,6 +26,8 @@ class TrainingListingActivity : DataBindingActivity() {
     private val binding: ActivityTrainingListingBinding by binding(R.layout.activity_training_listing)
     private val adapter by lazy { WorkoutListingAdapter(this) }
     private var currentWorkout = 0
+    private var inRoom = false
+    private var isHost = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,14 @@ class TrainingListingActivity : DataBindingActivity() {
             viewModel = this@TrainingListingActivity.viewModel
             socialViewModel = this@TrainingListingActivity.socialViewModel
         }
+
+        socialViewModel.isInRoom.observe(this, {
+            inRoom = it
+        })
+
+        socialViewModel.isHost.observe(this, {
+            isHost = it
+        })
 
         binding.pager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int){
@@ -56,11 +66,13 @@ class TrainingListingActivity : DataBindingActivity() {
 
         setSupportActionBar(binding.mainToolbar.toolbar)
         fab.setOnClickListener {
-            startActivity(WorkoutActivity.startWorkout(this, currentWorkout))
+            if (inRoom){
+                startActivity(WorkoutActivity.startSocialWorkout(this, currentWorkout, isHost))
+            } else {
+                startActivity(WorkoutActivity.startWorkout(this, currentWorkout))
+            }
         }
     }
-
-    // @TODO implement workout callback
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.training_main_menu, menu)

@@ -16,6 +16,7 @@ import com.wile.database.model.TrainingTypes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.workout_controller.view.*
 import timber.log.Timber
+import java.time.Instant
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.HashMap
@@ -34,7 +35,7 @@ class WorkoutService : Service() {
 
     private val binder = WorkoutBinder()
 
-    private lateinit var expendedTrainings: List<Training>
+    private var expendedTrainings: List<Training> = listOf()
     private var currentTraining = -1
     private var trainingCountdown = 0
     private var lastTrainingChange = 0L
@@ -66,7 +67,7 @@ class WorkoutService : Service() {
     /**
      * @TODO
      *
-     * Empty list of member when disconnected
+     * Empty list of member when disconnected~
      * Display actual room in bottomsheet (not the one we create)
      * CreatedRoomID refreshes when disconnecting
      * Avoid to start a workout when you are in a room and not host
@@ -101,6 +102,7 @@ class WorkoutService : Service() {
 
 
     fun joinRoom(userId: String, room: String) {
+        isHost.postValue(false)
         roomSubscription(userId, room, RoomMessageAction.Join)
     }
 
@@ -140,13 +142,16 @@ class WorkoutService : Service() {
             }
             WorkoutMessageAction.Lobby -> {
                 workoutIsDoneLiveData.postValue(false)
-                // Asking to put yourself in lobby, so we'll launch the workout activity in social mode
-                startActivity(
-                    WorkoutActivity.startSocialWorkout(
-                        applicationContext,
-                        isHost.value!!
+                if (isHost.value?.equals(false) == true) {
+                    // Asking to put yourself in lobby, so we'll launch the workout activity in social mode
+                    startActivity(
+                        WorkoutActivity.startSocialWorkout(
+                            applicationContext,
+                            0,
+                            false
+                        )
                     )
-                )
+                }
             }
             WorkoutMessageAction.Ready -> {
                 // People sending you ready only matters if you are a host
@@ -174,7 +179,9 @@ class WorkoutService : Service() {
                         trainingType = response.training.trainingType
                     )
                     currentTrainingLiveData.postValue(training)
-                    countdownLiveData.postValue(response.countdown)
+                    if (response.countdown > 0) {
+                        countdownLiveData.postValue(response.countdown)
+                    }
                     workoutProgressLiveData.postValue(response.trainingPos)
                     workoutProgressMaxLiveData.postValue(response.trainingCount)
                 }
@@ -195,28 +202,64 @@ class WorkoutService : Service() {
             RoomMessageAction.Joined -> {
                 if (response.userId == userName.value) {
                     isInRoom.postValue(true)
-                }
-                roomMembers.value?.let { orig ->
-                    roomMembers.postValue(orig.also { it[response.userId] = true })
+                    isHost.postValue(false)
+                } else {
+                    roomMembers.value?.let { orig ->
+                        roomMembers.postValue(orig.also { it[response.userId] = true })
+                    }
                 }
                 //callbackListener.onUserJoined(response.userId, response.name)
             }
             RoomMessageAction.Created -> {
                 isInRoom.postValue(true)
-                //callbackListener.onRoomCreated(response.name)
+                isHost.postValue(true)
             }
             RoomMessageAction.Left -> {
                 roomMembers.value?.let { orig ->
-                    roomMembers.postValue(orig.also { it.remove(response.userId) })
+                    if (response.userId == userName.value){
+                        isInRoom.postValue(false)
+                        isHost.postValue(false)
+                        roomMembers.postValue(orig.also{it.clear()})
+                    } else {
+                        roomMembers.postValue(orig.also { it.remove(response.userId) })
+                    }
                 }
-                //callbackListener.onUserLeft(response.userId, response.name)
             }
             else -> {
             }
         }
     }
 
+    private fun sendWorkoutMessage(countdown: Int, action: WorkoutMessageAction) {
+        var trainingLight: TrainingLight = TrainingLight()
+        currentTrainingLiveData.value?.let {
+            trainingLight = TrainingLight(
+                name = it.name,
+                reps = it.reps,
+                repRate = it.repRate,
+                trainingType = it.trainingType
+            )
+        }
+        val message = WorkoutModels.WorkoutMessage(
+            userId =  userName.value.orEmpty(),
+            name = roomName.value.orEmpty(),
+            countdown = countdown,
+            trainingPos = currentTraining,
+            trainingCount = expendedTrainings.count(),
+            action = action,
+            timestamp = Instant.now().toEpochMilli(),
+            training = trainingLight
+        )
 
+        val env = EnvelopWorkout(
+            message = message
+        )
+        server.messageWorkout(env)
+    }
+
+    fun askLobby(){
+        sendWorkoutMessage(0, WorkoutMessageAction.Lobby)
+    }
     // Private region
     fun startStopWorkout(): Boolean {
         if (expendedTrainings.count() > 1) {
@@ -252,15 +295,18 @@ class WorkoutService : Service() {
             chronometerIsRunningLiveData.postValue(chronometerIsRunning)
             currentTraining = -1
             workoutProgressLiveData.postValue(currentTraining)
+            sendWorkoutMessage(0, WorkoutMessageAction.Stop)
         }
     }
 
     private fun pauseWorkout() {
         if (chronometerIsRunning) {
             timeWhenPaused = SystemClock.elapsedRealtime()
+            sendWorkoutMessage(-1, WorkoutMessageAction.Pause)
         } else {
             lastTrainingChange =
                 SystemClock.elapsedRealtime() - (timeWhenPaused - lastTrainingChange)
+            sendWorkoutMessage(-1, WorkoutMessageAction.Start)
         }
         chronometerIsRunning = !chronometerIsRunning
         chronometerIsRunningLiveData.postValue(chronometerIsRunning)
@@ -275,6 +321,9 @@ class WorkoutService : Service() {
         val endOfTraining = trainingCountdown - elapsedTime
         elapsedTimeLiveData.postValue(((SystemClock.elapsedRealtime() - timeWhenStarted) / 1000.0).roundToInt())
         countdownLiveData.postValue(endOfTraining)
+        if (chronometerIsRunning) {
+            sendWorkoutMessage(endOfTraining, WorkoutMessageAction.Tick)
+        }
         if (endOfTraining <= 0) {
             if (expendedTrainings[currentTraining].trainingType != TrainingTypes.Repeated) {
                 skipTraining()
@@ -287,12 +336,13 @@ class WorkoutService : Service() {
             return
         }
         currentTraining++
-        workoutProgressLiveData.postValue(currentTraining)
-        currentTrainingLiveData.postValue(expendedTrainings[currentTraining])
-        countdownLiveData.postValue(expendedTrainings[currentTraining].duration)
         if (currentTraining <= expendedTrainings.count() - 1) {
             trainingCountdown = expendedTrainings[currentTraining].duration
             lastTrainingChange = SystemClock.elapsedRealtime()
+            workoutProgressLiveData.postValue(currentTraining)
+            currentTrainingLiveData.postValue(expendedTrainings[currentTraining])
+            countdownLiveData.postValue(expendedTrainings[currentTraining].duration)
+            sendWorkoutMessage(expendedTrainings[currentTraining].duration, WorkoutMessageAction.TrainingStart)
         } else {
             stopWorkout()
         }

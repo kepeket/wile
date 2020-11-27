@@ -25,7 +25,7 @@ class TrainingListingViewModel @ViewModelInject constructor(
     val isLoading: ObservableBoolean = ObservableBoolean(false)
 
     fun fetchTrainings(workout: Int) {
-        workoutName.value = "Entrainement #"+(workout+1)
+        workoutName.value = "Entrainement #" + (workout + 1)
         viewModelScope.launch {
             isLoading.set(true)
             trainingRepository.fetchTrainingList(
@@ -43,7 +43,7 @@ class TrainingListingViewModel @ViewModelInject constructor(
         }
     }
 
-    fun deleteTraining(id: Int){
+    fun deleteTraining(id: Int) {
         viewModelScope.launch {
             trainingRepository.deleteTraining(id)
         }
@@ -57,42 +57,5 @@ class TrainingListingViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             trainingRepository.addAll(trainings)
         }
-    }
-
-    fun getExpendedTrainingList(): List<Training> {
-        val expended: MutableList<Training> = mutableListOf()
-        trainingListLiveData.value?.let { list ->
-            expended.add(
-                Training(name = "Préparation", duration = 15, trainingType = TrainingTypes.Timed, sorting = 0)
-            )
-            for (training in list){
-                when(training.trainingType){
-                    TrainingTypes.Tabata -> {
-                        training.tabataConfig?.let { tabataConfig ->
-                            for (loop in 0 until tabataConfig.cycles){
-                                val mainTraining = Training(
-                                    name = String.format("Tabata / %s", tabataConfig.mainName),
-                                    duration = tabataConfig.mainDuration,
-                                    trainingType = TrainingTypes.Timed
-                                )
-                                val alterTraining = Training(
-                                    name = String.format("Tabata / %s", tabataConfig.alterName),
-                                    duration = tabataConfig.alterDuration,
-                                    trainingType = TrainingTypes.Timed
-                                )
-                                with(expended){
-                                    add(mainTraining)
-                                    add(alterTraining)
-                                }
-                            }
-                        }
-                    }
-                    else -> {
-                        expended.add(training)
-                    }
-                }
-            }
-        }
-        return expended
     }
 }

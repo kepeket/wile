@@ -8,14 +8,14 @@ import com.wile.database.model.TrainingTypes
 class WorkoutModels {
     @JsonClass(generateAdapter = true)
     data class WorkoutMessage(
-        val userId: String,
-        val name: String,
-        val action: WorkoutMessageAction,
-        val training: TrainingLight,
-        val timestamp: Long,
-        val countdown: Int,
-        val trainingCount: Int,
-        val trainingPos: Int
+        var userId: String,
+        var name: String,
+        var action: WorkoutMessageAction,
+        var training: TrainingLight,
+        var timestamp: Long,
+        var countdown: Int,
+        var trainingCount: Int,
+        var trainingPos: Int
     ) : WileMessage
 }
 
