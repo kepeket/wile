@@ -93,6 +93,8 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                 }
                 if (askLobby){
                     svc.askLobby()
+                } else {
+                    svc.tellReady()
                 }
                 // The main ticking event
                 svc.countdownLiveData.observe(this@WorkoutActivity, { countdown ->

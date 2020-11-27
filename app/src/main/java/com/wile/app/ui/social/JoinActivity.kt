@@ -100,6 +100,7 @@ class JoinActivity: DataBindingActivity() {
     private fun onConnectionOpen() {
     }
 
+    /*
     private fun onConnectionClosed(code: Int, reason: String) {
         runOnUiThread {
             showToast(getString(R.string.ws_connection_list, reason))
@@ -149,7 +150,7 @@ class JoinActivity: DataBindingActivity() {
 
     private fun cleanLogOutput(){
         binding.connectionLog.removeAllViews()
-    }
+    }*/
 
     companion object {
         private const val WORKOUT_ID = "workout_id"
