@@ -79,6 +79,7 @@
         <activity
             android:name="com.wile.app.ui.workout.WorkoutActivity"
             android:label="@string/activity_workout_label"
+            android:parentActivityName="com.wile.app.ui.main.TrainingListingActivity"
 
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -86,6 +87,7 @@
         <activity
             android:name="com.wile.app.ui.settings.SettingsActivity"
             android:label="@string/activity_settings_label"
+            android:parentActivityName="com.wile.app.ui.main.TrainingListingActivity"
 
             android:launchMode="singleTop"
             android:screenOrientation="portrait"

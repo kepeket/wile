@@ -13,8 +13,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.wile.main"
-        versionCode = 5
-        versionName = "1.4"
+        versionCode = 6
+        versionName = "1.5"
     }
 
     buildTypes {

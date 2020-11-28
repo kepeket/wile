@@ -107,7 +107,7 @@ class TrainingListingActivity : DataBindingActivity() {
                     return@observe
                 }
                 imported = true
-                val maxId = Collections.max(list) + 1
+                val maxId = if (list.orEmpty().count() > 0) { Collections.max(list) + 1 } else { 0 }
                 val trainingsJSON = contentResolver.openInputStream(data)
                 trainingsJSON?.let { json ->
                     val jsonString = BufferedReader(InputStreamReader(json))
