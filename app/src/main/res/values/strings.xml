@@ -92,4 +92,8 @@
     <string name="pref_info_developer_value">Kevin</string>
     <string name="pref_info_design_value">Robin</string>
     <string name="pref_info_qa_value">Paul</string>
+    <string name="share_workout_message">Partager mon Entrainement</string>
+    <string name="activity_import">Importer un entrainement</string>
+    <string name="import_failed">Impossible d\'importer l\'entrainement</string>
+    <string name="import_success">L\'entrainement a bien été importé</string>
 </resources>

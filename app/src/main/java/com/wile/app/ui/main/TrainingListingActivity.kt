@@ -1,13 +1,18 @@
 package com.wile.app.ui.main
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.core.content.FileProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
+import com.wile.app.extensions.showToast
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
 import com.wile.app.ui.settings.SettingsActivity
@@ -17,6 +22,11 @@ import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
+import java.util.*
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -29,6 +39,8 @@ class TrainingListingActivity : DataBindingActivity() {
     private var currentWorkout = 0
     private var inRoom = false
     private var isHost = false
+
+    private var imported = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +62,8 @@ class TrainingListingActivity : DataBindingActivity() {
             isHost = it
         })
 
-        binding.pager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int){
+        binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
                 super.onPageSelected(position);
                 currentWorkout = adapter.getItem(position)
             }
@@ -69,6 +81,52 @@ class TrainingListingActivity : DataBindingActivity() {
             startActivity(SettingsActivity.newIntent(this))
         }
 
+        viewModel.fileExportLiveData.observe(
+            this,
+            {
+                if (it.isNotEmpty()) {
+                    val path: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.wile.app.fileprovider",
+                        File(it)
+                    )
+                    val i = Intent(Intent.ACTION_SEND).apply {
+                        putExtra(Intent.EXTRA_STREAM, path)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        type = "application/json"
+                    }
+                    Intent.createChooser(i, resources.getText(R.string.share_workout_message))
+                    startActivity(i)
+                }
+            }
+        )
+
+        intent.data?.let { data ->
+            viewModel.workoutListLiveData.observe(this, { list ->
+                if (imported) {
+                    return@observe
+                }
+                imported = true
+                val maxId = Collections.max(list) + 1
+                val trainingsJSON = contentResolver.openInputStream(data)
+                trainingsJSON?.let { json ->
+                    val jsonString = BufferedReader(InputStreamReader(json))
+                    viewModel.importTrainingsJSON(jsonString.readText(), maxId)
+                    showToast(getString(R.string.import_success))
+                }
+            })
+            viewModel.newlyImportedLiveData.observe(this, {
+                val lastPos = adapter.getPosition(it)
+                binding.pager.post {
+                    binding.pager.setCurrentItem(lastPos, true)
+                }
+            })
+        }
+
+        viewModel.toastLiveData.observe(this, {
+            showToast(getString(R.string.import_failed))
+            finish()
+        })
 
         setSupportActionBar(binding.mainToolbar.toolbar)
         fab.setOnClickListener {
@@ -98,10 +156,23 @@ class TrainingListingActivity : DataBindingActivity() {
             viewModel.deleteWorkout(currentWorkout)
             true
         }
+        R.id.training_share_workout -> {
+            viewModel.getWorkoutJSON(currentWorkout)
+            true
+        }
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
+        }
+    }
+
+    companion object {
+        const val NEWLY_ADDED_ID = "newly_added_id"
+
+        fun newIntent(context: Context) = Intent(context, TrainingListingActivity::class.java)
+        fun showImported(context: Context, newId: Int) = newIntent(context).apply {
+            putExtra(NEWLY_ADDED_ID, newId)
         }
     }
 }

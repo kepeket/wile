@@ -48,4 +48,8 @@ class WorkoutListingAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         }
         return 0
     }
+
+    fun getPosition(id: Int): Int {
+        return items.indexOf(id)
+    }
 }
