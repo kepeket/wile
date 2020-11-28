@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Vibrator
 import android.view.inputmethod.InputMethodManager
+import androidx.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,6 +30,9 @@ object AppModule {
     ) = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
     @Provides
-    fun provideSharedPreference(activity: Activity): SharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
 
 }

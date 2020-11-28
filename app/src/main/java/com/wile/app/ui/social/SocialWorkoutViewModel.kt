@@ -1,26 +1,27 @@
 package com.wile.app.ui.social
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.os.IBinder
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.preference.Preference
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.app.ui.workout.WorkoutService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.hashids.Hashids
 import java.time.Instant
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.HashMap
 import kotlin.random.Random
 
 class SocialWorkoutViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val sharedPreferences: SharedPreferences
+
 ) : LiveCoroutinesViewModel() {
 
     private var workoutService: WorkoutService? = null
@@ -39,9 +40,22 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
             val binder = service as WorkoutService.WorkoutBinder
             workoutService = binder.getService()
             workoutService?.let { svc ->
+                sharedPreferences.registerOnSharedPreferenceChangeListener { pref, value ->
+                    if (pref.equals("custom_name")) {
+                        if (value.isNotEmpty()) {
+                            userName.postValue(value)
+                        }
+                    }
+                }
+
                 userName.addSource(svc.userName) {
                     if (it.isEmpty()) {
-                        userName.postValue(getRotatedUserName())
+                        val prefUserName = sharedPreferences.getString("custom_name", "")
+                        if (prefUserName?.isNotEmpty() == true) {
+                            userName.postValue(prefUserName)
+                        } else {
+                            userName.postValue(getRotatedUserName())
+                        }
                     } else {
                         userName.postValue(it)
                     }

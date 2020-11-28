@@ -70,13 +70,7 @@ class WorkoutService : Service() {
     /**
      * @TODO
      *
-     * Empty list of member when disconnected : done
-     * Display actual room in bottomsheet (not the one we create) : done
-     * CreatedRoomID refreshes when disconnecting : done
-     * Avoid to start a workout when you are in a room and not host : done
-     * Workout controls when your are not host disabled
      * When you join you should receive the member list
-     * Easy share room ID
      */
 
     @SuppressLint("CheckResult")

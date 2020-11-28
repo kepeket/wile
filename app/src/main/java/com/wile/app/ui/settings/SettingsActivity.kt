@@ -6,13 +6,21 @@ import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
+import com.wile.app.databinding.ActivitySettingsBinding
+import com.wile.app.databinding.ActivitySocialJoinBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SettingsActivity : DataBindingActivity() {
+
+    private val binding: ActivitySettingsBinding by binding(R.layout.activity_settings)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+
+        setSupportActionBar(binding.mainToolbar.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.settings_fragment, SettingsFragment())
