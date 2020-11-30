@@ -3,11 +3,9 @@ package com.wile.app.ui.settings
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.preference.PreferenceFragmentCompat
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySettingsBinding
-import com.wile.app.databinding.ActivitySocialJoinBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +21,7 @@ class SettingsActivity : DataBindingActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.settings_fragment, SettingsFragment())
+            .replace(R.id.settings_fragment, SettingsFragment.newInstance())
             .commit()
     }
 

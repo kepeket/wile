@@ -3,12 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
-<!--    <data>
-        <variable
-            name="viewModel"
-            type="com.wile.app.ui.workout.WorkoutViewModel" />
-    </data>-->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -17,20 +11,17 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <include
                 android:id="@+id/main_toolbar"
                 layout="@layout/toolbar_home"
                 tools:viewBindingIgnore="true"/>
-
         </com.google.android.material.appbar.AppBarLayout>
         <FrameLayout
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/settings_fragment"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
