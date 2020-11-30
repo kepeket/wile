@@ -1,6 +1,5 @@
 package com.wile.app.ui.main
 
-import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -27,21 +26,14 @@ class TrainingListingViewModel @ViewModelInject constructor(
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData
 
-    val isLoading: ObservableBoolean = ObservableBoolean(false)
-
     fun fetchTrainings(workout: Int) {
         _workoutName.value = "Entrainement #" + (workout + 1)
 
         viewModelScope.launch {
-            isLoading.set(true)
             trainingRepository.fetchTrainingList(
                 workout = workout,
-                onSuccess = {
-                    isLoading.set(false)
-                },
-                onError = {
-                    _toastLiveData.postValue(it)
-                }
+                onSuccess = {},
+                onError = { _toastLiveData.postValue(it) }
             ).collect {
                 _trainingListLiveData.value = it
                 _trainingDurationLiveData.value = it.map { t -> t.duration }.sum()
