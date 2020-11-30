@@ -46,9 +46,6 @@ object Dependencies {
     const val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-ktx"
 
-    // https://github.com/google/gson
-    const val gson = "com.google.code.gson:gson"
-
     // Artifact : https://mvnrepository.com/artifact/com.google.dagger/hilt-android
     // Release notes : https://developer.android.com/jetpack/androidx/releases/hilt
     const val hiltAndroid = "com.google.dagger:hilt-android"

@@ -2,7 +2,6 @@ package com.wile.database.di
 
 import android.app.Application
 import androidx.room.Room
-import com.google.gson.Gson
 import com.wile.database.AppDatabase
 import com.wile.database.converters.TabataConfigConverter
 import dagger.Module
@@ -29,8 +28,4 @@ object PersistenceModule {
     @Provides
     @Singleton
     fun provideTrainingDao(appDatabase: AppDatabase) = appDatabase.trainingDao()
-
-    @Provides
-    @Singleton
-    fun provideTabataConfigConverter(gson: Gson) = TabataConfigConverter(gson)
 }

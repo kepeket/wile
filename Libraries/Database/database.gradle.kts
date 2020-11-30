@@ -32,8 +32,8 @@ dependencies {
     )
 
     implementations(
-            Dependencies.gson,
             Dependencies.hiltAndroid,
+            Dependencies.moshi,
             Dependencies.room
     )
 }

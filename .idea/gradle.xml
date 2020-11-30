@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Libraries" />
             <option value="$PROJECT_DIR$/Libraries/Database" />
-            <option value="$PROJECT_DIR$/Libraries/File" />
             <option value="$PROJECT_DIR$/Libraries/Logging" />
             <option value="$PROJECT_DIR$/Libraries/Sound" />
             <option value="$PROJECT_DIR$/Repositories" />

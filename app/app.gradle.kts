@@ -52,7 +52,6 @@ dependencies {
         Dependencies.constraintLayout,
         Dependencies.firebaseAnalytics,
         Dependencies.firebaseCrashlytics,
-        Dependencies.gson,
         Dependencies.hiltAndroid,
         Dependencies.hiltViewModel,
         Dependencies.kotlinReflect,

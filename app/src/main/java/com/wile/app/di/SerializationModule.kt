@@ -1,12 +1,12 @@
 package com.wile.app.di
 
-import com.google.gson.Gson
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.wile.app.model.*
+import com.wile.database.model.TabataConfig
 import com.wile.database.model.Training
 import dagger.Module
 import dagger.Provides
@@ -18,14 +18,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ApplicationComponent::class)
 object SerializationModule {
-    // FixMe : Gson or Moshi, choose you side. You are using 2 different parsing solutions.
     @Provides
     @Singleton
-    fun provideGson() = Gson()
-
-    @Provides
-    @Singleton
-    fun provideMoshi() = Moshi.Builder()
+    fun provideMoshi(): Moshi = Moshi.Builder()
         .add(RoomActionAdapter())
         .add(EnvelopTypeAdapter())
         .add(WorkoutActionAdapter())
@@ -67,4 +62,9 @@ object SerializationModule {
         List::class.java,
         Training::class.java
     ))
+
+    @Provides
+    @Reusable
+    fun provideTabataConfigAdapter(moshi: Moshi): JsonAdapter<TabataConfig>
+            = moshi.adapter(TabataConfig::class.java)
 }

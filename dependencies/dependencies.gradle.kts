@@ -22,7 +22,6 @@ dependencies {
         api("${Dependencies.androidXViewModelKTX}:${DependenciesVersions.androidXViewModelKTX}")
         api("${Dependencies.constraintLayout}:${DependenciesVersions.constraintLayout}")
         api("${Dependencies.databindingCompiler}:${DependenciesVersions.databindingCompiler}")
-        api("${Dependencies.gson}:${DependenciesVersions.gson}")
         api("${Dependencies.hiltAndroid}:${DependenciesVersions.hiltAndroid}")
         api("${Dependencies.hiltAndroidCompiler}:${DependenciesVersions.hiltAndroid}")
         api("${Dependencies.hiltViewModel}:${DependenciesVersions.hiltCore}")
@@ -62,7 +61,6 @@ object DependenciesVersions {
     const val constraintLayout                 = "2.0.4"
     const val databindingCompiler              = "3.1.4"
     const val firebaseBoM                      = "26.0.0"
-    const val gson                             = "2.8.6"
     const val hiltAndroid                      = "2.29.1-alpha"
     const val hiltCore                         = "1.0.0-alpha02"
     const val materialDesign                   = "1.2.1"
