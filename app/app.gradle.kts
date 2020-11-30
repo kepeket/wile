@@ -68,7 +68,7 @@ dependencies {
         Dependencies.scarletLifecyle,
         Dependencies.scarletMoshi,
         Dependencies.scarletCoroutine,
-        Dependencies.preferences
+        Dependencies.androidXPreferences
     )
 
     testImplementations(
@@ -81,6 +81,7 @@ dependencies {
     )
 
     implementationProjects(
+        ":Features:Settings",
         ":Libraries:Core",
         ":Libraries:Database",
         ":Libraries:Logging",

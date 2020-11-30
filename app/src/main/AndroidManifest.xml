@@ -84,14 +84,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Main.NoActionBar" />
-        <activity
-            android:name="com.wile.app.ui.settings.SettingsActivity"
-            android:label="@string/activity_settings_label"
-            android:parentActivityName="com.wile.app.ui.main.TrainingListingActivity"
-
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Main.NoActionBar" />
 
         <service
             android:name="com.wile.app.ui.workout.WorkoutService"

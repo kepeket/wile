@@ -1,12 +1,11 @@
-package com.wile.app.ui.settings
+package com.wile.features.settings
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.wile.app.R
 import com.wile.core.databinding.DataBindingActivity
-import com.wile.app.databinding.ActivitySettingsBinding
 import com.wile.core.extensions.replaceFragment
+import com.wile.features.settings.databinding.ActivitySettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +16,7 @@ class SettingsActivity : DataBindingActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setSupportActionBar(binding.mainToolbar.toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         supportFragmentManager.replaceFragment(

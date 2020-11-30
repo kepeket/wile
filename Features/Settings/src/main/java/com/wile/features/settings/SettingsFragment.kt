@@ -1,8 +1,7 @@
-package com.wile.app.ui.settings
+package com.wile.features.settings
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
-import com.wile.app.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

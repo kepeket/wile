@@ -6,14 +6,16 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        tools:context=".ui.settings.SettingsActivity">
+        tools:context="com.wile.features.settings.SettingsActivity">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <include
-                android:id="@+id/main_toolbar"
-                layout="@layout/toolbar_home"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimaryVariant"
                 tools:viewBindingIgnore="true"/>
         </com.google.android.material.appbar.AppBarLayout>
         <FrameLayout

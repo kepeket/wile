@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_settings_label">Réglages</string>
+    <string name="pref_workout_category">Entrainements</string>
+    <string name="pref_username_title">Pseudo</string>
+    <string name="pref_username_expl">Pour vos session en ligne avec vos amis</string>
+    <string name="pref_reprate_title">Difficulté</string>
+    <string name="pref_reprate_expl">Nombre de répétition par minute par défaut lorsque vous ajoutez un exercice (20, 30, 40)</string>
+    <string name="pref_app_category">Application</string>
+    <string name="pref_dark_theme_title">Dark theme</string>
+    <string name="pref_misc_category">Wile</string>
+    <string name="pref_info_developer">Développeur</string>
+    <string name="pref_info_developer_value">Kevin</string>
+    <string name="pref_info_qa">Tests / Qualité</string>
+    <string name="pref_info_qa_value">Paul</string>
+    <string name="pref_info_design">Design</string>
+    <string name="pref_info_design_value">Robin</string>
+
+    <string name="pref_information">Informations</string>
+</resources>

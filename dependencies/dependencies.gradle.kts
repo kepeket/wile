@@ -42,7 +42,7 @@ dependencies {
         api("${Dependencies.scarletMoshi}:${DependenciesVersions.scarlet}")
         api("${Dependencies.scarletCoroutine}:${DependenciesVersions.scarlet}")
         api("${Dependencies.scarletLifecyle}:${DependenciesVersions.scarlet}")
-        api("${Dependencies.preferences}:${DependenciesVersions.preferences}")
+        api("${Dependencies.androidXPreferences}:${DependenciesVersions.preferences}")
         // endregion
     }
 }

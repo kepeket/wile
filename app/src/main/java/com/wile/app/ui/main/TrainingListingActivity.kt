@@ -14,7 +14,7 @@ import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
-import com.wile.app.ui.settings.SettingsActivity
+import com.wile.features.settings.SettingsActivity
 import com.wile.app.ui.social.JoinActivity
 import com.wile.app.ui.social.SocialWorkoutViewModel
 import com.wile.app.ui.workout.WorkoutActivity
