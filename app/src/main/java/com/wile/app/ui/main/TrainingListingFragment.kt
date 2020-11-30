@@ -57,11 +57,9 @@ class TrainingListingFragment : DataBindingFragment() {
     }
 
     private fun onTouchTraining(training: Training) {
-        context?.let {
-            when(training.trainingType){
-                TrainingTypes.Tabata -> startActivity(TabataAddActivity.editTabata(it, training.id))
-                else -> startActivity(AddActivity.editTraining(it, training.id))
-            }
+        when (training.trainingType) {
+            TrainingTypes.Tabata -> startActivity(TabataAddActivity.editTabata(requireContext(), training.id))
+            else -> startActivity(AddActivity.editTraining(requireContext(), training.id))
         }
     }
     
