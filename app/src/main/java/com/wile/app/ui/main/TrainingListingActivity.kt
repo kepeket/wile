@@ -12,7 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
-import com.wile.app.extensions.showToast
+import com.wile.core.extensions.showToast
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
 import com.wile.app.ui.settings.SettingsActivity

@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import com.wile.app.R
 import com.wile.app.base.DataBindingFragment
 import com.wile.app.databinding.FragmentTrainingListBinding
-import com.wile.app.extensions.exhaustive
+import com.wile.core.extensions.exhaustive
 import com.wile.app.ui.adapter.TrainingAdapter
 import com.wile.app.ui.add.AddActivity
 import com.wile.app.ui.add.TabataAddActivity

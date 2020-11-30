@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
-import com.wile.app.extensions.showToast
+import com.wile.core.extensions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.BufferedReader
 import java.io.InputStreamReader

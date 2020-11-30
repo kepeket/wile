@@ -1,4 +1,4 @@
-package com.wile.app.extensions
+package com.wile.core.extensions
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment

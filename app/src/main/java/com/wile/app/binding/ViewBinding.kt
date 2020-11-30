@@ -6,11 +6,10 @@ import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.wile.app.R
-import com.wile.app.extensions.showToast
+import com.wile.core.extensions.showToast
 import com.wile.app.ui.handler.WorkoutInterface
 import timber.log.Timber
 import java.lang.Integer.parseInt

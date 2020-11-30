@@ -23,6 +23,8 @@ object Dependencies {
     // Guide : https://developer.android.com/topic/libraries/app-startup
     const val androidXAppStartup = "androidx.startup:startup-runtime"
 
+    const val androidXFragment = "androidx.fragment:fragment"
+
     // Artifact : https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-livedata-ktx
     const val androidXLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx"
 

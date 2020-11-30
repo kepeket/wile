@@ -1,4 +1,4 @@
-package com.wile.app.extensions
+package com.wile.core.extensions
 
 import android.content.Context
 import android.widget.Toast

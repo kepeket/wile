@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySettingsBinding
-import com.wile.app.extensions.replaceFragment
+import com.wile.core.extensions.replaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

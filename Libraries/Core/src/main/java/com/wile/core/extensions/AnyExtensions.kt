@@ -1,4 +1,4 @@
-package com.wile.app.extensions
+package com.wile.core.extensions
 
 /**
  * Use this extension for `when` expressions that you want to be exhaustive.
