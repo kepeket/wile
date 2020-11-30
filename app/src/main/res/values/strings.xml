@@ -96,4 +96,6 @@
     <string name="activity_import">Importer un entrainement</string>
     <string name="import_failed">Impossible d\'importer l\'entrainement</string>
     <string name="import_success">L\'entrainement a bien été importé</string>
+
+    <string name="training_number">"Entrainement #%d"</string>
 </resources>

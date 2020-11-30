@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.database.model.Training
 import com.wile.training.TrainingRepository
+import com.wile.app.extensions.duration
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -19,17 +20,14 @@ class TrainingListingViewModel @ViewModelInject constructor(
     private val _trainingDurationLiveData: MutableLiveData<Int> = MutableLiveData(0)
     val trainingDurationLiveData: LiveData<Int> get() = _trainingDurationLiveData
 
-    private val _workoutName: MutableLiveData<String> = MutableLiveData("")
-    val workoutName: LiveData<String> get () = _workoutName
-
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData
 
     private val workoutId: Int = requireNotNull(savedStateHandle.get<Int>(TrainingListingFragment.WORKOUT_ID))
+    private val _workoutNumber: MutableLiveData<Int> = MutableLiveData(workoutId)
+    val workoutName: LiveData<Int> get () = _workoutNumber
 
     init {
-        _workoutName.value = "Entrainement #" + (workoutId + 1)
-
         viewModelScope.launch {
             trainingRepository.fetchTrainingList(
                 workout = workoutId,
@@ -37,7 +35,7 @@ class TrainingListingViewModel @ViewModelInject constructor(
                 onError = { _toastLiveData.postValue(it) }
             ).collect {
                 _trainingListLiveData.value = it
-                _trainingDurationLiveData.value = it.map { t -> t.duration }.sum()
+                _trainingDurationLiveData.value = it.duration()
             }
         }
     }
@@ -49,8 +47,8 @@ class TrainingListingViewModel @ViewModelInject constructor(
     }
 
     fun saveTrainings(trainings: List<Training>) {
-        trainings.mapIndexed { i, t ->
-            t.sorting = i * 10
+        trainings.mapIndexed { index, training ->
+            training.sorting = index * 10
         }
 
         viewModelScope.launch {

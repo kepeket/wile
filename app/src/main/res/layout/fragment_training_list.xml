@@ -37,12 +37,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="@dimen/form_padding"
+                android:text="@{String.format(@string/training_number, viewModel.workoutName)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Workout #1"
                 style="@style/Theme.Main.Workout.Duration"
-                android:text="@{viewModel.workoutName}"
-
                 tools:ignore="RtlSymmetry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <View
