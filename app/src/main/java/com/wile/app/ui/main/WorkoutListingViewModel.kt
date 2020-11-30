@@ -8,8 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.database.model.Training
 import com.wile.training.TrainingRepository
@@ -18,7 +16,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileWriter
-import java.lang.reflect.Type
 
 // FixMe : this VM is injected in two places : ImportActivity and TrainingListActivity.
 //  Did we want the same instance of the VM in the two activities ? If yes, use by activityViewModels()
@@ -26,8 +23,7 @@ class WorkoutListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
-    private val trainingListAdapter: JsonAdapter<List<Training>>,
-    private val moshi: Moshi
+    private val trainingListAdapter: JsonAdapter<List<Training>>
 ) : LiveCoroutinesViewModel() {
 
     private val _workoutListLiveData: MutableLiveData<List<Int>> = MutableLiveData()
@@ -97,12 +93,7 @@ class WorkoutListingViewModel @ViewModelInject constructor(
                 try {
                     val file = File(dir, FILE)
                     val writer = FileWriter(file)
-                    val type: Type = Types.newParameterizedType(
-                        List::class.java,
-                        Training::class.java
-                    )
-                    val adapter: JsonAdapter<List<Training>> = moshi.adapter(type)
-                    val content = adapter.toJson(it)
+                    val content = trainingListAdapter.toJson(it)
                     writer.append(content)
                     writer.flush()
                     writer.close()
