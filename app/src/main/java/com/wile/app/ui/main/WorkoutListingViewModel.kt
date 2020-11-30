@@ -18,6 +18,8 @@ import java.io.File
 import java.io.FileWriter
 import java.lang.reflect.Type
 
+// FixMe : this VM is injected in two places : ImportActivity and TrainingListActivity.
+//  Did we want the same instance of the VM in the two activities ? If yes, use by activityViewModels()
 class WorkoutListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle,
