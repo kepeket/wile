@@ -168,7 +168,7 @@ class TrainingListingActivity : DataBindingActivity() {
     }
 
     companion object {
-        const val NEWLY_ADDED_ID = "newly_added_id"
+        private const val NEWLY_ADDED_ID = "newly_added_id"
 
         fun newIntent(context: Context) = Intent(context, TrainingListingActivity::class.java)
         fun showImported(context: Context, newId: Int) = newIntent(context).apply {

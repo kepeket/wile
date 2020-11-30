@@ -8,7 +8,6 @@ import androidx.lifecycle.*
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import com.squareup.moshi.adapter
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.database.model.Training
 import com.wile.training.TrainingRepository
@@ -18,7 +17,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileWriter
 import java.lang.reflect.Type
-import java.util.*
 
 class WorkoutListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
@@ -92,6 +90,7 @@ class WorkoutListingViewModel @ViewModelInject constructor(
                     _toastLiveData.postValue(it)
                 }
             ).collect {
+                // FixMe : you're doing IO operation on the MainThread !
                 val dir = File(context.filesDir, "export")
                 if (!dir.exists()) {
                     dir.mkdir()

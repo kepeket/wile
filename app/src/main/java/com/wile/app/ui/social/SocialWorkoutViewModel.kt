@@ -6,14 +6,9 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.preference.Preference
 import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.app.ui.workout.WorkoutService
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.hashids.Hashids
-import java.time.Instant
-import java.util.*
-import javax.inject.Inject
 import kotlin.collections.HashMap
 import kotlin.random.Random
 

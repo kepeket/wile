@@ -46,7 +46,6 @@ class TrainingListingFragment : DataBindingFragment() {
         arguments?.getInt(WORKOUT_ID)?.let {
             viewModel.fetchTrainings(it)
         }
-
     }
 
     private fun onDeleteTraining(training: Training) {
@@ -60,12 +59,8 @@ class TrainingListingFragment : DataBindingFragment() {
     private fun onTouchTraining(training: Training) {
         context?.let {
             when(training.trainingType){
-                TrainingTypes.Tabata -> {
-                    startActivity(TabataAddActivity.editTabata(it, training.id))
-                }
-                else -> {
-                    startActivity(AddActivity.editTraining(it, training.id))
-                }
+                TrainingTypes.Tabata -> startActivity(TabataAddActivity.editTabata(it, training.id))
+                else -> startActivity(AddActivity.editTraining(it, training.id))
             }
         }
     }

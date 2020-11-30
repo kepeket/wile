@@ -3,18 +3,15 @@ package com.wile.app.ui.workout
 import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.*
 import androidx.lifecycle.MutableLiveData
 import com.tinder.scarlet.Lifecycle
-import com.tinder.scarlet.ShutdownReason
 import com.tinder.scarlet.lifecycle.LifecycleRegistry
 import com.wile.app.model.*
 import com.wile.app.ui.social.WileServer
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.workout_controller.view.*
 import org.hashids.Hashids
 import timber.log.Timber
 import java.time.Instant
@@ -23,7 +20,6 @@ import javax.inject.Inject
 import kotlin.collections.HashMap
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.roundToInt
-import kotlin.reflect.KParameter
 
 @AndroidEntryPoint
 class WorkoutService : Service() {
@@ -128,6 +124,7 @@ class WorkoutService : Service() {
         server.messageRoom(env)
     }
 
+    // FixMe : this will not scale, you will end with a massive method / class. Think about splintting it
     private fun workoutMessageReceived(response: WorkoutModels.WorkoutMessage) {
         when (response.action) {
             WorkoutMessageAction.Paused -> {
@@ -251,7 +248,7 @@ class WorkoutService : Service() {
         if ((isHost.value == false && action != WorkoutMessageAction.Ready) || isInRoom.value == false) {
             return
         }
-        var trainingLight: TrainingLight = TrainingLight()
+        var trainingLight = TrainingLight()
         if (isHost.value == true &&
             action !in listOf(WorkoutMessageAction.Lobby)
             && currentTraining in 0 until expendedTrainings.count()
