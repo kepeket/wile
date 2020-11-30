@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.databinding.ActivitySettingsBinding
+import com.wile.app.extensions.replaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,10 +20,11 @@ class SettingsActivity : DataBindingActivity() {
         setSupportActionBar(binding.mainToolbar.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.settings_fragment, SettingsFragment.newInstance(), SettingsFragment.TAG)
-            .commit()
+        supportFragmentManager.replaceFragment(
+                R.id.settings_fragment,
+                SettingsFragment.newInstance(),
+                SettingsFragment.TAG
+        )
     }
 
     companion object {
