@@ -11,11 +11,9 @@ import com.wile.app.base.LiveCoroutinesViewModel
 import com.wile.database.model.Training
 import com.wile.training.TrainingRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-@ExperimentalCoroutinesApi
 class AddViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle

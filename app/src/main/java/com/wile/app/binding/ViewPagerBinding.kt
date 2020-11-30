@@ -3,9 +3,7 @@ package com.wile.app.binding
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.ui.adapter.WorkoutListingAdapter
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 object ViewPagerBinding {
 
     @JvmStatic

@@ -21,14 +21,11 @@ import com.wile.app.ui.social.SocialWorkoutViewModel
 import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_training_listing.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.util.*
 
-
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class TrainingListingActivity : DataBindingActivity() {
 

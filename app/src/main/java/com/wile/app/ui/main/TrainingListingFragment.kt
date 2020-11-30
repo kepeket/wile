@@ -15,10 +15,8 @@ import com.wile.app.ui.add.TabataAddActivity
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
-@ExperimentalCoroutinesApi
 class TrainingListingFragment : DataBindingFragment() {
 
     private val viewModel: TrainingListingViewModel by viewModels()

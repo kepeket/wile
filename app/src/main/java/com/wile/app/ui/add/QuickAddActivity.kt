@@ -12,13 +12,10 @@ import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes
 import com.wile.app.ui.adapter.TrainingPresetAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class QuickAddActivity : DataBindingActivity() {
 

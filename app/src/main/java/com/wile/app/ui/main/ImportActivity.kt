@@ -6,12 +6,10 @@ import com.wile.app.R
 import com.wile.app.base.DataBindingActivity
 import com.wile.app.extensions.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ImportActivity : DataBindingActivity() {
 
