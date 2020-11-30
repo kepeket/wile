@@ -40,13 +40,6 @@ class TrainingListingFragment : DataBindingFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        arguments?.getInt(WORKOUT_ID)?.let {
-            viewModel.fetchTrainings(it)
-        }
-    }
-
     private fun onDeleteTraining(training: Training) {
         viewModel.deleteTraining(training.id)
     }

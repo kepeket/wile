@@ -13,7 +13,6 @@ class TrainingListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {
-
     private val _trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
     val trainingListLiveData: LiveData<List<Training>> get() = _trainingListLiveData
 
@@ -26,12 +25,14 @@ class TrainingListingViewModel @ViewModelInject constructor(
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData
 
-    fun fetchTrainings(workout: Int) {
-        _workoutName.value = "Entrainement #" + (workout + 1)
+    private val workoutId: Int = requireNotNull(savedStateHandle.get<Int>(TrainingListingFragment.WORKOUT_ID))
+
+    init {
+        _workoutName.value = "Entrainement #" + (workoutId + 1)
 
         viewModelScope.launch {
             trainingRepository.fetchTrainingList(
-                workout = workout,
+                workout = workoutId,
                 onSuccess = {},
                 onError = { _toastLiveData.postValue(it) }
             ).collect {
