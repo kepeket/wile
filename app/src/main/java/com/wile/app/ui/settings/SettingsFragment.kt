@@ -10,6 +10,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
+        const val TAG = "SettingsFragment"
         fun newInstance() = SettingsFragment()
     }
 }

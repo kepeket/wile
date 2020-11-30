@@ -21,7 +21,7 @@ class SettingsActivity : DataBindingActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.settings_fragment, SettingsFragment.newInstance())
+            .replace(R.id.settings_fragment, SettingsFragment.newInstance(), SettingsFragment.TAG)
             .commit()
     }
 
