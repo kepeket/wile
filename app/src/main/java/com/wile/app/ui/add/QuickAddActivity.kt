@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import com.wile.app.R
-import com.wile.app.base.DataBindingActivity
+import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityQuickAddBinding
 import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes

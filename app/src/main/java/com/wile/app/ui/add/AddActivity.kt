@@ -8,11 +8,9 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import com.wile.app.R
-import com.wile.app.base.DataBindingActivity
+import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityAddBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_add.*
-import kotlinx.android.synthetic.main.training_rep_rate.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -40,12 +38,12 @@ class AddActivity : DataBindingActivity() {
         if (trainingParam > 0){
             editMode = true
             supportActionBar?.title = getString(R.string.edit_training_toolbar_title)
-            save_btn.text = getString(R.string.save_training_btn)
+            binding.saveBtn.text = getString(R.string.save_training_btn)
         }
 
         workoutId = intent.getIntExtra(WORKOUT_ID, -1)
         viewModel.fetchTraining(trainingParam)
-        save_btn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
             validateTraining()
         }
 
@@ -54,7 +52,7 @@ class AddActivity : DataBindingActivity() {
             binding.trainingRepRateLayout.valueLayout.visibility = if (it) View.VISIBLE else View.GONE
         })
 
-        toggle_rep_rate.setOnCheckedChangeListener { _, b ->
+        binding.trainingRepRateLayout.toggleRepRate.setOnCheckedChangeListener { _, b ->
             viewModel.customRepRateChanged(b)
         }
     }

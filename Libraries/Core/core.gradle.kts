@@ -14,6 +14,10 @@ android {
 
 dependencies {
     implementations(
-        Dependencies.androidXFragment
+        Dependencies.androidXAppCompat,
+        Dependencies.androidXDataBinding,
+        Dependencies.androidXFragment,
+        Dependencies.androidXLiveDataKtx,
+        Dependencies.androidXViewModelKTX
     )
 }

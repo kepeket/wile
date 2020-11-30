@@ -1,4 +1,4 @@
-package com.wile.app.base
+package com.wile.core.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

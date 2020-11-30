@@ -6,7 +6,7 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.wile.app.base.LiveCoroutinesViewModel
+import com.wile.core.viewmodel.LiveCoroutinesViewModel
 import com.wile.app.ui.workout.WorkoutService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlin.collections.HashMap

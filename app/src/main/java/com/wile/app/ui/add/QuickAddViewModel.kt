@@ -7,7 +7,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.wile.app.base.LiveCoroutinesViewModel
+import com.wile.core.viewmodel.LiveCoroutinesViewModel
 import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes
 import com.wile.training.TrainingRepository

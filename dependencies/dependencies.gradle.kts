@@ -16,6 +16,7 @@ dependencies {
         api("${Dependencies.androidXCoreKTX}:${DependenciesVersions.androidXCoreKTX}")
         api("${Dependencies.androidXAppCompat}:${DependenciesVersions.androidXAppCompat}")
         api("${Dependencies.androidXAppStartup}:${DependenciesVersions.androidXAppStartup}")
+        api("${Dependencies.androidXDataBinding}:${DependenciesVersions.androidXDataBinding}")
         api("${Dependencies.androidXFragment}:${DependenciesVersions.androidXFragment}")
         api("${Dependencies.androidXLiveDataKtx}:${DependenciesVersions.androidXLiveDataKtx}")
         api("${Dependencies.androidXNavigationFragmentKTX}:${DependenciesVersions.androidXNavigation}")
@@ -55,6 +56,7 @@ object DependenciesVersions {
     const val androidXCoreKTX                  = "1.3.2"
     const val androidXAppCompat                = "1.2.0"
     const val androidXAppStartup               = "1.0.0"
+    const val androidXDataBinding              = "4.1.1"
     const val androidXFragment                 = "1.2.0"
     const val androidXLiveDataKtx              = "2.2.0"
     const val androidXNavigation               = "2.3.1"

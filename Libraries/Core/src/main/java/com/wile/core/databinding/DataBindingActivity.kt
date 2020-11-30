@@ -1,4 +1,4 @@
-package com.wile.app.base
+package com.wile.core.databinding
 
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity

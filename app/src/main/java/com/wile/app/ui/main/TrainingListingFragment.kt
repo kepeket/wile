@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.wile.app.R
-import com.wile.app.base.DataBindingFragment
+import com.wile.core.databinding.DataBindingFragment
 import com.wile.app.databinding.FragmentTrainingListBinding
 import com.wile.core.extensions.exhaustive
 import com.wile.app.ui.adapter.TrainingAdapter

@@ -3,7 +3,7 @@ package com.wile.app.ui.main
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.wile.app.R
-import com.wile.app.base.DataBindingActivity
+import com.wile.core.databinding.DataBindingActivity
 import com.wile.core.extensions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.BufferedReader

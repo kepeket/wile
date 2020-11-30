@@ -10,15 +10,15 @@ import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.R
-import com.wile.app.base.DataBindingActivity
+import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
-import com.wile.core.extensions.showToast
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
 import com.wile.app.ui.settings.SettingsActivity
 import com.wile.app.ui.social.JoinActivity
 import com.wile.app.ui.social.SocialWorkoutViewModel
 import com.wile.app.ui.workout.WorkoutActivity
+import com.wile.core.extensions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.BufferedReader
 import java.io.File

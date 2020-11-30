@@ -1,19 +1,15 @@
 package com.wile.app.ui.workout
 
-import android.graphics.Color
-import androidx.annotation.ColorRes
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.wile.app.R
-import com.wile.app.base.LiveCoroutinesViewModel
+import com.wile.core.viewmodel.LiveCoroutinesViewModel
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import com.wile.training.TrainingRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import javax.annotation.Resource
 
 class WorkoutViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,

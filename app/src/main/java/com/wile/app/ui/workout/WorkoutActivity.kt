@@ -9,11 +9,11 @@ import android.os.*
 import android.view.View
 import androidx.activity.viewModels
 import com.wile.app.R
-import com.wile.app.base.DataBindingActivity
+import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityWorkoutBinding
-import com.wile.core.extensions.showToast
 import com.wile.app.sound.WorkoutSoundPlayer
 import com.wile.app.ui.handler.WorkoutInterface
+import com.wile.core.extensions.showToast
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import dagger.hilt.android.AndroidEntryPoint

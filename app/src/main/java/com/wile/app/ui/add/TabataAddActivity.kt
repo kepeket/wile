@@ -7,10 +7,9 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import com.wile.app.R
-import com.wile.app.base.DataBindingActivity
+import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityTabataAddBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -40,7 +39,7 @@ class TabataAddActivity : DataBindingActivity() {
         if (trainingParam > 0){
             editMode = true
             supportActionBar?.title = getString(R.string.edit_training_toolbar_title)
-            save_btn.text = getString(R.string.save_training_btn)
+            binding.saveBtn.text = getString(R.string.save_training_btn)
         }
         workoutId = intent.getIntExtra(WORKOUT_ID, -1)
         viewModel.fetchTraining(trainingParam)
