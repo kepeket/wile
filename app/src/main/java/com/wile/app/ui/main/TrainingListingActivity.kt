@@ -20,11 +20,10 @@ import com.wile.app.ui.social.JoinActivity
 import com.wile.app.ui.social.SocialWorkoutViewModel
 import com.wile.app.ui.workout.WorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_training_listing.*
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
-import java.util.*
+import java.util.Collections
 
 @AndroidEntryPoint
 class TrainingListingActivity : DataBindingActivity() {
@@ -41,8 +40,6 @@ class TrainingListingActivity : DataBindingActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel.fetchWorkouts()
 
         binding.apply {
             lifecycleOwner = this@TrainingListingActivity
@@ -61,7 +58,7 @@ class TrainingListingActivity : DataBindingActivity() {
 
         binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                super.onPageSelected(position);
+                super.onPageSelected(position)
                 currentWorkout = adapter.getItem(position)
             }
         })
@@ -78,25 +75,22 @@ class TrainingListingActivity : DataBindingActivity() {
             startActivity(SettingsActivity.newIntent(this))
         }
 
-        viewModel.fileExportLiveData.observe(
-            this,
-            {
-                if (it.isNotEmpty()) {
-                    val path: Uri = FileProvider.getUriForFile(
-                        this,
-                        "com.wile.app.fileprovider",
-                        File(it)
-                    )
-                    val i = Intent(Intent.ACTION_SEND).apply {
-                        putExtra(Intent.EXTRA_STREAM, path)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        type = "application/json"
-                    }
-                    Intent.createChooser(i, resources.getText(R.string.share_workout_message))
-                    startActivity(i)
+        viewModel.fileExportLiveData.observe(this, {
+            if (it.isNotEmpty()) {
+                val path: Uri = FileProvider.getUriForFile(
+                    this,
+                    "com.wile.app.fileprovider",
+                    File(it)
+                )
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    putExtra(Intent.EXTRA_STREAM, path)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    type = "application/json"
                 }
+                Intent.createChooser(intent, resources.getText(R.string.share_workout_message))
+                startActivity(intent)
             }
-        )
+        })
 
         intent.data?.let { data ->
             viewModel.workoutListLiveData.observe(this, { list ->
@@ -112,6 +106,7 @@ class TrainingListingActivity : DataBindingActivity() {
                     showToast(getString(R.string.import_success))
                 }
             })
+
             viewModel.newlyImportedLiveData.observe(this, {
                 val lastPos = adapter.getPosition(it)
                 binding.pager.post {
@@ -126,8 +121,9 @@ class TrainingListingActivity : DataBindingActivity() {
         })
 
         setSupportActionBar(binding.mainToolbar.toolbar)
-        fab.setOnClickListener {
-            if (inRoom){
+
+        binding.fab.setOnClickListener {
+            if (inRoom) {
                 startActivity(WorkoutActivity.startSocialWorkout(this, currentWorkout, isHost))
             } else {
                 startActivity(WorkoutActivity.startWorkout(this, currentWorkout))

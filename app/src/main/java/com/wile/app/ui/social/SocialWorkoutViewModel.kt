@@ -16,7 +16,6 @@ class SocialWorkoutViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
     private val sharedPreferences: SharedPreferences
-
 ) : LiveCoroutinesViewModel() {
 
     private var workoutService: WorkoutService? = null

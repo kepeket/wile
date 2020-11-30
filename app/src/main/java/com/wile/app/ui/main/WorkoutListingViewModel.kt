@@ -1,10 +1,12 @@
 package com.wile.app.ui.main
 
 import android.content.Context
-import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -24,6 +26,7 @@ class WorkoutListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
+    private val trainingListAdapter: JsonAdapter<List<Training>>,
     private val moshi: Moshi
 ) : LiveCoroutinesViewModel() {
 
@@ -39,15 +42,10 @@ class WorkoutListingViewModel @ViewModelInject constructor(
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData
 
-    val isLoading: ObservableBoolean = ObservableBoolean(false)
-
-    fun fetchWorkouts() {
+    init {
         viewModelScope.launch {
-            isLoading.set(true)
             trainingRepository.fetchWorkoutIds(
-                onSuccess = {
-                    isLoading.set(false)
-                },
+                onSuccess = {},
                 onError = {
                     _toastLiveData.postValue(it)
                 }
@@ -64,18 +62,14 @@ class WorkoutListingViewModel @ViewModelInject constructor(
     }
 
     fun importTrainingsJSON(json: String, maxId: Int) {
-        val type: Type = Types.newParameterizedType(
-            List::class.java,
-            Training::class.java
-        )
-        val adapter: JsonAdapter<List<Training>> = moshi.adapter(type)
         try {
-            val trainings = adapter.fromJson(json)
+            val trainings = trainingListAdapter.fromJson(json)
             trainings?.let {
-                for (t in trainings) {
-                    t.id = 0
-                    t.workout = maxId
+                trainings.forEach {
+                    it.id = 0
+                    it.workout = maxId
                 }
+
                 viewModelScope.launch {
                     trainingRepository.addAll(trainings)
                     _newlyImportedLiveData.postValue(maxId)
@@ -88,23 +82,20 @@ class WorkoutListingViewModel @ViewModelInject constructor(
 
     fun getWorkoutJSON(id: Int) {
         viewModelScope.launch {
-            isLoading.set(true)
             trainingRepository.fetchTrainingList(
                 workout = id,
-                onSuccess = {
-                    isLoading.set(false)
-                },
+                onSuccess = {},
                 onError = {
                     _toastLiveData.postValue(it)
                 }
             ).collect {
                 // FixMe : you're doing IO operation on the MainThread !
-                val dir = File(context.filesDir, "export")
+                val dir = File(context.filesDir, DIRECTORY)
                 if (!dir.exists()) {
                     dir.mkdir()
                 }
                 try {
-                    val file = File(dir, "Workout.json")
+                    val file = File(dir, FILE)
                     val writer = FileWriter(file)
                     val type: Type = Types.newParameterizedType(
                         List::class.java,
@@ -121,5 +112,10 @@ class WorkoutListingViewModel @ViewModelInject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val DIRECTORY = "export"
+        const val FILE = "Workout.json"
     }
 }

@@ -8,7 +8,7 @@ import com.wile.app.extensions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.util.*
+import java.util.Collections
 
 @AndroidEntryPoint
 class ImportActivity : DataBindingActivity() {
@@ -19,9 +19,7 @@ class ImportActivity : DataBindingActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.fetchWorkouts()
-
-        viewModel.workoutListLiveData.observe   (this, { list ->
+        viewModel.workoutListLiveData.observe(this, { list ->
             if (imported) {
                 return@observe
             }
