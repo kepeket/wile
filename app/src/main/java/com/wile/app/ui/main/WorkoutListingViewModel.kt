@@ -25,12 +25,18 @@ class WorkoutListingViewModel @ViewModelInject constructor(
     private val moshi: Moshi
 ) : LiveCoroutinesViewModel() {
 
-    val workoutListLiveData: MutableLiveData<List<Int>> = MutableLiveData()
-    val fileExportLiveData: MutableLiveData<String> = MutableLiveData("")
-    val newlyImportedLiveData: MutableLiveData<Int> = MutableLiveData()
+    private val _workoutListLiveData: MutableLiveData<List<Int>> = MutableLiveData()
+    val workoutListLiveData: LiveData<List<Int>> get() = _workoutListLiveData
+
+    private val _fileExportLiveData: MutableLiveData<String> = MutableLiveData("")
+    val fileExportLiveData: LiveData<String> get() = _fileExportLiveData
+
+    private val _newlyImportedLiveData: MutableLiveData<Int> = MutableLiveData()
+    val newlyImportedLiveData: LiveData<Int> get() = _newlyImportedLiveData
 
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData
+
     val isLoading: ObservableBoolean = ObservableBoolean(false)
 
     fun fetchWorkouts() {
@@ -44,7 +50,7 @@ class WorkoutListingViewModel @ViewModelInject constructor(
                     _toastLiveData.postValue(it)
                 }
             ).collect {
-                workoutListLiveData.value = it
+                _workoutListLiveData.value = it
             }
         }
     }
@@ -70,7 +76,7 @@ class WorkoutListingViewModel @ViewModelInject constructor(
                 }
                 viewModelScope.launch {
                     trainingRepository.addAll(trainings)
-                    newlyImportedLiveData.postValue(maxId)
+                    _newlyImportedLiveData.postValue(maxId)
                 }
             }
         } catch (e: Exception) {
@@ -107,7 +113,7 @@ class WorkoutListingViewModel @ViewModelInject constructor(
                     writer.append(content)
                     writer.flush()
                     writer.close()
-                    fileExportLiveData.postValue(file.absolutePath)
+                    _fileExportLiveData.postValue(file.absolutePath)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
