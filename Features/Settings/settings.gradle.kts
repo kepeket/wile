@@ -23,6 +23,7 @@ dependencies {
     )
 
     implementationProjects(
-        ":Libraries:Core"
+        ":Libraries:Core",
+        ":Libraries:Design"
     )
 }

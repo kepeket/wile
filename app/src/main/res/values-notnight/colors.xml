@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="blue_bullet">#0277BD</color>
     <color name="training_go_red">#C62828</color>
     <color name="training_go_btn_color">#F9A825</color>
     <color name="drag">#929292</color>
-    <color name="timed_preset">#74B5FF</color>
     <color name="repeated_preset">#ED5A5A</color>
     <color name="tabata_preset">#C0E4A6</color>
-    <color name="dark_grey_variant">#454545</color>
-    <color name="dark_grey">#A6A6A6</color>
     <color name="training_go_blue">#0277BD</color>
     <color name="black_opacity_9">#BF000000</color>
     <color name="black_opacity_5">#80000000</color>
     <color name="go_fab_backgroung">#BFBFBF</color>
-    <color name="bottom_bar_background">#EF6C00</color>
 </resources>

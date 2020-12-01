@@ -83,6 +83,7 @@ dependencies {
     implementationProjects(
         ":Features:Settings",
         ":Libraries:Core",
+        ":Libraries:Design",
         ":Libraries:Database",
         ":Libraries:Logging",
         ":Libraries:Sound",

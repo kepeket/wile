@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="blue_bullet">#0277BD</color>
+    <color name="bottom_bar_background">#EF6C00</color>
+    <color name="dark_grey">#A6A6A6</color>
+    <color name="dark_grey_variant">#454545</color>
+    <color name="timed_preset">#74B5FF</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

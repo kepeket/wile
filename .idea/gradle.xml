@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/Libraries" />
             <option value="$PROJECT_DIR$/Libraries/Core" />
             <option value="$PROJECT_DIR$/Libraries/Database" />
+            <option value="$PROJECT_DIR$/Libraries/Design" />
             <option value="$PROJECT_DIR$/Libraries/Logging" />
             <option value="$PROJECT_DIR$/Libraries/Sound" />
             <option value="$PROJECT_DIR$/Repositories" />
