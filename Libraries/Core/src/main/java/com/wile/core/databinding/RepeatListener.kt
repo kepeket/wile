@@ -1,4 +1,4 @@
-package com.wile.app.binding
+package com.wile.core.databinding
 
 import android.os.Handler
 import android.os.Looper

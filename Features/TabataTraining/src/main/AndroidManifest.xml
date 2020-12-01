@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wile.features.tabatatraining">
+    <application>
+        <activity
+            android:name=".TabataAddActivity"
+            android:label="@string/activity_tabata_add_label"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Main.NoActionBar" />
+    </application>
+</manifest>

@@ -1,4 +1,6 @@
 import com.android.build.gradle.BaseExtension
+import org.jetbrains.kotlin.gradle.plugin.KaptExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
  * NOTE: The values set here CAN NOT be overwritten in subprojects by themselves.
@@ -14,7 +16,10 @@ subprojects {
             dependencies {
                 configurations.create("kapt")(platform(project(":dependencies")))
             }
-            configure<org.jetbrains.kotlin.gradle.plugin.KaptExtension> {
+
+            configure<KaptExtension> {
+                correctErrorTypes = true
+
                 javacOptions {
                     option("-source", "8")
                     option("-target", "8")
@@ -29,6 +34,10 @@ subprojects {
         withPlugin(BuildScript.AndroidApplication) {
             configureAndroidProject()
         }
+    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = "1.8"
     }
 }
 

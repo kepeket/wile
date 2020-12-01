@@ -13,6 +13,7 @@ dependencies {
         api("${Dependencies.junit}:${DependenciesVersions.junit}")
         // endregion
         // region Runtime
+        api("${Dependencies.androidXActivityKTX}:${DependenciesVersions.androidXActivityKTX}")
         api("${Dependencies.androidXCoreKTX}:${DependenciesVersions.androidXCoreKTX}")
         api("${Dependencies.androidXAppCompat}:${DependenciesVersions.androidXAppCompat}")
         api("${Dependencies.androidXAppStartup}:${DependenciesVersions.androidXAppStartup}")
@@ -54,6 +55,7 @@ object DependenciesVersions {
     const val junit                            = "4.13"
     // Runtime
     const val androidXCoreKTX                  = "1.3.2"
+    const val androidXActivityKTX              = "1.1.0"
     const val androidXAppCompat                = "1.2.0"
     const val androidXAppStartup               = "1.0.0"
     const val androidXDataBinding              = "4.1.1"

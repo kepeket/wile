@@ -25,12 +25,6 @@ android {
     }
 
     buildFeatures.dataBinding = true
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    kapt.correctErrorTypes = true
 }
 
 dependencies {
@@ -82,6 +76,7 @@ dependencies {
 
     implementationProjects(
         ":Features:Settings",
+        ":Features:TabataTraining",
         ":Libraries:Core",
         ":Libraries:Design",
         ":Libraries:Database",

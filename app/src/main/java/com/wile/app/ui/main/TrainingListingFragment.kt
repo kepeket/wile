@@ -11,7 +11,7 @@ import com.wile.app.databinding.FragmentTrainingListBinding
 import com.wile.core.extensions.exhaustive
 import com.wile.app.ui.adapter.TrainingAdapter
 import com.wile.app.ui.add.AddActivity
-import com.wile.app.ui.add.TabataAddActivity
+import com.wile.features.tabatatraining.TabataAddActivity
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import dagger.hilt.android.AndroidEntryPoint
