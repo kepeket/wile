@@ -10,6 +10,9 @@ abstract class DataBindingFragment : Fragment() {
 
     protected inline fun <reified T : ViewDataBinding> binding(
         @LayoutRes resId: Int
-    ): Lazy<T> = lazy { DataBindingUtil.inflate(layoutInflater, resId,
-        view?.parent as ViewGroup?, false) }
+    ): Lazy<T> = lazy { DataBindingUtil.inflate<T>(layoutInflater, resId,
+        view?.parent as ViewGroup?, false).apply {
+            setLifecycleOwner { this@DataBindingFragment.lifecycle }
+        }
+    }
 }

@@ -27,7 +27,6 @@ class AddActivity : DataBindingActivity() {
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            lifecycleOwner = this@AddActivity
             vm = viewModel
         }
 

@@ -52,7 +52,6 @@ class QuickAddActivity : DataBindingActivity() {
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            lifecycleOwner = this@QuickAddActivity
             adapter = this@QuickAddActivity.adapter
             vm = viewModel
         }

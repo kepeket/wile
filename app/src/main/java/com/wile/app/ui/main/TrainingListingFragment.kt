@@ -33,7 +33,6 @@ class TrainingListingFragment : DataBindingFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding.apply {
-            lifecycleOwner = this@TrainingListingFragment
             adapter = this@TrainingListingFragment.adapter
             viewModel = this@TrainingListingFragment.viewModel
         }

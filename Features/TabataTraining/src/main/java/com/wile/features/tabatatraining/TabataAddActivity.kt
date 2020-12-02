@@ -25,7 +25,6 @@ class TabataAddActivity : DataBindingActivity() {
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            lifecycleOwner = this@TabataAddActivity
             vm = viewModel
         }
 
@@ -33,7 +32,7 @@ class TabataAddActivity : DataBindingActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val trainingParam = intent.getIntExtra(TRAINING_ID, -1)
-        if (trainingParam > 0){
+        if (trainingParam > 0) {
             supportActionBar?.title = getString(R.string.edit_training_toolbar_title)
             binding.saveBtn.text = getString(R.string.save_training_btn)
         }
@@ -44,10 +43,10 @@ class TabataAddActivity : DataBindingActivity() {
         binding.tabataAlterName.trainingNameLabel.text = getString(R.string.tabata_form_alter_label)
         binding.tabataCycles.trainingNameLabel.text = getString(R.string.tabata_form_cycles_label)
 
-
         binding.tabataMainName.trainingTitle.addTextChangedListener {
             viewModel.updateMainName(it.toString())
         }
+
         binding.tabataMainDuration.trainingDuration.addTextChangedListener {
             viewModel.updateMainDuration(parseInt(it.toString()))
         }
@@ -55,9 +54,11 @@ class TabataAddActivity : DataBindingActivity() {
         binding.tabataAlterName.trainingTitle.addTextChangedListener {
             viewModel.updateAlterName(it.toString())
         }
+
         binding.tabataAlterDuration.trainingDuration.addTextChangedListener {
             viewModel.updateAlterDuration(parseInt(it.toString()))
         }
+
         binding.tabataCycles.trainingDuration.addTextChangedListener {
             viewModel.updateCycles(parseInt(it.toString()))
         }
@@ -83,7 +84,6 @@ class TabataAddActivity : DataBindingActivity() {
             onBackPressed()
             true
         }
-
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.

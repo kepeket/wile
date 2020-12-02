@@ -47,7 +47,6 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            lifecycleOwner = this@WorkoutActivity
             viewModel = this@WorkoutActivity.viewModel
         }
 

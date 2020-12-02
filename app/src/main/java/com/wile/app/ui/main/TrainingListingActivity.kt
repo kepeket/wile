@@ -42,7 +42,6 @@ class TrainingListingActivity : DataBindingActivity() {
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            lifecycleOwner = this@TrainingListingActivity
             adapter = this@TrainingListingActivity.adapter
             viewModel = this@TrainingListingActivity.viewModel
             socialViewModel = this@TrainingListingActivity.socialViewModel

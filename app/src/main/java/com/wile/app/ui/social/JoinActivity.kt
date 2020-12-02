@@ -32,7 +32,6 @@ class JoinActivity: DataBindingActivity() {
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            lifecycleOwner = this@JoinActivity
             viewModel = this@JoinActivity.viewModel
             memberAdapter = adapter
         }
