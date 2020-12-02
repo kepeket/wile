@@ -21,10 +21,9 @@ class TabataAddViewModel @ViewModelInject constructor(
 ) : LiveCoroutinesViewModel()  {
 
     private val _toastLiveData: MutableLiveData<Any> = MutableLiveData()
-    val isLoading: ObservableBoolean = ObservableBoolean(false)
     val toastLiveData: LiveData<Any> get() = _toastLiveData
     var training: LiveData<Training>
-    val trainingFetchLiveData: MutableLiveData<Int> = MutableLiveData(-1)
+    private val trainingFetchLiveData: MutableLiveData<Int> = MutableLiveData(-1)
 
     init {
         training = trainingFetchLiveData.switchMap { id ->
@@ -32,7 +31,7 @@ class TabataAddViewModel @ViewModelInject constructor(
                 launchOnViewModelScope {
                     trainingRepository.getTraining(
                         id = id,
-                        onSuccess = { isLoading.set(false) },
+                        onSuccess = {},
                         onError = { _toastLiveData.postValue(it) }
                     ).asLiveData()
                 }
@@ -60,7 +59,7 @@ class TabataAddViewModel @ViewModelInject constructor(
 
             trainingRepository.saveTraining(
                 newTraining = t,
-                onSuccess = { isLoading.set(false) },
+                onSuccess = {},
                 onError = { _toastLiveData.postValue(it) }
             )
         }
