@@ -19,7 +19,6 @@ class TabataAddActivity : DataBindingActivity() {
 
     private val viewModel: TabataAddViewModel by viewModels()
     private val binding: ActivityTabataAddBinding by binding(R.layout.activity_tabata_add)
-    private var editMode: Boolean = false
     private var workoutId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +34,6 @@ class TabataAddActivity : DataBindingActivity() {
 
         val trainingParam = intent.getIntExtra(TRAINING_ID, -1)
         if (trainingParam > 0){
-            editMode = true
             supportActionBar?.title = getString(R.string.edit_training_toolbar_title)
             binding.saveBtn.text = getString(R.string.save_training_btn)
         }
