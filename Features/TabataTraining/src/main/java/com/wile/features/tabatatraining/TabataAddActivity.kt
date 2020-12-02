@@ -95,7 +95,8 @@ class TabataAddActivity : DataBindingActivity() {
         const val TRAINING_ID = "training_id"
         const val WORKOUT_ID = "workout_id"
 
-        fun newIntent(context: Context) = Intent(context, TabataAddActivity::class.java)
+        private fun newIntent(context: Context) = Intent(context, TabataAddActivity::class.java)
+
         fun newTabata(context: Context, workoutId: Int) = newIntent(context).apply {
             putExtra(WORKOUT_ID, workoutId)
         }
