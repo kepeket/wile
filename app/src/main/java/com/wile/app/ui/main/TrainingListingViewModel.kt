@@ -17,6 +17,10 @@ class TrainingListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : LiveCoroutinesViewModel() {
+
+    private val _emptyListLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+    val emptyListLiveData: LiveData<Boolean> get() = _emptyListLiveData
+
     private val _trainingListLiveData: MutableLiveData<List<Training>> = MutableLiveData()
     val trainingListLiveData: LiveData<List<Training>> get() = _trainingListLiveData
 
@@ -38,6 +42,7 @@ class TrainingListingViewModel @ViewModelInject constructor(
                 onError = { _toastLiveData.postValue(it) }
             ).collect {
                 _trainingListLiveData.value = it
+                _emptyListLiveData.value = it.isEmpty()
                 _trainingDurationLiveData.value = it.duration()
             }
         }

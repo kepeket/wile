@@ -7,6 +7,7 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.ServiceConnection
 import android.os.*
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import com.wile.app.R
 import com.wile.core.databinding.DataBindingActivity
@@ -77,6 +78,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
         Intent(this, WorkoutService::class.java).also { intent ->
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     // Service binding callback

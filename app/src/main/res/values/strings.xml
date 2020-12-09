@@ -55,7 +55,7 @@
     <string name="share_workout">Partager l\'entrainement</string>
     <string name="no_excercice">Il n\'y a aucun exercice dans cet entrainement</string>
     <string name="workout_press_play_ready">Appuies sur Play quand t\'es prêt-e à te lancer</string>
-    <string name="add_training">Add training</string>
+    <string name="add_training">Ajouter un exercice</string>
     <string name="empty_userid">Il manque votre pseudo</string>
     <string name="empty_room_name">Il manque le code de la salle</string>
     <string name="ws_connection_list">Connexion au serveur perdues [%s]</string>
@@ -82,4 +82,9 @@
     <string name="import_success">L\'entrainement a bien été importé</string>
 
     <string name="training_number">"Entrainement #%d"</string>
+    <string name="no_training_added">Avant de pouvoir lancer l\'entrainement, il faut y mettre des exercices. Le + en bas à droite est là pour çà</string>
+    <string name="illustration">illustration</string>
+    <string name="delete_last_training">Cela va entrainer la suppression de l\'entrainement</string>
+    <string name="delete">Supprimer</string>
+    <string name="cancel">Conserver</string>
 </resources>

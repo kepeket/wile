@@ -7,4 +7,9 @@
         <item name="android:scaleType">centerCrop</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
+
+
+    <style name="Theme.Main.Training.PlaceholderImage" parent="Theme.Main">
+        <item name="android:src">@drawable/draw_sport_man_black</item>
+    </style>
 </resources>
