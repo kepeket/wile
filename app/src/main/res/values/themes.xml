@@ -28,12 +28,26 @@
         <item name="android:layout_marginBottom">@dimen/paragraph_margin</item>
     </style>
 
+    <style name="Theme.Main.Training.Label" parent="Theme.Main">
+        <item name="textAllCaps">true</item>
+        <item name="android:textSize">@dimen/training_label</item>
+    </style>
+
     <style name="Theme.Main.Social.RoomID" parent="Theme.Main">
         <item name="textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/room_id</item>
         <item name="background">@color/dark_grey</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.Main.Training.MoreLessBtn" parent="Theme.Main">
+        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="backgroundTint">?android:attr/colorPrimary</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:adjustViewBounds">true</item>
     </style>
 
     <style name="Theme.Main.Workout.Duration" parent="Theme.Main">
@@ -62,6 +76,7 @@
     </style>
 
     <dimen name="workout_info">24sp</dimen>
+    <dimen name="training_label">18sp</dimen>
     <dimen name="paragraph_margin">34dp</dimen>
     <dimen name="room_id">28sp</dimen>
 </resources>

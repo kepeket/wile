@@ -11,7 +11,6 @@ import com.wile.app.databinding.ActivityQuickAddBinding
 import com.wile.training.model.Preset
 import com.wile.database.model.TrainingTypes
 import com.wile.app.ui.adapter.TrainingPresetAdapter
-import com.wile.features.tabatatraining.TabataAddActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

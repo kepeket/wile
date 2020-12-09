@@ -11,8 +11,6 @@ object Dependencies {
     // endregion
 
     // region Runtime
-    const val androidXActivityKTX = "androidx.activity:activity-ktx"
-
     // Guide : https://developer.android.com/kotlin/ktx#kotlin
     // Artifact : https://mvnrepository.com/artifact/androidx.core/core-ktx
     // Release notes : https://developer.android.com/jetpack/androidx/releases/core

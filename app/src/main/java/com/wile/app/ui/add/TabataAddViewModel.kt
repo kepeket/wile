@@ -1,4 +1,4 @@
-package com.wile.features.tabatatraining
+package com.wile.app.ui.add
 
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
@@ -6,6 +6,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.wile.app.R
 import com.wile.core.viewmodel.LiveCoroutinesViewModel
 import com.wile.database.model.TabataConfig
 import com.wile.database.model.Training
@@ -97,23 +98,23 @@ class TabataAddViewModel @ViewModelInject constructor(
                 return false
             }
 
-            it.tabataConfig?.let { (_, mainDuration, alterDuration, mainName) ->
-                if (mainName.isEmpty()) {
+            it.tabataConfig?.let { tc ->
+                if (tc.mainName.isEmpty()) {
                     _toastLiveData.value =  R.string.training_tabata_missing_main
                     return false
                 }
 
-                if (mainName.isEmpty()) {
+                if (tc.mainName.isEmpty()) {
                     _toastLiveData.value =  R.string.training_tabata_missing_alter
                     return false
                 }
 
-                if (mainDuration <= 0) {
+                if (tc.mainDuration <= 0) {
                     _toastLiveData.value =  R.string.training_tabata_missing_duration
                     return false
                 }
 
-                if (alterDuration <= 0) {
+                if (tc.alterDuration <= 0) {
                     _toastLiveData.value =  R.string.training_tabata_missing_duration
                     return false
                 }

@@ -1,4 +1,4 @@
-package com.wile.features.tabatatraining
+package com.wile.app.ui.add
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
+import com.wile.app.R
 import com.wile.core.databinding.DataBindingActivity
-import com.wile.features.tabatatraining.databinding.ActivityTabataAddBinding
+import com.wile.app.databinding.ActivityTabataAddBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ class TabataAddActivity : DataBindingActivity() {
     private val binding: ActivityTabataAddBinding by binding(R.layout.activity_tabata_add)
     private var workoutId = -1
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,7 +30,7 @@ class TabataAddActivity : DataBindingActivity() {
             vm = viewModel
         }
 
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.mainToolbar.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val trainingParam = intent.getIntExtra(TRAINING_ID, -1)

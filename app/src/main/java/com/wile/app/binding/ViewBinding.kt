@@ -1,14 +1,15 @@
 package com.wile.app.binding
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.wile.app.R
+import com.wile.core.extensions.showToast
 import com.wile.app.ui.handler.WorkoutInterface
 import timber.log.Timber
 import java.lang.Integer.parseInt
@@ -46,6 +47,46 @@ object ViewBinding {
         val sec = duration % 60
         val min = duration / 60
         view.text = view.context.getString(R.string.overall_duration, min, sec)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @JvmStatic
+    @BindingAdapter(value = ["counterTarget", "counterDirection"], requireAll = true)
+    fun bindCounterBtn(view: ImageButton, counterTarget: TextView, counterDirection: String?) {
+        val lambda = fun(){
+            counterTarget.let { textview ->
+                val stringNumber = textview.text.toString()
+                var curValue = if (stringNumber.isNotBlank()) stringNumber.toInt() else 0
+                if (counterDirection == "sub"){
+                    curValue = if (curValue > 0) { curValue-1 } else { 0 }
+                } else {
+                    curValue++
+                }
+                textview.text = curValue.toString()
+            }
+        }
+
+        view.setOnClickListener { lambda() }
+
+        view.setOnTouchListener(
+            RepeatListener(initialInterval = 400, initialRepeatDelay = 100) { lambda() }
+        )
+    }
+
+    @JvmStatic
+    @BindingAdapter("toast")
+    fun bindToast(view: View, text: Int) {
+        view.context.showToast(text)
+    }
+
+    @JvmStatic
+    @BindingAdapter("toast")
+    fun bindToast(view: View, text: String?) {
+        text?.let {
+            if (it.isNotEmpty()) {
+                view.context.showToast(it)
+            }
+        }
     }
 
     @JvmStatic

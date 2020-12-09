@@ -62,6 +62,13 @@
             android:theme="@style/Theme.Main.NoActionBar" />
 
         <activity
+            android:name="com.wile.app.ui.add.TabataAddActivity"
+            android:label="@string/activity_tabata_add_label"
+
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Main.NoActionBar" />
+        <activity
             android:name="com.wile.app.ui.social.JoinActivity"
             android:label="@string/activity_social_join_label"
 
