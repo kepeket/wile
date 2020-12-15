@@ -1,7 +1,7 @@
 package com.wile.reminders.di
 
-import com.wile.training.TrainingRepository
-import com.wile.training.TrainingRepositoryImpl
+import com.wile.reminders.ReminderRepository
+import com.wile.reminders.ReminderRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

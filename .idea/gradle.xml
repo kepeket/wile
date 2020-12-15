@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/Libraries/Logging" />
             <option value="$PROJECT_DIR$/Libraries/Sound" />
             <option value="$PROJECT_DIR$/Repositories" />
+            <option value="$PROJECT_DIR$/Repositories/Reminders" />
             <option value="$PROJECT_DIR$/Repositories/Training" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />

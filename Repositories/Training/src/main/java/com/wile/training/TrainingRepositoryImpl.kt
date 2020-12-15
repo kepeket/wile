@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-// FixMe : miss a Network stack
 class TrainingRepositoryImpl @Inject constructor(
     private val trainingDao: TrainingDao
 ) : TrainingRepository {

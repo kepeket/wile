@@ -12,4 +12,5 @@
     <color name="connection_green">#558B2F</color>
     <color name="connection_red">#A22121</color>
     <color name="connection_orange">#F9A825</color>
+    <color name="reminder_bullet_color">#F9A825</color>
 </resources>

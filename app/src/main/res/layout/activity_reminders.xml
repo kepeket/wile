@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.wile.app.ui.reminders.RemindersViewModel" />
+    </data>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.reminders.RemindersActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/toolbar_home"
+            tools:viewBindingIgnore="true"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/reminder_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Rappel pour Entrainement #3"
+            style="@style/Theme.Main.Training.Label"
+            android:layout_marginTop="@dimen/big_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textIsSelectable="true" />
+
+        <TextView
+            android:id="@+id/reminder_expl"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/reminder_explain"
+            android:layout_marginTop="@dimen/big_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reminder_title" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/big_padding"
+            app:layout_constraintTop_toBottomOf="@+id/reminder_expl"
+            android:orientation="vertical">
+
+
+
+
+            <TextView
+                android:id="@+id/reminder_hour"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:theme="@style/Theme.Main.Reminder.Time"
+                tools:text="08:45" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/reminder_active"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reminder_active_label" />
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                >
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/reminder_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reminder_monday" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/reminder_tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reminder_tuesday" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/reminder_wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reminder_wednesday" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/reminder_thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reminder_thursday" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/reminder_friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reminder_friday" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/reminder_saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reminder_saturday" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/reminder_sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reminder_sunday" />
+            </GridLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_btn"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_padding"
+                android:text="@string/save_training_btn" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

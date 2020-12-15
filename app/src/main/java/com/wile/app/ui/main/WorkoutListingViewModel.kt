@@ -3,15 +3,15 @@ package com.wile.app.ui.main
 import android.content.Context
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.squareup.moshi.JsonAdapter
 import com.wile.core.viewmodel.LiveCoroutinesViewModel
+import com.wile.database.model.Reminder
 import com.wile.database.model.Training
+import com.wile.reminders.ReminderRepository
 import com.wile.training.TrainingRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.io.File
@@ -21,6 +21,7 @@ import java.io.FileWriter
 //  Did we want the same instance of the VM in the two activities ? If yes, use by activityViewModels()
 class WorkoutListingViewModel @ViewModelInject constructor(
     private val trainingRepository: TrainingRepository,
+    private val reminderRepository: ReminderRepository,
     @Assisted private val savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
     private val trainingListAdapter: JsonAdapter<List<Training>>
@@ -38,6 +39,10 @@ class WorkoutListingViewModel @ViewModelInject constructor(
     private val _toastLiveData: MutableLiveData<String> = MutableLiveData()
     val toastLiveData: LiveData<String> get() = _toastLiveData
 
+    var reminderFetchLiveData: MutableLiveData<Int> = MutableLiveData(-1)
+    var hasReminder: LiveData<Boolean> = MutableLiveData(false)
+
+
     init {
         viewModelScope.launch {
             trainingRepository.fetchWorkoutIds(
@@ -48,6 +53,9 @@ class WorkoutListingViewModel @ViewModelInject constructor(
             ).collect {
                 _workoutListLiveData.value = it
             }
+        }
+        hasReminder = reminderFetchLiveData.switchMap { workoutId ->
+            reminderRepository.hasReminderByWorkoutId(workoutId).asLiveData()
         }
     }
 

@@ -87,6 +87,7 @@ dependencies {
         ":Libraries:Database",
         ":Libraries:Logging",
         ":Libraries:Sound",
-        ":Repositories:Training"
+        ":Repositories:Training",
+        ":Repositories:Reminders"
     )
 }

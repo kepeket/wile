@@ -67,7 +67,7 @@ object DependenciesVersions {
     const val firebaseBoM                      = "26.0.0"
     const val hiltAndroid                      = "2.29.1-alpha"
     const val hiltCore                         = "1.0.0-alpha02"
-    const val materialDesign                   = "1.2.1"
+    const val materialDesign                   = "1.3.0-alpha04"
     const val moshi                            = "1.11.0"
     const val timber                           = "4.7.1"
     const val viewpager2                       = "1.0.0"

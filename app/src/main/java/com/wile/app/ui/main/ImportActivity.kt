@@ -9,7 +9,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.Collections
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 @AndroidEntryPoint
 class ImportActivity : DataBindingActivity() {
 

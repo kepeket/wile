@@ -1,40 +1,25 @@
 package com.wile.reminders
 
-import com.wile.training.model.Preset
-import com.wile.database.model.Training
+import com.wile.database.model.Reminder
 import kotlinx.coroutines.flow.Flow
 
 interface ReminderRepository {
 
-    suspend fun getTraining(
-        id: Int,
+    fun getReminderByWorkoutId(
+        workout: Int,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
-    ): Flow<Training>
+    ): Flow<Reminder>
 
-    suspend fun saveTraining(
-        newTraining: Training,
+    fun hasReminderByWorkoutId(
+        workout: Int
+    ): Flow<Boolean>
+
+    suspend fun saveReminder(
+        newReminder: Reminder,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     )
 
-    fun fetchTrainingList(
-        workout: Int,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ): Flow<List<Training>>
-
-    suspend fun fetchWorkoutIds(
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ): Flow<List<Int>>
-
-    suspend fun deleteTraining(id: Int)
-
-    suspend fun deleteTrainings(workoutId: Int)
-
-    suspend fun addAll(trainings: List<Training>)
-
-    suspend fun addTrainingFromPreset(preset: Preset, workout: Int)
-
+    suspend fun deleteReminder(id: Int)
 }

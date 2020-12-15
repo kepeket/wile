@@ -1,10 +1,9 @@
 package com.wile.reminders
 
 import androidx.annotation.WorkerThread
-import com.wile.training.model.Preset
-import com.wile.database.model.Training
-import com.wile.database.model.TrainingTypes
-import com.wile.database.dao.TrainingDao
+import androidx.lifecycle.MutableLiveData
+import com.wile.database.dao.ReminderDao
+import com.wile.database.model.Reminder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -12,72 +11,41 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-// FixMe : miss a Network stack
+@ExperimentalCoroutinesApi
 class ReminderRepositoryImpl @Inject constructor(
-    private val trainingDao: TrainingDao
-) : TrainingRepository {
-
-    @ExperimentalCoroutinesApi
-    @WorkerThread
-    override suspend fun getTraining(
-            id: Int,
-            onSuccess: () -> Unit,
-            onError: (String) -> Unit
-    ) = flow {
-            emit(trainingDao.getTraining(id))
-        }.flowOn(Dispatchers.IO)
+    private val reminderDao: ReminderDao
+) : ReminderRepository {
 
     @WorkerThread
-    override suspend fun saveTraining(
-        newTraining: Training,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) {
-        trainingDao.insertTraining(newTraining)
-    }
-
-    @WorkerThread
-    override fun fetchTrainingList(
+    override fun getReminderByWorkoutId(
         workout: Int,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
-    ) = trainingDao.getTrainingList(workout)
+    ) = flow {
+            emit(reminderDao.getReminderByWorkoutId(workout))
+        }.flowOn(Dispatchers.IO)
 
     @WorkerThread
-    override suspend fun fetchWorkoutIds(
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) = trainingDao.getWorkoutIds()
-
-    @WorkerThread
-    override suspend fun deleteTraining(id: Int) = trainingDao.delete(id)
-
-    @WorkerThread
-    override suspend fun deleteTrainings(workoutId: Int) = trainingDao.deleteByWorkoutId(workoutId)
-
-    @WorkerThread
-    override suspend fun addAll(trainings: List<Training>) = trainingDao.insertAll(trainings)
-
-    @WorkerThread
-    override suspend fun addTrainingFromPreset(preset: Preset, workout: Int)  {
-        val training = Training(
-            name = preset.name,
-            trainingType = preset.trainingType,
-            workout = workout
-        )
-
-        when(preset.trainingType){
-            TrainingTypes.Timed -> {
-                training.duration = preset.duration
-            }
-            TrainingTypes.Repeated -> {
-                training.reps = preset.reps
-                training.customRepRate = true
-                training.repRate = preset.repRate
-            }
-            else -> TODO()
+    override fun hasReminderByWorkoutId(workout: Int): Flow<Boolean> = flow {
+        val reminder = reminderDao.getReminderByWorkoutId(workout)
+        @Suppress("SENSELESS_COMPARISON")
+        if (reminder != null){
+            emit(reminder.workout == workout && reminder.active)
+        } else {
+            emit(false)
         }
 
-        trainingDao.insertTraining(training)
+    }.flowOn(Dispatchers.IO)
+
+    @WorkerThread
+    override suspend fun saveReminder(
+        newReminder: Reminder,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        reminderDao.insert(newReminder)
     }
+
+    @WorkerThread
+    override suspend fun deleteReminder(id: Int) = reminderDao.delete(id)
 }

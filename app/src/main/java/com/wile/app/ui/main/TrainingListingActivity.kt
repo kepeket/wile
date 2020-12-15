@@ -14,6 +14,7 @@ import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
+import com.wile.app.ui.reminders.RemindersActivity
 import com.wile.features.settings.SettingsActivity
 import com.wile.app.ui.social.JoinActivity
 import com.wile.app.ui.social.SocialWorkoutViewModel
@@ -24,7 +25,9 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.util.Collections
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 @AndroidEntryPoint
 class TrainingListingActivity : DataBindingActivity() {
 
@@ -59,6 +62,7 @@ class TrainingListingActivity : DataBindingActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentWorkout = adapter.getItem(position)
+                viewModel.reminderFetchLiveData.value = currentWorkout
             }
         })
 
@@ -72,6 +76,10 @@ class TrainingListingActivity : DataBindingActivity() {
 
         binding.settingsBtn.setOnClickListener {
             startActivity(SettingsActivity.newIntent(this))
+        }
+
+        binding.reminderBtn.setOnClickListener {
+            startActivity(RemindersActivity.showReminders(this, currentWorkout))
         }
 
         viewModel.fileExportLiveData.observe(this, {

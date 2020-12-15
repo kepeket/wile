@@ -79,6 +79,10 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="Theme.Main.Reminder.Time" parent="Theme.Main">
+        <item name="android:textSize">44sp</item>
+    </style>
+
     <dimen name="workout_info">24sp</dimen>
     <dimen name="training_label">18sp</dimen>
     <dimen name="paragraph_margin">34dp</dimen>

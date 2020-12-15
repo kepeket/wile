@@ -65,6 +65,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 app:layout_constraintBottom_toBottomOf="parent"/>
             <ImageButton
+                android:id="@+id/reminder_btn"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/ic_baseline_add_alarm_24"
@@ -73,6 +74,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="?selectableItemBackgroundBorderless"
                 app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageView
+                app:gone="@{!viewModel.hasReminder}"
+                android:visibility="gone"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/circle"
+                app:tint="@color/reminder_bullet_color"
+                app:layout_constraintTop_toTopOf="@+id/reminder_btn"
+                app:layout_constraintEnd_toEndOf="@+id/reminder_btn"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="18dp"
+                />
             <ImageButton
                 android:id="@+id/go_social"
                 android:layout_width="60dp"
@@ -92,7 +105,7 @@
                 app:layout_constraintTop_toTopOf="@+id/go_social"
                 app:layout_constraintEnd_toEndOf="@+id/go_social"
                 android:layout_marginTop="18dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginEnd="18dp"
                 />
             <ImageButton
                 android:id="@+id/new_training"

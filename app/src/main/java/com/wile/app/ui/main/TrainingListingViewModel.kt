@@ -31,8 +31,8 @@ class TrainingListingViewModel @ViewModelInject constructor(
     val toastLiveData: LiveData<String> get() = _toastLiveData
 
     private val workoutId: Int = requireNotNull(savedStateHandle.get<Int>(TrainingListingFragment.WORKOUT_ID))
-    private val _workoutNumber: MutableLiveData<Int> = MutableLiveData(workoutId)
-    val workoutName: LiveData<Int> get () = _workoutNumber
+    private val _workoutName: MutableLiveData<Int> = MutableLiveData(workoutId)
+    val workoutName: LiveData<Int> get () = _workoutName
 
     init {
         viewModelScope.launch {

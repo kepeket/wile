@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 4,
-    "identityHash": "e05ddeea9a960f2c6659def165e58352",
+    "version": 7,
+    "identityHash": "00c031e6d8b9b66ff64cdf07014a3633",
     "entities": [
       {
         "tableName": "Training",
@@ -80,7 +80,7 @@
       },
       {
         "tableName": "Reminder",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workout` INTEGER NOT NULL, `active` INTEGER NOT NULL, `time` TEXT NOT NULL, `monday` INTEGER NOT NULL, `tuesday` INTEGER NOT NULL, `wednesday` INTEGER NOT NULL, `thursday` INTEGER NOT NULL, `friday` INTEGER NOT NULL, `saturday` INTEGER NOT NULL, `sunday` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workout` INTEGER NOT NULL, `active` INTEGER NOT NULL, `hour` INTEGER NOT NULL, `minute` INTEGER NOT NULL, `monday` INTEGER NOT NULL, `tuesday` INTEGER NOT NULL, `wednesday` INTEGER NOT NULL, `thursday` INTEGER NOT NULL, `friday` INTEGER NOT NULL, `saturday` INTEGER NOT NULL, `sunday` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -101,9 +101,15 @@
             "notNull": true
           },
           {
-            "fieldPath": "time",
-            "columnName": "time",
-            "affinity": "TEXT",
+            "fieldPath": "hour",
+            "columnName": "hour",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minute",
+            "columnName": "minute",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -162,7 +168,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e05ddeea9a960f2c6659def165e58352')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '00c031e6d8b9b66ff64cdf07014a3633')"
     ]
   }
 }
