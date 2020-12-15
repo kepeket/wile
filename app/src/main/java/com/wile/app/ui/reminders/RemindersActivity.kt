@@ -12,6 +12,8 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.wile.app.R
 import com.wile.app.databinding.ActivityRemindersBinding
+import com.wile.app.ui.main.TrainingListingActivity
+import com.wile.app.ui.main.TrainingListingActivity_GeneratedInjector
 import com.wile.core.databinding.DataBindingActivity
 import com.wile.database.model.Reminder
 import com.wile.database.model.ReminderDay
@@ -106,6 +108,11 @@ class RemindersActivity : DataBindingActivity() {
         }
 
         binding.reminderActive.setOnCheckedChangeListener { _, checked ->
+            if (checked){
+                setResult(TrainingListingActivity.UPDATE_REMINDER_RESULT_TRUE)
+            } else {
+                setResult(TrainingListingActivity.UPDATE_REMINDER_RESULT_FALSE)
+            }
             viewModel.setActive(checked)
         }
     }

@@ -10,24 +10,22 @@ import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.wile.app.R
-import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityTrainingListingBinding
 import com.wile.app.ui.adapter.WorkoutListingAdapter
 import com.wile.app.ui.add.QuickAddActivity
 import com.wile.app.ui.reminders.RemindersActivity
-import com.wile.features.settings.SettingsActivity
 import com.wile.app.ui.social.JoinActivity
 import com.wile.app.ui.social.SocialWorkoutViewModel
 import com.wile.app.ui.workout.WorkoutActivity
+import com.wile.core.databinding.DataBindingActivity
 import com.wile.core.extensions.showToast
+import com.wile.features.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
-import java.util.Collections
-import kotlin.time.ExperimentalTime
+import java.util.*
 
-@ExperimentalTime
 @AndroidEntryPoint
 class TrainingListingActivity : DataBindingActivity() {
 
@@ -79,7 +77,10 @@ class TrainingListingActivity : DataBindingActivity() {
         }
 
         binding.reminderBtn.setOnClickListener {
-            startActivity(RemindersActivity.showReminders(this, currentWorkout))
+            startActivityForResult(
+                RemindersActivity.showReminders(this, currentWorkout),
+                UPDATE_REMINDER
+            )
         }
 
         viewModel.fileExportLiveData.observe(this, {
@@ -105,7 +106,11 @@ class TrainingListingActivity : DataBindingActivity() {
                     return@observe
                 }
                 imported = true
-                val maxId = if (list.orEmpty().count() > 0) { Collections.max(list) + 1 } else { 0 }
+                val maxId = if (list.orEmpty().count() > 0) {
+                    Collections.max(list) + 1
+                } else {
+                    0
+                }
                 val trainingsJSON = contentResolver.openInputStream(data)
                 trainingsJSON?.let { json ->
                     val jsonString = BufferedReader(InputStreamReader(json))
@@ -167,8 +172,24 @@ class TrainingListingActivity : DataBindingActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            UPDATE_REMINDER -> {
+                if (resultCode == UPDATE_REMINDER_RESULT_FALSE ||
+                    resultCode == UPDATE_REMINDER_RESULT_TRUE
+                ) {
+                    viewModel.reminderFetchLiveData.value = currentWorkout
+                }
+            }
+        }
+    }
+
     companion object {
         private const val NEWLY_ADDED_ID = "newly_added_id"
+        private const val UPDATE_REMINDER = 100
+        const val UPDATE_REMINDER_RESULT_TRUE = 101
+        const val UPDATE_REMINDER_RESULT_FALSE = 102
 
         fun newIntent(context: Context) = Intent(context, TrainingListingActivity::class.java)
         fun showImported(context: Context, newId: Int) = newIntent(context).apply {
