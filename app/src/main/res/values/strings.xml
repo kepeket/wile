@@ -102,4 +102,8 @@
     <string name="reminder_sunday">Dimanche</string>
     <string name="reminder_hour_label">Heure du rappel</string>
     <string name="time_format">%02d:%02d</string>
+    <string name="alarm_notification_channel">Rappel d\'entrainement</string>
+    <string name="alarm_notification_title">C\'est l\'heure de l\'entrainement</string>
+    <string name="alarm_notification_text">Vous aviez prévu de vous entrainer aujourd\'hui, tapez la notification pour lancer l\'entrainement, et aller vous préparer !</string>
+    <string name="alarm_notification_sub_text">Un peu de sport</string>
 </resources>

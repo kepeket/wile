@@ -17,7 +17,7 @@ interface ReminderDao {
     suspend fun insertAll(reminder: List<Reminder>)
 
     @Query("SELECT * FROM Reminder WHERE id = :id")
-    fun getReminder(id: Int): Reminder
+    fun getReminder(id: Int): Reminder?
 
     @Query("SELECT * FROM Reminder WHERE workout = :workoutId")
     fun getReminderByWorkoutId(workoutId: Int): Reminder

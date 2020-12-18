@@ -9,7 +9,7 @@ interface ReminderRepository {
         workout: Int,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
-    ): Flow<Reminder>
+    ): Flow<Reminder?>
 
     fun hasReminderByWorkoutId(
         workout: Int

@@ -95,12 +95,14 @@
             android:theme="@style/Theme.Main.NoActionBar" />
 
         <service
-            android:name="com.wile.app.ui.workout.WorkoutService"
-            android:enabled="true">
+            android:name="com.wile.app.services.WorkoutService"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.wile.app.ui.workout.WorkoutService" />
             </intent-filter>
         </service>
+        <receiver android:name=".receivers.AlarmReceiver"/>
     </application>
 
 </manifest>

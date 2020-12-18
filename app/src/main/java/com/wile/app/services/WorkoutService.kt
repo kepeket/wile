@@ -1,4 +1,4 @@
-package com.wile.app.ui.workout
+package com.wile.app.services
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -9,6 +9,7 @@ import com.tinder.scarlet.Lifecycle
 import com.tinder.scarlet.lifecycle.LifecycleRegistry
 import com.wile.app.model.*
 import com.wile.app.ui.social.WileServer
+import com.wile.app.ui.workout.WorkoutActivity
 import com.wile.database.model.Training
 import com.wile.database.model.TrainingTypes
 import dagger.hilt.android.AndroidEntryPoint

@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import com.wile.app.R
 import com.wile.core.databinding.DataBindingActivity
 import com.wile.app.databinding.ActivityWorkoutBinding
+import com.wile.app.services.WorkoutService
 import com.wile.app.sound.WorkoutSoundPlayer
 import com.wile.app.ui.handler.WorkoutInterface
 import com.wile.core.extensions.showToast

@@ -12,6 +12,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.wile.app.R
 import com.wile.app.databinding.ActivityRemindersBinding
+import com.wile.app.services.AlarmService
 import com.wile.app.ui.main.TrainingListingActivity
 import com.wile.app.ui.main.TrainingListingActivity_GeneratedInjector
 import com.wile.core.databinding.DataBindingActivity
@@ -23,10 +24,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RemindersActivity : DataBindingActivity() {
-
     private val viewModel: RemindersViewModel by viewModels()
     private val binding: ActivityRemindersBinding by binding(R.layout.activity_reminders)
     private val timePickerDialogBuilder =
