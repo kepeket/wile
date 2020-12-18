@@ -115,7 +115,7 @@ class WorkoutActivity : DataBindingActivity(), WorkoutInterface {
                         } else {
                             countdown.toString()
                         }
-                    if (countdown in 1..4) {
+                    if (countdown in 1..4 && svc.chronometerIsRunningLiveData.value == true) {
                         workoutSoundPlayer.playBeep()
                     }
                 })
