@@ -13,4 +13,5 @@
     <color name="connection_red">#A22121</color>
     <color name="connection_orange">#F9A825</color>
     <color name="reminder_bullet_color">#F9A825</color>
+    <color name="workout_top_sheet_color">#363636</color>
 </resources>
